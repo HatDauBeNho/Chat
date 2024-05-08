@@ -131,6 +131,12 @@ body {
   border-radius: 99.99px;
   margin-right: 10px;
 }
+.avatarMessage{
+  width: 36px;
+  height: 36px;
+  border-radius: 99.99px;
+  margin-right: 10px;
+}
 .content {
   margin: 0;
 }
@@ -177,6 +183,48 @@ body {
   width: 100%;
   height: 964px;
 }
+.rightContainerListMessageFriend
+{
+  display: flex;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: left;
+
+  
+}
+.rightContainerListMyMessage
+{
+  display: flex;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  margin-bottom: 10px;
+  justify-content: right;
+}
+.friendMessage
+{
+  padding: 4px 8px 4px 8px;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 36px;
+  background-color: #E9EAED;
+  border-radius: 18px 18px 18px 2px;
+  margin: 0;
+}
+.myMessage
+{
+  padding: 4px 8px 4px 8px;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 36px;
+  background-color: #E9EAED;
+  border-radius: 18px 18px 2px 18px;
+  margin: 0;
+}
 .rightContainerMessageComposer {
   display: flex;
   align-items: center;
@@ -185,7 +233,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1397px;
+  width: 1443px;
   height: 40px;
   border-radius: 20px;
   border: 1px solid #dbdde1;

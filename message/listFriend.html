@@ -17,8 +17,8 @@
             </button>
             <div class="leftContainerHeaderDropDownContent">
               <div class="leftContainerHeaderDropDownUserInfor">
-                  <img id="avatar" class="avatar" src="" alt="">
-                  <h3 id="fullName"></h3>
+                <img id="avatar" class="avatar" src="" alt="" />
+                <h3 id="fullName"></h3>
               </div>
               <a href="">
                 <img
@@ -44,8 +44,8 @@
                 />
                 Giao diện tối
               </a>
-              <a  id="logout" href="">
-                <img 
+              <a id="logout" href="">
+                <img
                   src="user.png"
                   alt=""
                   class="leftContainerHeaderDropDownIcon"
@@ -78,7 +78,9 @@
       </div>
       <div class="rightContainer">
         <div id="getUser"></div>
-        <div class="rightContainerListMessage"></div>
+        <div class="rightContainerListMessage">
+          <div id="messages"></div>
+        </div>
         <div class="rightContainerMessageComposer">
           <button class="rightContainerMessageComposerPlus">
             <img
@@ -119,7 +121,7 @@
   const token = localStorage.getItem("token");
   const friendsList = document.getElementById("friends");
   const getUser = document.getElementById("getUser");
-
+  const getAllMessage = document.getElementById("messages");
   var myHeaders = new Headers();
   myHeaders.append("Authorization", "Bearer " + token);
 
@@ -128,29 +130,29 @@
     headers: myHeaders,
     redirect: "follow",
   };
-  //lay thong tin nguoi dung 
+  //lay thong tin nguoi dung
   fetch("http://10.2.44.52:8888/api/user/info", requestOptions)
-        .then(response => {
-            return response.json();
-        })
-        .then(result => {
-            console.log('result', result);
+    .then((response) => {
+      return response.json();
+    })
+    .then((result) => {
+      console.log("result", result);
 
-            if (result.status == 1) {
-                fullName.textContent = result.data.FullName;
-                avatar.src = 'http://10.2.44.52:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg';
-            } else {
-                console.error('Error: ' + result.message);
-            }
-        })
-        .catch(error => console.log('error', error));
+      if (result.status == 1) {
+        fullName.textContent = result.data.FullName;
+        avatar.src = "http://10.2.44.52:8888/api/images" + result.data.Avatar;
+      } else {
+        console.error("Error: " + result.message);
+      }
+    })
+    .catch((error) => console.log("error", error));
 
   //su kien dang xuat
-  const btnLogout=document.getElementById('logout');
-  btnLogout.addEventListener("click",function(){
+  const btnLogout = document.getElementById("logout");
+  btnLogout.addEventListener("click", function () {
     event.preventDefault();
     localStorage.clear();
-    window.location.href="/auth/login.html";
+    window.location.href = "/auth/login.html";
   });
 
   //lấy danh sách bạn bè
@@ -166,22 +168,51 @@
 
           const avatar = document.createElement("img");
           avatar.classList.add("avatar");
-          avatar.src =
-            "http://10.2.44.52:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg";
+          avatar.src = "http://10.2.44.52:8888/api/images" + friend.Avatar;
           listItem.appendChild(avatar);
 
           const friendInfo = document.createElement("div");
           friendInfo.classList.add("leftContainerChannelInfor");
 
-          const username = document.createElement("p");
-          username.classList.add("content");
-          username.textContent = friend.Username;
-          friendInfo.appendChild(username);
-
           const fullName = document.createElement("p");
           fullName.classList.add("content");
           fullName.textContent = friend.FullName;
           friendInfo.appendChild(fullName);
+
+          fetch(
+            "http://10.2.44.52:8888/api/message/get-message?FriendID=" +
+              friend.FriendID,
+            requestOptions
+          )
+            .then((response1) => {
+              return response1.json();
+            })
+            .then((result1) => {
+              console.log("result1", result1);
+              fetch(
+                "http://10.2.44.52:8888/api/message/get-message?FriendID=" +
+                  friend.FriendID +
+                  "&&LastTime=" +
+                  result1.data.LastTime,
+                requestOptionss
+              )
+                .then((response2) => {
+                  return response2.json();
+                })
+                .then((result2) => {
+                  console.log("result", result2);
+                  if (result2.status == 1) {
+                    const lastMessage = document.createElement("p");
+                    lastMessage.classList.add("content");
+                    lastMessage.textContent = result2.data.Content;
+                    friendInfo.appendChild(lastMessage);
+                  } else {
+                    console.error("Error: " + result2.message);
+                  }
+                })
+                .catch((error) => console.log("error", error));
+            })
+            .catch((error2) => console.log("error", error2));
 
           // const status = document.createElement('p');
           // status.classList.add('status');
@@ -202,14 +233,57 @@
 
   //su kien click vao ban be
   friendsList.addEventListener("click", function (event) {
-    if (
-      event.target &&
-      event.target.classList.contains("leftContainerChannel")
-    ) {
+    if ( event.target &&event.target.classList.contains("leftContainerChannel"))
+    {
       // Lấy thông tin về friend từ phần tử cha
       const friend = event.target.dataset.friend;
       friendClick(JSON.parse(friend));
+      const friendID = JSON.parse(friend).FriendID;
+      //lay tin nhan
+      fetch(
+        "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friendID,
+        requestOptions
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((result) => {
+          console.log("result", result);
+          if (result.status == 1) {
+            result.data.forEach((message) => {
+              const listMessage = document.createElement("div");
+              if (message.MessageType == 0) {
+                listMessage.classList.add("rightContainerListMessageFriend");
+
+                const avatar = document.createElement("img");
+                avatar.classList.add("avatarMessage");
+                avatar.src =
+                  "http://10.2.44.52:8888/api/images" + JSON.parse(friend).Avatar;
+                listMessage.appendChild(avatar);
+
+                const content = document.createElement("p");
+                content.classList.add("friendMessage");
+                content.textContent = message.Content;
+
+                listMessage.appendChild(content);
+                getAllMessage.appendChild(listMessage);
+              } else {
+                listMessage.classList.add("rightContainerListMyMessage");
+                const content = document.createElement("p");
+                content.classList.add("myMessage");
+                content.textContent = message.Content;
+
+                listMessage.appendChild(content);
+                getAllMessage.appendChild(listMessage);
+              }
+            });
+          } else {
+            console.error("Error: " + result.message);
+          }
+        })
+        .catch((error) => console.log("error", error));
     }
+    //chon ban de nhan tin
     const boxes = document.querySelectorAll(".leftContainerChannel");
     boxes.forEach((box) => {
       box.addEventListener("click", function () {
@@ -226,13 +300,24 @@
     if (existingUser) {
       existingUser.remove();
     }
+    const existingFriendMessage = getAllMessage.querySelectorAll(
+      ".rightContainerListMessageFriend"
+    );
+    existingFriendMessage.forEach((message) => {
+      message.remove();
+    });
+    const existingMyMessage = getAllMessage.querySelectorAll(
+      ".rightContainerListMyMessage"
+    );
+    existingMyMessage.forEach((message) => {
+      message.remove();
+    });
     const userInfor = document.createElement("div");
     userInfor.classList.add("rightContainerHeader");
 
     const avatar = document.createElement("img");
     avatar.classList.add("rightContainerHeaderAvatar");
-    avatar.src =
-      "http://10.2.44.52:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg";
+    avatar.src = "http://10.2.44.52:8888/api/images" + friend.Avatar;
     userInfor.appendChild(avatar);
 
     const detailDiv = document.createElement("div");
