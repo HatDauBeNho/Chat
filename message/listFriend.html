@@ -129,7 +129,7 @@
     redirect: "follow",
   };
   //lay thong tin nguoi dung 
-  fetch("http://localhost:8888/api/user/info", requestOptions)
+  fetch("http://10.2.44.52:8888/api/user/info", requestOptions)
         .then(response => {
             return response.json();
         })
@@ -138,7 +138,7 @@
 
             if (result.status == 1) {
                 fullName.textContent = result.data.FullName;
-                avatar.src = 'http://localhost:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg';
+                avatar.src = 'http://10.2.44.52:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg';
             } else {
                 console.error('Error: ' + result.message);
             }
@@ -154,7 +154,7 @@
   });
 
   //lấy danh sách bạn bè
-  fetch("http://localhost:8888/api/message/list-friend", requestOptions)
+  fetch("http://10.2.44.52:8888/api/message/list-friend", requestOptions)
     .then((response) => response.json())
     .then((result) => {
       console.log("Result:", result);
@@ -167,7 +167,7 @@
           const avatar = document.createElement("img");
           avatar.classList.add("avatar");
           avatar.src =
-            "http://localhost:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg";
+            "http://10.2.44.52:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg";
           listItem.appendChild(avatar);
 
           const friendInfo = document.createElement("div");
@@ -232,7 +232,7 @@
     const avatar = document.createElement("img");
     avatar.classList.add("rightContainerHeaderAvatar");
     avatar.src =
-      "http://localhost:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg";
+      "http://10.2.44.52:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg";
     userInfor.appendChild(avatar);
 
     const detailDiv = document.createElement("div");

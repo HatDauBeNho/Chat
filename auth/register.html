@@ -101,7 +101,7 @@
       redirect: "follow",
     };
 
-    fetch("http://localhost:8888/api/auth/register", requestOptions)
+    fetch("http://10.2.44.52:8888/api/auth/register", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log(result);
