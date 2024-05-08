@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Messaging</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Chat</h1>
+        <div class="messages">
+            <h2>Cuộc trò chuyện</h2>
+            <ul id="messageList">
+                <!-- Messages will be displayed here -->
+            </ul>
+        </div>
+        <div class="message-form">
+            <form id="send-message">
+                <input type="text" id="friendid" name="friendid" placeholder="Friend ID" required>
+                <input type="text" id="message" name="message" placeholder="Nhập tin nhắn">
+                <button id="btn-send-message" type="submit">Gửi</button>
+            </form>
+        </div>
+
+
+    </div>
+</body>
+
+</html>
+<script>
+    const token = localStorage.getItem('token');
+    const form = document.querySelector('#send-message');
+
+    const btnSendmessage = document.querySelector('#btn-send-message');
+    btnSendmessage.addEventListener("click", function (e) {
+        e.preventDefault();
+        sendMessage(
+            form.querySelector('[name="friendid"]').value,
+            form.querySelector('[name="message"]').value);
+    });
+
+    function sendMessage(FriendID, Content) {
+        var formData = new FormData();
+        formData.append('FriendID', FriendID);
+        formData.append('Content', Content);
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: formData,
+            redirect: 'follow'
+        };
+        fetch('http://localhost:8888/api/message/send-message', requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log('result', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function getMessages() {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", "Bearer " + token);
+        var requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow'
+        };
+        fetch('http://10.2.44.52:8888/api/message/get-message?FriendID=6614f58603ea7381fe1f42a8&LastTime=2024-04-10T07:02:38.856Z', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+    window.onload = function () {
+        getMessages();
+    };
+</script>

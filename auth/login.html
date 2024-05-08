@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="styleLogin.css" />
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="leftContainer">
+        <div class="leftContainerLogo">
+          <img src="Logo.png" alt="logo" class="headerLogo" />
+        </div>
+        <div class="left__container--backgroud">
+          <img src="Background.png" alt="logo" class="backgroud" />
+        </div>
+        <div class="leftContainerContent">
+          <div class="leftContainerContentText">
+            <p class="leftContainerContentText1">Đăng nhập để kết nối</p>
+            <p class="leftContainerContentText2"> Nếu chưa có tài khoản đăng ký tại <a class="redirectText" href="register.html" id="redirectRegister">đây!</a></p>
+          </div>
+          <div class="leftContainerContentImage">
+            <img
+              src="isometric view of colleagues discussing the project.png" alt="logo"class="image" />
+              
+              
+              
+          </div>
+        </div>
+      </div>
+      <div class="rightContainer">
+        <div class="rightContainerMenu">
+          <button class="btnLanguage">Tiếng việt</button>
+          <button id="btnLogin" class="btnLogin">Đăng nhập</button>
+          <button id="btnRegister" class="btnRegister">Đăng ký</button>
+        </div>
+        <div class="rightContainerAuthForm">
+          <form class="formLogin" id="login" method="post">
+            <input type="text" name="username" placeholder="Nhập tài khoản" required />                                                           
+            <input type="password" name="password" placeholder="Mật khẩu" required />                         
+            <a class="rightContainerAuthFormForgot" href="" >Quên mật khẩu?</a>             
+            <input id="btnSubmitLogin" type="submit" value="Đăng nhập" />
+          </form>
+        </div>
+        <div class="rightContainerFunction">
+          <div class="rightContainerFunctionNoti">
+            <span class="rightContainerFunctionDash"></span>
+            <p class="rightContainerFunctionText">Hoặc tiếp tục với</p>
+            <span class="rightContainerFunctionDash"></span>
+          </div>
+          <div class="rightContainerFunctionSocial">
+            <button class="rightContainerFunctionSocialGoogle">
+              <img src="google.png" alt="" class="rightContainerFunctionSocialGg" />                                    
+            </button>
+            <button class="rightContainerFunctionSocialApple">
+              <img
+                src="apple.png" alt="" class="rightContainerFunctionSocialA" />                                           
+            </button>
+            <button class="rightContainerFunctionSocialFacebook">
+              <img
+                src="facebook.png" alt="" class="rightContainerFunctionSocialFb" />                                              
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  //Chuyen huong text sang trang dang ky
+  document.getElementById('redirectRegister').addEventListener('click', function(event) {
+    event.preventDefault();
+    var url = this.getAttribute('href');
+    window.location.href = url;
+});
+  //chuyen huong btn sang trang dang ky
+  document.addEventListener("DOMContentLoaded", function () 
+  {
+    var btnSubmitLogin = document.getElementById("btnRegister");
+    btnSubmitLogin.addEventListener("click", function (event) {
+      event.preventDefault();
+      window.location.href = "/auth/register.html";
+    });
+  });
+  //btn login
+  const form = document.querySelector("#login");
+  const btnSubmitLogin = document.querySelector("#btnSubmitLogin");
+  btnSubmitLogin.addEventListener("click", function (e) {
+    e.preventDefault();
+    login(
+      form.querySelector('[name="username"]').value,
+      form.querySelector('[name="password"]').value
+    );
+  });
+  function login(Username, Password) {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      Username: Username,
+      Password: Password,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8888/api/auth/login", requestOptions)
+      .then((response) => {
+        return response.json();
+      })
+      .then((result) => {
+        localStorage.setItem("token", result.data.token);
+        window.location.href = "/message/listFriend.html";
+      })
+      .catch((error) => console.log("error", error));
+  }
+</script>

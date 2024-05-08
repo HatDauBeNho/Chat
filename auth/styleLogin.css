@@ -1,0 +1,222 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
+.main {
+  display: flex;
+  background-color: #f6f6f6;
+}
+.leftContainer {
+  width: 1280px;
+  height: 1080px;
+}
+
+.leftContainerLogo {
+  height: 100px;
+}
+.headerLogo {
+  margin: 30px 0 0 56px;
+}
+.left__container--backgroud {
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  left: 100px;
+  top: 150px;
+}
+.backgroud {
+}
+.redirectText
+{
+  text-decoration: none;
+  color: #4461F2;
+}
+.leftContainerContentText {
+  /* position: absolute;
+  width: 430px;
+  height: 492px;
+  left: 142px;
+  top: 291px; */
+}
+.leftContainerContentText1 {
+  /* Đăng nhập để kết nối */
+
+  position: absolute;
+  width: 390px;
+  height: 141px;
+  left: 199px;
+  top: 381px;
+
+  font-weight: 400;
+  font-size: 58px;
+  line-height: 77px;
+  /* or 133% */
+
+  color: #000000;
+}
+.leftContainerContentText2 {
+  /* Nếu chưa có tài khoản Đăng ký tại đây! */
+
+  position: absolute;
+  width: 290px;
+  height: 63px;
+  left: 201px;
+  top: 599px;
+
+  font-style: normal;
+  font-weight: 400;
+  font-size: 23px;
+  line-height: 27px;
+
+  color: #000000;
+}
+.leftContainerContentImage {
+  display: flex;
+}
+.image {
+  margin-right: 10px;
+
+  position: absolute;
+  width: 480px;
+  height: 456px;
+  left: 769px;
+  top: 454px;
+
+  position: absolute;
+}
+.rightContainer {
+  width: 640px;
+  height: 1080px;
+}
+.rightContainerMenu {
+  align-items: flex-end;
+  height: 100px;
+  display: flex;
+  padding: 0 20px;
+  justify-content: center;
+}
+
+.rightContainerAuthForm {
+  display: flex;
+  align-items: center;
+  height: 500px;
+  justify-content: center;
+  margin-top: 200px;
+}
+.rightContainerAuthFormForgot {
+  text-decoration: none;
+  width: 125px;
+  height: 77px;
+  color: #c7c7c7;
+  margin-left: 280px;
+}
+.formLogin {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.rightContainerFunction {
+}
+.rightContainerFunctionNoti {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rightContainerFunctionDash {
+  display: block;
+  border-top: 1px solid #dfdfdf;
+  width: 120px;
+}
+.rightContainerFunctionText {
+  margin: 0 10px;
+  color: #acadac;
+}
+.rightContainerFunctionSocial {
+  display: flex;
+  justify-content: center;
+}
+.rightContainerFunctionSocialGoogle,
+.rightContainerFunctionSocialFacebook,
+.rightContainerFunctionSocialApple {
+  width: 117px;
+  height: 60px;
+  border-radius: 10px;
+  border: 1px;
+  margin: 40px 10px;
+}
+.rightContainerFunctionSocialGg,
+.rightContainerFunctionSocialFb,
+.rightContainerFunctionSocialA {
+  width: 23px;
+  height: 28px;
+}
+.rightContainerFunctionSocialGoogle:hover,
+.rightContainerFunctionSocialFacebook:hover,
+.rightContainerFunctionSocialApple:hover {
+  background-color: white;
+}
+/* Thiết lập các thuộc tính cho input */
+input[type="text"],
+input[type="password"],
+input[type="submit"] {
+  width: 400px;
+  height: 77px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  background-color:lightsteelblue;
+}
+
+/* Thiết lập màu nền và màu chữ cho nút submit */
+input[type="submit"] {
+  background-color: #4461f2;
+  height: 60px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 19px;
+  letter-spacing: 0.09em;
+  color: #ffffff;
+}
+
+/* Hiệu ứng hover cho nút submit */
+input[type="submit"]:hover {
+  background-color: #ffa07a;
+}
+.btnRegister,
+.btnLogin {
+  width: 112px;
+  height: 42px;
+  color: #4461f2;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  background: #f6f6f6;
+  border-radius: 21px;
+  font-weight: bold;
+  font-size: 16px;
+  border: #ccc;
+}
+
+.btnLanguage {
+  width: 112px;
+  height: 42px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  background: #f6f6f6;
+  border-radius: 21px;
+  font-weight: bold;
+  font-size: 16px;
+  border: #ccc;
+}
+
+.btnRegister:hover,
+.btnLogin:hover,
+.btnLanguage:hover {
+  background-color: white;
+}

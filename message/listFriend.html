@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Friends List</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="leftContainer">
+        <div class="leftContainerHeader">
+          <div class="leftContainerHeaderDropDown">
+            <button class="leftContainerHeaderDropDownBtn">
+              <img src="Vector.png" alt="" class="leftContainerHeaderBtnIcon" />
+            </button>
+            <div class="leftContainerHeaderDropDownContent">
+              <div class="leftContainerHeaderDropDownUserInfor">
+                <!-- <h6 class="">Chào mừng bạn !</h6> -->
+              </div>
+              <a href="">
+                <img
+                  src="@.png"
+                  alt=""
+                  class="leftContainerHeaderDropDownIcon"
+                />
+                Nhắc đến bạn
+              </a>
+              <a href="">
+                <img
+                  src="group.png"
+                  alt=""
+                  class="leftContainerHeaderDropDownIcon"
+                />
+                Tạo nhóm
+              </a>
+              <a href="">
+                <img
+                  src="moon.png"
+                  alt=""
+                  class="leftContainerHeaderDropDownIcon"
+                />
+                Giao diện tối
+              </a>
+              <a  id="logout" href="">
+                <img 
+                  src="user.png"
+                  alt=""
+                  class="leftContainerHeaderDropDownIcon"
+                />
+                Đăng xuất
+              </a>
+            </div>
+          </div>
+
+          <div class="leftContainerHeaderSearch">
+            <img src="Shape.png" alt="" class="leftContainerHeaderSearchIcon" />
+            <input
+              class="leftContainerHeaderSearchInput"
+              type="text"
+              name=""
+              id=""
+              placeholder="Tìm kiếm"
+            />
+          </div>
+        </div>
+        <div class="leftContainerChannels">
+          <div id="friends">
+            <!-- <img src="Profile pic.png" alt="">
+                    <div class="leftContainerChannelInfor">
+                        <p class="content">Elon</p>
+                        <p class="content">Mouse hover button</p>
+                    </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="rightContainer">
+        <div id="getUser"></div>
+        <div class="rightContainerListMessage"></div>
+        <div class="rightContainerMessageComposer">
+          <button class="rightContainerMessageComposerPlus">
+            <img
+              src="attach.png"
+              alt=""
+              class="rightContainerMessageComposerPlusIcon"
+            />
+          </button>
+          <div class="rightContainerMessageComposerEnter">
+            <input
+              class="rightContainerMessageComposerEnterInput"
+              type="text"
+              name=""
+              id=""
+              placeholder="Nhập tin nhắn"
+            />
+            <button class="rightContainerMessageComposerEnterEmo">
+              <img
+                src="smile.png"
+                alt=""
+                class="rightContainerMessageComposerEnterEmoIcon"
+              />
+            </button>
+          </div>
+          <button class="rightContainerMessageComposerSend">
+            <img
+              src="Send Button.png"
+              alt=""
+              class="rightContainerMessageComposerSendIcon"
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  const token = localStorage.getItem("token");
+  const friendsList = document.getElementById("friends");
+  const getUser = document.getElementById("getUser");
+
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  //su kien dang xuat
+  const btnLogout=document.getElementById('logout');
+  btnLogout.addEventListener("click",function(){
+    event.preventDefault();
+    localStorage.clear();
+    window.location.href="/auth/login.html";
+  });
+
+  //lấy danh sách bạn bè
+  fetch("http://localhost:8888/api/message/list-friend", requestOptions)
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("Result:", result);
+      if (result.status == 1) {
+        result.data.forEach((friend) => {
+          const listItem = document.createElement("div");
+          listItem.classList.add("leftContainerChannel");
+          listItem.dataset.friend = JSON.stringify(friend);
+
+          const avatar = document.createElement("img");
+          avatar.classList.add("avatar");
+          avatar.src =
+            "http://localhost:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg";
+          listItem.appendChild(avatar);
+
+          const friendInfo = document.createElement("div");
+          friendInfo.classList.add("leftContainerChannelInfor");
+
+          const username = document.createElement("p");
+          username.classList.add("content");
+          username.textContent = friend.Username;
+          friendInfo.appendChild(username);
+
+          const fullName = document.createElement("p");
+          fullName.classList.add("content");
+          fullName.textContent = friend.FullName;
+          friendInfo.appendChild(fullName);
+
+          // const status = document.createElement('p');
+          // status.classList.add('status');
+          // status.textContent = friend.isOnline ? 'Online' : 'Offline';
+          // status.classList.add(friend.isOnline ? 'online' : 'offline');
+          // friendInfo.appendChild(status);
+
+          listItem.appendChild(friendInfo);
+          friendsList.appendChild(listItem);
+        });
+      } else {
+        console.error("Error: " + result.message);
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching friends list:", error);
+    });
+
+  //su kien click vao ban be
+  friendsList.addEventListener("click", function (event) {
+    if (
+      event.target &&
+      event.target.classList.contains("leftContainerChannel")
+    ) {
+      // Lấy thông tin về friend từ phần tử cha
+      const friend = event.target.dataset.friend;
+      friendClick(JSON.parse(friend));
+    }
+    const boxes = document.querySelectorAll(".leftContainerChannel");
+    boxes.forEach((box) => {
+      box.addEventListener("click", function () {
+        boxes.forEach((box) => {
+          box.classList.remove("active");
+        });
+        this.classList.add("active");
+      });
+    });
+  });
+  // lay user
+  function friendClick(friend) {
+    const existingUser = getUser.querySelector(".rightContainerHeader");
+    if (existingUser) {
+      existingUser.remove();
+    }
+    const userInfor = document.createElement("div");
+    userInfor.classList.add("rightContainerHeader");
+
+    const avatar = document.createElement("img");
+    avatar.classList.add("rightContainerHeaderAvatar");
+    avatar.src =
+      "http://localhost:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg";
+    userInfor.appendChild(avatar);
+
+    const detailDiv = document.createElement("div");
+    detailDiv.classList.add("rightContainerHeaderInfor");
+
+    const fullName = document.createElement("p");
+    fullName.classList.add("rightContainerHeaderUserName");
+    fullName.textContent = friend.FullName;
+    detailDiv.appendChild(fullName);
+
+    const status = document.createElement("p");
+    status.textContent = friend.isOnline ? "Online" : "Offline";
+    status.classList.add("rightContainerHeaderUserName");
+    detailDiv.appendChild(status);
+
+    userInfor.appendChild(detailDiv);
+    getUser.appendChild(userInfor);
+  }
+</script>

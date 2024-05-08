@@ -1,0 +1,176 @@
+/* Thiết lập font chữ và màu nền cho body */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
+.main {
+  display: flex;
+  background-color: #f6f6f6;
+}
+.leftContainer {
+  width: 1056px;
+  height: 1080px;
+}
+
+.leftContainerLogo {
+  height: 100px;
+}
+.headerLogo {
+  margin: 30px 0 0 56px;
+}
+
+.leftContainerContentImage {
+  display: flex;
+}
+.image {
+
+  position: absolute;
+  width: 502px;
+  height: 456px;
+  left: 321px;
+  top: 323px;
+}
+.rightContainer {
+  width: 864px;
+  height: 1080px;
+}
+.rightContainerMenu {
+  align-items: flex-end;
+  height: 100px;
+  display: flex;
+  padding: 0 20px;
+  justify-content: center;
+}
+
+.rightContainerAuthForm {
+  
+  display: flex;
+  align-items: center;
+  height: 500px;
+  justify-content: center;
+  margin-right: 200px;
+  margin-top: 200px;
+}
+
+.formRegister {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+.formRegisterLine
+{
+  display: flex;
+  align-items: center;
+}
+.formRegisterHeader
+{
+  width: 400px;
+  height: 100px;
+}
+.labelRegister
+{
+  font-size: 50px;
+}
+.labelForInput
+{
+  width: 140px;
+  margin-right: 70px;
+  font-size: 19px;
+}
+.rightContainerFunction {
+}
+
+.rightContainerFunctionText {
+  margin: 0 10px;
+  color: #acadac;
+}
+
+/* Thiết lập các thuộc tính cho input */
+input[type="text"],
+input[type="password"]{
+  width: 400px;
+  height: 77px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  background-color:lightsteelblue;
+
+}
+
+/* Thiết lập màu nền và màu chữ cho nút submit */
+input[type="submit"] {
+  background-color: #4461f2;
+  width: 400px;
+  height: 60px;
+  color: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 50px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 19px;
+  letter-spacing: 0.09em;
+  color: #ffffff;
+}
+
+/* Hiệu ứng hover cho nút submit */
+input[type="submit"]:hover {
+  background-color: #ffa07a;
+}
+.rightContainerMenuRegister,
+.rightContainerMenuLogin {
+  width: 112px;
+  height: 42px;
+  color: #4461f2;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  background: #f6f6f6;
+  border-radius: 21px;
+  font-weight: bold;
+  font-size: 16px;
+  border: #ccc;
+}
+
+.rightContainerMenuLanguage{
+  width: 112px;
+  height: 42px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+  background: #f6f6f6;
+  border-radius: 21px;
+  font-weight: bold;
+  font-size: 16px;
+  border: #ccc;
+}
+
+.rightContainerMenuRegister:hover,
+.rightContainerMenuLanguage:hover,
+.rightContainerMenuLogin:hover {
+  background-color: white;
+}
+.rightContainerFunctionNoti
+{
+  /* Đã có tài khoản, đăng nhập tại đây! */
+
+position: absolute;
+width: 290px;
+height: 63px;
+left: 1280px;
+top: 900px;
+
+font-style: normal;
+font-weight: 400;
+font-size: 23px;
+line-height: 27px;
+color: #000000;
+}
+.redirectText
+{
+  text-decoration: none;
+  color: #4461F2;
+
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="styleRegister.css" />
+  </head>
+
+  <body>
+    <div class="main">
+      <div class="leftContainer">
+        <div class="leftContainerLogo">
+          <img src="Logo.png" alt="logo" class="headerLogo" />
+        </div>
+        <div class="leftContainerContent">
+          <div class="leftContainerContentImage">
+            <img src="imageRegister.png" alt="logo" class="image" />
+          </div>
+        </div>
+      </div>
+      <div class="rightContainer">
+        <div class="rightContainerMenu">
+          <button class="rightContainerMenuLanguage">Tiếng việt</button>
+          <button id="btnLogin" class="rightContainerMenuLogin">
+            Đăng nhập
+          </button>
+          <button id="btnRegister" class="rightContainerMenuRegister">
+            Đăng ký
+          </button>
+        </div>
+        <div class="rightContainerAuthForm">
+          <form class="formRegister" id="register" method="post">
+            <div class="formRegisterHeader">
+              <label class="labelRegister">Đăng ký</label>
+            </div>
+            <div class="formRegisterLine">
+              <label class="labelForInput" for="username">Tài khoản</label>
+              <input type="text" name="username" required />
+            </div>
+            <div class="formRegisterLine">
+              <label class="labelForInput" for="password">Nhập mật khẩu</label>
+              <input type="password" name="password" required />
+            </div>
+            <div class="formRegisterLine">
+              <label class="labelForInput" for="fullname">Tên đầy đủ</label>
+              <input type="text" name="fullname" required />
+            </div>
+
+            <input id="btnSubmitRegister" type="submit" value="Đăng ký" />
+          </form>
+        </div>
+
+        <div class="rightContainerFunctionNoti">
+            Đã có tài khoản đăng nhập tại <a class="redirectText" href="login.html" id="redirectLogin">đây!</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script>
+  //Chuyen huong text sang trang login
+  document.getElementById('redirectLogin').addEventListener('click', function(event) {
+    event.preventDefault();
+    var url = this.getAttribute('href');
+    window.location.href = url;
+});
+  //Chuyen huong btn login
+  document.addEventListener("DOMContentLoaded", function () {
+    var btnSubmitLogin = document.getElementById("btnLogin");
+    btnSubmitLogin.addEventListener("click", function (event) {
+      event.preventDefault();
+      window.location.href = "/auth/login.html";
+    });
+  });
+  //btn dang ky
+  const form = document.querySelector("#register");
+  const btnRegister = document.querySelector("#btnSubmitRegister");
+  btnRegister.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    createUser(
+      form.querySelector('[name="fullname"]').value,
+      form.querySelector('[name="username"]').value,
+      form.querySelector('[name="password"]').value
+    );
+  });
+  function createUser(FullName, Username, Password) {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      FullName: FullName,
+      Username: Username,
+      Password: Password,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch("http://localhost:8888/api/auth/register", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => console.log("error", error));
+  }
+</script>

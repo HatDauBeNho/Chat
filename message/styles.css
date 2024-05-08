@@ -1,0 +1,204 @@
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.main {
+  display: flex;
+  background: #ffffff;
+}
+.leftContainer {
+  width: 360px;
+  height: 1080px;
+  border-right: 1px solid #dbdde1;
+}
+.leftContainerHeader {
+  display: flex;
+  width: 360px;
+  height: 60px;
+  justify-self: center;
+  align-items: center;
+}
+.leftContainerHeaderDropDown {
+  position: relative;
+  display: flex;
+  width: 42px;
+  height: 42px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: #ffffff;
+  cursor: pointer;
+}
+.leftContainerHeaderDropDownBtn
+{
+  border: none;
+  background-color:#ffffff;
+}
+.leftContainerHeaderBtnIcon
+{
+  background-color: #ffffff;
+}
+.leftContainerHeaderDropDownContent {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  width: 295px;
+  height: 280px;
+  top: 100%; 
+  left: 0;
+  border-radius: 8px;
+}
+.leftContainerHeaderDropDownContent a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+.leftContainerHeaderDropDownIcon
+{
+  margin-right: 15px;
+}
+.leftContainerHeaderDropDownContent a:hover
+{
+  background-color: #f1f1f1;
+}
+.leftContainerHeaderDropDown:hover .leftContainerHeaderDropDownContent
+{
+  display: block;
+}
+
+
+.leftContainerHeaderSearch {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dbdde1;
+  width: 273px;
+  height: 40px;
+  border-radius: 20px;
+}
+.leftContainerHeaderSearchIcon {
+  margin-left: 10px;
+  margin-right: 5px;
+}
+.leftContainerHeaderSearchInput {
+  width: 200px;
+  height: 30px;
+  border: none;
+  outline: none;
+}
+
+.leftContainerChannels {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  width: 360px;
+  height: 432px;
+  overflow-y: scroll;
+}
+
+.leftContainerChannel {
+  display: flex;
+  align-items: center;
+  height: 72px;
+  width: 100%;
+}
+.leftContainerChannel.active
+{
+  background-color: #DBDDE1;
+
+}
+
+.leftContainerChannel:hover
+{
+  cursor: pointer;
+}
+.leftContainerChannelInfor {
+  height: 44px;
+  width: 287px;
+}
+.avatar {
+  width: 49px;
+  height: 49px;
+  border-radius: 99.99px;
+  margin-right: 10px;
+}
+.content {
+  margin: 0;
+}
+
+/*right container*/
+
+.rightContainer {
+  width: 1560px;
+  height: 1080px;
+}
+.rightContainerHeader {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+}
+
+
+.rightContainerHeaderAvatar
+{
+  width: 40px;
+  height: 40px;
+  margin-left: 8px;
+  border-radius: 99.99px;
+}
+.rightContainerHeaderInfor
+{
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+.rightContainerHeaderUserName
+{
+  height: 20px;
+  margin: 0 0 0 10px;
+}
+.rightContainerHeaderUserStatus
+{
+  height: 16px;
+  margin: 0 0 0 10px;
+}
+
+.rightContainerListMessage {
+  width: 100%;
+  height: 964px;
+}
+.rightContainerMessageComposer {
+  display: flex;
+  align-items: center;
+}
+.rightContainerMessageComposerEnter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1397px;
+  height: 40px;
+  border-radius: 20px;
+  border: 1px solid #dbdde1;
+}
+.rightContainerMessageComposerEnterEmo {
+  border: none;
+  background-color: #ffffff;
+}
+.rightContainerMessageComposerEnterInput {
+  width: 1395px;
+  height: 20px;
+  outline: none;
+  border: none;
+}
+
+.rightContainerMessageComposerPlus {
+  border: none;
+  background-color: #ffffff;
+}
+.rightContainerMessageComposerSend {
+  border: none;
+  background-color: #ffffff;
+}
