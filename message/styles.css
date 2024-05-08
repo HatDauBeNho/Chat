@@ -67,7 +67,10 @@ body {
 {
   display: block;
 }
-
+.h3
+{
+  margin-left: 10px;
+}
 
 .leftContainerHeaderSearch {
   display: flex;
@@ -80,6 +83,10 @@ body {
 .leftContainerHeaderSearchIcon {
   margin-left: 10px;
   margin-right: 5px;
+}
+.leftContainerHeaderDropDownUserInfor
+{
+  display: flex;
 }
 .leftContainerHeaderSearchInput {
   width: 200px;

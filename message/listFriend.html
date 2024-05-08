@@ -17,7 +17,8 @@
             </button>
             <div class="leftContainerHeaderDropDownContent">
               <div class="leftContainerHeaderDropDownUserInfor">
-                <!-- <h6 class="">Chào mừng bạn !</h6> -->
+                  <img id="avatar" class="avatar" src="" alt="">
+                  <h3 id="fullName"></h3>
               </div>
               <a href="">
                 <img
@@ -127,6 +128,22 @@
     headers: myHeaders,
     redirect: "follow",
   };
+  //lay thong tin nguoi dung 
+  fetch("http://localhost:8888/api/user/info", requestOptions)
+        .then(response => {
+            return response.json();
+        })
+        .then(result => {
+            console.log('result', result);
+
+            if (result.status == 1) {
+                fullName.textContent = result.data.FullName;
+                avatar.src = 'http://localhost:8888/api/images/avatar/4344930c-0c01-436c-8784-4917f5147660.jpg';
+            } else {
+                console.error('Error: ' + result.message);
+            }
+        })
+        .catch(error => console.log('error', error));
 
   //su kien dang xuat
   const btnLogout=document.getElementById('logout');
