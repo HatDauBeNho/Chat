@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Friends List</title>
     <link rel="stylesheet" href="styles.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
 
   <body>
@@ -86,7 +87,6 @@
   var requestOptions = {
     method: "GET",
     headers: myHeaders,
-    redirect: "follow",
   };
   //lay thong tin nguoi dung
   fetch("http://10.2.44.52:8888/api/user/info", requestOptions)
@@ -104,9 +104,6 @@
       }
     })
     .catch((error) => console.log("error", error));
-
-  
-
   //lấy danh sách bạn bè
   fetch("http://10.2.44.52:8888/api/message/list-friend", requestOptions)
     .then((response) => response.json())
@@ -198,41 +195,41 @@
             ".rightContainerListMessageFriend"
           );
           //Tao form gui tin nhan
-          const divMessageForm = document.createElement("div");
-          divMessageForm.classList.add("rightContainerMessageComposer");
+          // const divMessageForm = document.createElement("div");
+          // divMessageForm.classList.add("rightContainerMessageComposer");
 
-          const btnPlus = document.createElement("button");
-          btnPlus.classList.add("rightContainerMessageComposerPlus");
-          const plusImage = document.createElement("img");
-          plusImage.classList.add("rightContainerMessageComposerPlusIcon");
-          plusImage.src = "attach.png";
-          btnPlus.appendChild(plusImage);
-          divMessageForm.appendChild(btnPlus);
+          // const btnPlus = document.createElement("button");
+          // btnPlus.classList.add("rightContainerMessageComposerPlus");
+          // const plusImage = document.createElement("img");
+          // plusImage.classList.add("rightContainerMessageComposerPlusIcon");
+          // plusImage.src = "attach.png";
+          // btnPlus.appendChild(plusImage);
+          // divMessageForm.appendChild(btnPlus);
 
-          const divEnterInput = document.createElement("div");
-          divEnterInput.classList.add("rightContainerMessageComposerEnter");
-          const inputMessage = document.createElement("input");
-          inputMessage.classList.add("rightContainerMessageComposerEnterInput");
-          inputMessage.placeholder = "Nhập tin nhắn";
-          inputMessage.id = "message";
-          const btnEmo = document.createElement("btn");
-          btnEmo.classList.add("rightContainerMessageComposerEnterEmo");
-          const emoImage = document.createElement("img");
-          emoImage.classList.add("rightContainerMessageComposerEnterEmoIcon");
-          emoImage.src = "smile.png";
-          btnEmo.appendChild(emoImage);
-          divEnterInput.appendChild(inputMessage);
-          divEnterInput.appendChild(btnEmo);
-          divMessageForm.appendChild(divEnterInput);
+          // const divEnterInput = document.createElement("div");
+          // divEnterInput.classList.add("rightContainerMessageComposerEnter");
+          // const inputMessage = document.createElement("input");
+          // inputMessage.classList.add("rightContainerMessageComposerEnterInput");
+          // inputMessage.placeholder = "Nhập tin nhắn";
+          // inputMessage.id = "message";
+          // const btnEmo = document.createElement("btn");
+          // btnEmo.classList.add("rightContainerMessageComposerEnterEmo");
+          // const emoImage = document.createElement("img");
+          // emoImage.classList.add("rightContainerMessageComposerEnterEmoIcon");
+          // emoImage.src = "smile.png";
+          // btnEmo.appendChild(emoImage);
+          // divEnterInput.appendChild(inputMessage);
+          // divEnterInput.appendChild(btnEmo);
+          // divMessageForm.appendChild(divEnterInput);
 
-          const btnSendMessage = document.createElement("button");
-          btnSendMessage.classList.add("rightContainerMessageComposerSend");
-          const sendImage = document.createElement("img");
-          sendImage.classList.add("rightContainerMessageComposerSendIcon");
-          sendImage.src = "Send Button.png";
-          btnSendMessage.appendChild(sendImage);
-          divMessageForm.appendChild(btnSendMessage);
-          messageForm.appendChild(divMessageForm);
+          // const btnSendMessage = document.createElement("button");
+          // btnSendMessage.classList.add("rightContainerMessageComposerSend");
+          // const sendImage = document.createElement("img");
+          // sendImage.classList.add("rightContainerMessageComposerSendIcon");
+          // sendImage.src = "Send Button.png";
+          // btnSendMessage.appendChild(sendImage);
+          // divMessageForm.appendChild(btnSendMessage);
+          // messageForm.appendChild(divMessageForm);
 
           //Xuat toan bo tin nhan
           if (result.status == 1) {
@@ -269,71 +266,99 @@
           }
         })
         .catch((error) => console.log("error", error));
-      console.log(sendMessage.querySelector('[name="message"]').value);
-      const btnSendmessage = document.querySelector("#btnSendMessage");
-      btnSendmessage.addEventListener("click", function (e) {
-        e.preventDefault();
-        actionSendMessage(
-          friendID,
-          sendMessage.querySelector('[name="message"]').value
-        );
-      });
+      // console.log(sendMessage.querySelector('[name="message"]').value);
+      // const btnSendmessage = document.querySelector("#btnSendMessage");
+      // btnSendmessage.addEventListener("click", function (e) {
+      //   e.preventDefault();
+      //   actionSendMessage(
+      //     friendID,
+      //     sendMessage.querySelector('[name="message"]').value
+      //   );
+      // });
     }
-    //chon ban de nhan tin
-    const boxes = document.querySelectorAll(".leftContainerChannel");
-    boxes.forEach((box) => {
-      box.addEventListener("click", function () {
-        boxes.forEach((box) => {
-          box.classList.remove("active");
-        });
-        this.classList.add("active");
-      });
+    //set background cho ban be duoc chon
+    $(".leftContainerChannel").click(function() {
+       $(".leftContainerChannel").removeClass("active"); // Loại bỏ lớp "active" từ tất cả các phần tử
+        $(this).addClass("active"); // Thêm lớp "active" vào phần tử được click
     });
+
     //gui tin nhan
   });
 
   // lay user
+  // function friendClick(friend) {
+  //   const existingUser = getUser.querySelector(".rightContainerHeader");
+  //   if (existingUser) {
+  //     existingUser.remove();
+  //   }
+  //   const existingFriendMessage = getAllMessage.querySelectorAll(
+  //     ".rightContainerListMessageFriend"
+  //   );
+  //   existingFriendMessage.forEach((message) => {
+  //     message.remove();
+  //   });
+  //   const existingMyMessage = getAllMessage.querySelectorAll(
+  //     ".rightContainerListMyMessage"
+  //   );
+  //   existingMyMessage.forEach((message) => {
+  //     message.remove();
+  //   });
+  //   const userInfor = document.createElement("div");
+  //   userInfor.classList.add("rightContainerHeader");
+
+  //   const avatar = document.createElement("img");
+  //   avatar.classList.add("rightContainerHeaderAvatar");
+  //   avatar.src = "http://10.2.44.52:8888/api/images" + friend.Avatar;
+  //   userInfor.appendChild(avatar);
+
+  //   const detailDiv = document.createElement("div");
+  //   detailDiv.classList.add("rightContainerHeaderInfor");
+
+  //   const fullName = document.createElement("h3");
+  //   fullName.classList.add("rightContainerHeaderUserName");
+  //   fullName.textContent = friend.FullName;
+  //   detailDiv.appendChild(fullName);
+
+  //   const status = document.createElement("p");
+  //   status.textContent = friend.isOnline ? "Online" : "Offline";
+  //   status.classList.add("rightContainerHeaderStatus");
+  //   detailDiv.appendChild(status);
+
+  //   userInfor.appendChild(detailDiv);
+  //   getUser.appendChild(userInfor);
+  // }
   function friendClick(friend) {
-    const existingUser = getUser.querySelector(".rightContainerHeader");
-    if (existingUser) {
-      existingUser.remove();
-    }
-    const existingFriendMessage = getAllMessage.querySelectorAll(
-      ".rightContainerListMessageFriend"
-    );
-    existingFriendMessage.forEach((message) => {
-      message.remove();
-    });
-    const existingMyMessage = getAllMessage.querySelectorAll(
-      ".rightContainerListMyMessage"
-    );
-    existingMyMessage.forEach((message) => {
-      message.remove();
-    });
-    const userInfor = document.createElement("div");
-    userInfor.classList.add("rightContainerHeader");
+  // Chọn phần tử rightContainerHeader
+  const $userInfor = $(".rightContainerHeader");
 
-    const avatar = document.createElement("img");
-    avatar.classList.add("rightContainerHeaderAvatar");
-    avatar.src = "http://10.2.44.52:8888/api/images" + friend.Avatar;
-    userInfor.appendChild(avatar);
+  // Nếu phần tử này đã tồn tại, thay đổi nội dung của nó
+  if ($userInfor.length > 0) {
+    // Thay đổi nội dung ảnh đại diện
+    $userInfor.find(".rightContainerHeaderAvatar").attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
 
-    const detailDiv = document.createElement("div");
-    detailDiv.classList.add("rightContainerHeaderInfor");
+    // Thay đổi nội dung tên và trạng thái
+    $userInfor.find(".rightContainerHeaderUserName").text(friend.FullName);
+    $userInfor.find(".rightContainerHeaderStatus").text(friend.isOnline ? "Online" : "Offline");
+  } else {
+    // Nếu phần tử không tồn tại, tạo mới và thêm vào
+    const $userInfor = $("<div>").addClass("rightContainerHeader");
 
-    const fullName = document.createElement("h3");
-    fullName.classList.add("rightContainerHeaderUserName");
-    fullName.textContent = friend.FullName;
-    detailDiv.appendChild(fullName);
+    const $avatar = $("<img>").addClass("rightContainerHeaderAvatar").attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+    $userInfor.append($avatar);
 
-    const status = document.createElement("p");
-    status.textContent = friend.isOnline ? "Online" : "Offline";
-    status.classList.add("rightContainerHeaderStatus");
-    detailDiv.appendChild(status);
+    const $detailDiv = $("<div>").addClass("rightContainerHeaderInfor");
 
-    userInfor.appendChild(detailDiv);
-    getUser.appendChild(userInfor);
+    const $fullName = $("<h3>").addClass("rightContainerHeaderUserName").text(friend.FullName);
+    $detailDiv.append($fullName);
+
+    const $status = $("<p>").text(friend.isOnline ? "Online" : "Offline").addClass("rightContainerHeaderStatus");
+    $detailDiv.append($status);
+
+    $userInfor.append($detailDiv);
+    $(".getUser").append($userInfor);
   }
+}
+
   //gui tin nhan
 
   function actionSendMessage(FriendID, Content) {
@@ -346,7 +371,6 @@
       method: "POST",
       headers: myHeaders,
       body: formData,
-      redirect: "follow",
     };
     fetch("http://10.2.44.52:8888/api/message/send-message", requestOptions1)
       .then((response) => response.json())
