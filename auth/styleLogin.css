@@ -1,86 +1,77 @@
 body {
   display: flex;
-  font-family: 'Roboto', sans-serif;
-  width: 99vw;
-  height: 99vh;
+  font-family: "Roboto", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   margin: 0;
   padding: 0;
-  background-color: #f6f6f6;
+  background-color: #ffffff;
 }
 .left-container {
   display: flex;
   flex-direction: column;
   width: 1280px;
   height: 100%;
-  background-color: bisque;
 }
 .logo {
   width: 100%;
   height: 100px;
 }
 .logo-img {
-  /* margin: 30px 0 0 56px; */
+  padding: 30px 0 0 56px;
 }
-.left
-.content
-{
-  width: auto;
-  height: auto;
+.left-content {
+  display: flex;
+  width: 769px;
+  height: 100%;
 }
 .background {
-  width: 430px;
-  height: 392px;
-  background-image:url('images/background.png');
-  margin: 191px 0 0 142px;
   position: absolute;
-  background-color: red;
-}
-.text{
-  position: absolute;
-}
-.redirectText
-{
-  text-decoration: none;
-  color: #4461F2;
-}
-/* .leftContainerContentText {
-  /* position: absolute;
   width: 430px;
   height: 492px;
   left: 142px;
-  top: 291px; */
-/* } */
-.leftContainerContentText1 {
-
+  bottom: 297px;
+}
+.background-image {
+  width: 430px;
+  height: 492px;
+  
+}
+.text {
   position: absolute;
-  width: 390px;
+  width: 607px;
+  height: 281px;
+  left: 57px;
+  bottom: 121px;
+}
+.text1 {
+  width: 400px;
   height: 141px;
-  left: 199px;
-  top: 381px;
-
   font-weight: 400;
   font-size: 58px;
   line-height: 77px;
-  /* or 133% */
 
-  color: #000000;
+  margin: 0;
 }
-.leftContainerContentText2 {
-  /* Nếu chưa có tài khoản Đăng ký tại đây! */
-
-  position: absolute;
+.text2 {
   width: 290px;
   height: 63px;
-  left: 201px;
-  top: 599px;
-
-  font-style: normal;
   font-weight: 400;
   font-size: 23px;
-  line-height: 27px;
-
-  color: #000000;
+  line-height: 26.95px;
+  margin: 0 0 0 0;
+  padding-top: 77px;
 }
+.right-content {
+  width: 480px;
+  height: 100%;
+}
+.redirectText {
+  text-decoration: none;
+  color: #4461f2;
+}
+
 .leftContainerContentImage {
   display: flex;
 }
@@ -169,7 +160,7 @@ input[type="submit"] {
   border: 1px solid #ccc;
   border-radius: 10px;
   box-sizing: border-box;
-  background-color:lightsteelblue;
+  background-color: lightsteelblue;
 }
 
 /* Thiết lập màu nền và màu chữ cho nút submit */
@@ -218,4 +209,4 @@ input[type="submit"]:hover {
 .btnLogin:hover,
 .btnLanguage:hover {
   background-color: white;
-} 
+}

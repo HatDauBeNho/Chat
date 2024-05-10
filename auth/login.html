@@ -1,87 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
-    <link rel="stylesheet" href="styleLogin.css" />
-  </head>
 
-  <body>
-    <div class="left-container">
-      <div class="logo">
-        <img src="images/Logo.png" alt="logo" class="logo-img" />
-      </div>
-      <div class="content">
-        <div class="left-content">
-          <div class="background">
-            <div class="text">
-              <p class="text1">Đăng nhập để kết nối</p>
-              <p class="text2">       
-                Nếu chưa có tài khoản đăng ký tại
-                <a class="redirect-text" href="register.html" id="redirectRegister">đây!</a>      
-              </p>
-            </div>
-          </div>
-          
-          <div class="image">
-          </div>
-        </div>        
-      </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="styleLogin.css" />
+</head>
+
+<body>
+  <div class="left-container">
+    <div class="logo">
+      <img src="images/Logo.png" alt="logo" class="logo-img" />
     </div>
-
-    <div class="right-container">
-      <div class="rightContainerMenu">
-        <button class="btnLanguage">Tiếng việt</button>
-        <button id="btnLogin" class="btnLogin">Đăng nhập</button>
-        <button id="btnRegister" class="btnRegister">Đăng ký</button>
-      </div>
-      <div class="rightContainerAuthForm">
-        <form class="formLogin" id="login" method="post">
-          <input
-            type="text"
-            name="username"
-            placeholder="Nhập tài khoản"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Mật khẩu"
-            required
-          />
-          <a class="rightContainerAuthFormForgot" href="">Quên mật khẩu?</a>
-          <input id="btnSubmitLogin" type="submit" value="Đăng nhập" />
-        </form>
-      </div>
-      <div class="rightContainerFunction">
-        <div class="rightContainerFunctionNoti">
-          <span class="rightContainerFunctionDash"></span>
-          <p class="rightContainerFunctionText">Hoặc tiếp tục với</p>
-          <span class="rightContainerFunctionDash"></span>
+    <div class="content">
+      <div class="left-content">
+        <div class="background">
+          <img src="images/background.png" class="background-image">
+          <div class="text">
+            <p class="text1">Đăng nhập để kết nối</p>
+            <p class="text2">
+              Nếu chưa có tài khoản đăng ký tại
+              <a class="redirect-text" href="register.html" id="redirectRegister">đây!</a>
+            </p>
+          </div>
         </div>
-        <div class="rightContainerFunctionSocial">
-          <button class="rightContainerFunctionSocialGoogle">
-            <img
-              src="google.png"
-              alt=""
-              class="rightContainerFunctionSocialGg"
-            />
-          </button>
-          <button class="rightContainerFunctionSocialApple">
-            <img src="apple.png" alt="" class="rightContainerFunctionSocialA" />
-          </button>
-          <button class="rightContainerFunctionSocialFacebook">
-            <img
-              src="facebook.png"
-              alt=""
-              class="rightContainerFunctionSocialFb"
-            />
-          </button>
+        <div class="right-content">
+          <!-- <img src="images/isometric view of colleagues discussing the project.png" alt=""> -->
         </div>
       </div>
     </div>
-  </body>
+  </div>
+
+  <div class="right-container">
+    <div class="rightContainerMenu">
+      <button class="btnLanguage">Tiếng việt</button>
+      <button id="btnLogin" class="btnLogin">Đăng nhập</button>
+      <button id="btnRegister" class="btnRegister">Đăng ký</button>
+    </div>
+    <div class="rightContainerAuthForm">
+      <form class="formLogin" id="login" method="post">
+        <input type="text" name="username" placeholder="Nhập tài khoản" required />
+        <input type="password" name="password" placeholder="Mật khẩu" required />
+        <a class="rightContainerAuthFormForgot" href="">Quên mật khẩu?</a>
+        <input id="btnSubmitLogin" type="submit" value="Đăng nhập" />
+      </form>
+    </div>
+    <div class="rightContainerFunction">
+      <div class="rightContainerFunctionNoti">
+        <span class="rightContainerFunctionDash"></span>
+        <p class="rightContainerFunctionText">Hoặc tiếp tục với</p>
+        <span class="rightContainerFunctionDash"></span>
+      </div>
+      <div class="rightContainerFunctionSocial">
+        <button class="rightContainerFunctionSocialGoogle">
+          <img src="google.png" alt="" class="rightContainerFunctionSocialGg" />
+        </button>
+        <button class="rightContainerFunctionSocialApple">
+          <img src="apple.png" alt="" class="rightContainerFunctionSocialA" />
+        </button>
+        <button class="rightContainerFunctionSocialFacebook">
+          <img src="facebook.png" alt="" class="rightContainerFunctionSocialFb" />
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+
 </html>
 <script>
   //Chuyen huong text sang trang dang ky
