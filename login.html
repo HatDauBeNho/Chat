@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
   <link rel="stylesheet" href="auth/styleLogin.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -25,7 +27,7 @@
             </p>
           </div>
         </div>
-        
+
       </div>
       <div class="right-content">
         <img class="right-content-img" src="auth/images/isometric view of colleagues discussing the project.png" alt="">
@@ -69,39 +71,40 @@
     </div>
   </div>
 </body>
+
 </html>
 <script>
-  const form = document.querySelector("#login");
-  const btnSubmitLogin = document.querySelector("#btnSubmitLogin");
-  btnSubmitLogin.addEventListener("click", function (e) {
+  $(document).ready(function() {
+  const form = $("#login");
+  const btnSubmitLogin = $("#btnSubmitLogin");
+  
+  btnSubmitLogin.on("click", function (e) {
     e.preventDefault();
     login(
-      form.querySelector('[name="username"]').value,
-      form.querySelector('[name="password"]').value
+      form.find('[name="username"]').val(),
+      form.find('[name="password"]').val()
     );
   });
+});
   function login(Username, Password) {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({
       Username: Username,
       Password: Password,
     });
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-    };
-
-    fetch("http://10.2.44.52:8888/api/auth/login", requestOptions)
-      .then((response) => {
-        return response.json();
-      })
-      .then((result) => {
+    $.ajax({
+      url: "http://10.2.44.52:8888/api/auth/login",
+      type: "POST",
+      contentType: "application/json",
+      data: raw,
+      success: function (result) {
         localStorage.setItem("token", result.data.token);
         window.location.href = "/message/listFriend.html";
-      })
-      .catch((error) => console.log("error", error));
+      },
+      error: function (error) {
+        console.log("error", error);
+      }
+    });
   }
+
 </script>

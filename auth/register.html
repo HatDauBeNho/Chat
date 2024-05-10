@@ -56,38 +56,42 @@
 <script>
   
   //btn dang ky
-  const form = document.querySelector("#register");
-  const btnRegister = document.querySelector("#btnSubmitRegister");
-  btnRegister.addEventListener("click", function (e) {
-    e.preventDefault();
+  $(document).ready(function(){
+    const form=$("#login");
+    const btnSubmitRegister=$("btnSubmitRegister");
 
-    createUser(
-      form.querySelector('[name="fullname"]').value,
-      form.querySelector('[name="username"]').value,
-      form.querySelector('[name="password"]').value
-    );
+    btnSubmitRegister.on("click",function(e)
+    {
+      e.preventDefault();
+      register(
+        form.find('[name="fullname"]').val(),
+        form.find('[name="username"]').val(),
+        form.find('[name="password"]').val()
+      );
+    });
   });
-  function createUser(FullName, Username, Password) {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+  function register(FullName,Username,Password)
+  {
     var raw = JSON.stringify({
       FullName: FullName,
       Username: Username,
       Password: Password,
     });
-
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-
-    fetch("http://10.2.44.52:8888/api/auth/register", requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
+    $.ajax({
+      url: "http://localhost:8888/api/auth/register",
+      type:"POST",
+      headers:myHeaders,
+      contentType: "application/json",
+      body:raw,
+      success: function(result)
+      {
         console.log(result);
-      })
-      .catch((error) => console.log("error", error));
+        window.location.href="/login.html";
+      },
+      error: function(error)
+      {
+        console.log("error: ",error);
+      }
+    })
   }
 </script>
