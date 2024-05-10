@@ -8,42 +8,38 @@
   </head>
 
   <body>
-    <div class="main">
-      <div class="leftContainer">
-        <div class="leftContainerLogo">
-          <img src="Logo.png" alt="logo" class="headerLogo" />
+      <div class="left-container">
+        <div class="logo">
+          <img src="images/Logo.png" alt="logo" class="logo-img" />
         </div>
-        <div class="leftContainerContent">
-          <div class="leftContainerContentImage">
-            <img src="imageRegister.png" alt="logo" class="image" />
-          </div>
+        <div class="background">
+          <img src="images/background.png" alt="logo" class="background-image1" />
+          <img src="images/imageRegister.png" alt="logo" class="background-image2" />
         </div>
       </div>
-      <div class="rightContainer">
-        <div class="rightContainerMenu">
-          <button class="rightContainerMenuLanguage">Tiếng việt</button>
-          <button id="btnLogin" class="rightContainerMenuLogin">
-            Đăng nhập
-          </button>
-          <button id="btnRegister" class="rightContainerMenuRegister">
-            Đăng ký
-          </button>
+      <div class="right-container">
+        <div class="right-container-menu">
+          <select class="btn-language">
+            <option value="vietnames" selected>Tiếng việt</option>
+          </select>
+          <button id="btnLogin" class="btn-login" onclick="window.location.href='/login.html'">Đăng nhập</button>
+          <button id="btnRegister" class="btn-register" >Đăng ký</button>
         </div>
-        <div class="rightContainerAuthForm">
-          <form class="formRegister" id="register" method="post">
-            <div class="formRegisterHeader">
-              <label class="labelRegister">Đăng ký</label>
+        <div class="right-container-auth-form">
+          <form class="form-register" id="register" method="post">
+            <div class="form-register-header">
+              <label class="label-register">Đăng ký</label>
             </div>
-            <div class="formRegisterLine">
-              <label class="labelForInput" for="username">Tài khoản</label>
+            <div class="form-register-line">
+              <label class="label-for-input" for="username">Tài khoản</label>
               <input type="text" name="username" required />
             </div>
-            <div class="formRegisterLine">
-              <label class="labelForInput" for="password">Nhập mật khẩu</label>
+            <div class="form-register-line">
+              <label class="label-for-input" for="password">Nhập mật khẩu</label>
               <input type="password" name="password" required />
             </div>
-            <div class="formRegisterLine">
-              <label class="labelForInput" for="fullname">Tên đầy đủ</label>
+            <div class="form-register-line">
+              <label class="label-for-input" for="fullname">Nhập tên đầy đủ</label>
               <input type="text" name="fullname" required />
             </div>
 
@@ -51,28 +47,14 @@
           </form>
         </div>
 
-        <div class="rightContainerFunctionNoti">
-            Đã có tài khoản đăng nhập tại <a class="redirectText" href="login.html" id="redirectLogin">đây!</a>
+        <div class="right-container-function-noti">
+            Đã có tài khoản đăng nhập tại <a class="redirect-text" href="/login.html" id="redirectLogin">đây!</a>
         </div>
       </div>
-    </div>
   </body>
 </html>
 <script>
-  //Chuyen huong text sang trang login
-  document.getElementById('redirectLogin').addEventListener('click', function(event) {
-    event.preventDefault();
-    var url = this.getAttribute('href');
-    window.location.href = url;
-});
-  //Chuyen huong btn login
-  document.addEventListener("DOMContentLoaded", function () {
-    var btnSubmitLogin = document.getElementById("btnLogin");
-    btnSubmitLogin.addEventListener("click", function (event) {
-      event.preventDefault();
-      window.location.href = "/auth/login.html";
-    });
-  });
+  
   //btn dang ky
   const form = document.querySelector("#register");
   const btnRegister = document.querySelector("#btnSubmitRegister");

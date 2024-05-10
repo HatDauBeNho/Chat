@@ -1,12 +1,16 @@
 body {
+  display: flex;
   font-family: "Roboto", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
   margin: 0;
   padding: 0;
+  background-color:  #FFFFFF;
+  ;
+  ;
 }
-.main {
-  display: flex;
-  background: #ffffff;
-}
+
 .leftContainer {
   width: 360px;
   height: 1080px;
