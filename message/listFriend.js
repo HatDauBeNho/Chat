@@ -19,17 +19,15 @@ $(document).ready(function () {
 });
 function getUserInfor() {
   $.ajax({
-    url: "http://10.2.44.52:8888/api/user/info",
+    url: "http://localhost:8888/api/user/info",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
     success: function (result) {
       if (result.status == 1) {
         $("#fullName").text(result.data.FullName);
-        $("#avatar").attr(
-          "src",
-          "http://10.2.44.52:8888/api/images" + result.data.Avatar
-        );
+        $("#avatar").attr("src","http://localhost:8888/api/images" + result.data.Avatar);
+
       } else console.log("loi: ", result.message);
     },
     error: function (error) {
@@ -40,102 +38,113 @@ function getUserInfor() {
 function getListFriend() {
   //lấy danh sách bạn bè
   $.ajax({
-    url: "http://10.2.44.52:8888/api/message/list-friend",
+    url: "http://localhost:8888/api/message/list-friend",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
     success: function (result) {
-      $("div").addClass("leftContainerChannel");
-      
+      result.data.forEach((friend) => {
+        const listItem = $("<div>").addClass("leftContainerChannel");
+        listItem.attr("data-friend", JSON.stringify(friend));
+
+        const avatar = $("<img>").addClass("avatar");
+        avatar.attr("src", "http://localhost:8888/api/images" + friend.Avatar);
+        listItem.append(avatar);
+
+        const friendInfo = $("<div>").addClass("leftContainerChannelInfor");
+
+        const fullName = $("<h4>").addClass("h4content").text(friend.FullName);
+        friendInfo.append(fullName);
+      });
     },
   });
-  fetch("http://10.2.44.52:8888/api/message/list-friend", requestOptions)
-    .then((response) => response.json())
-    .then((result) => {
-      console.log("Result:", result);
-      if (result.status == 1) {
-        result.data.forEach((friend) => {
-          const listItem = document.createElement("div");
-          listItem.classList.add("leftContainerChannel");
-          listItem.dataset.friend = JSON.stringify(friend);
+  // fetch("http://localhost:8888/api/message/list-friend", requestOptions)
+  //   .then((response) => response.json())
+  //   .then((result) => {
+  //     console.log("Result:", result);
+  //     if (result.status == 1) {
+  //       result.data.forEach((friend) => {
+  //         const listItem = document.createElement("div");
+  //         listItem.classList.add("leftContainerChannel");
+  //         listItem.dataset.friend = JSON.stringify(friend);
 
-          const avatar = document.createElement("img");
-          avatar.classList.add("avatar");
-          avatar.src = "http://10.2.44.52:8888/api/images" + friend.Avatar;
-          listItem.appendChild(avatar);
+  //         const avatar = document.createElement("img");
+  //         avatar.classList.add("avatar");
+  //         avatar.src = "http://localhost:8888/api/images" + friend.Avatar;
+  //         listItem.appendChild(avatar);
 
-          const friendInfo = document.createElement("div");
-          friendInfo.classList.add("leftContainerChannelInfor");
+  //         const friendInfo = document.createElement("div");
+  //         friendInfo.classList.add("leftContainerChannelInfor");
 
-          const fullName = document.createElement("h4");
-          fullName.classList.add("h4content");
-          fullName.textContent = friend.FullName;
-          friendInfo.appendChild(fullName);
+  //         const fullName = document.createElement("h4");
+  //         fullName.classList.add("h4content");
+  //         fullName.textContent = friend.FullName;
+  //         friendInfo.appendChild(fullName);
 
-          fetch(
-            "http://10.2.44.52:8888/api/message/get-message?FriendID=" +
-              friend.FriendID,
-            requestOptions
-          )
-            .then((response1) => {
-              return response1.json();
-            })
-            .then((result1) => {
-              console.log("result1", result1);
-              if (result1.status == 1) {
-                const lastMessage = document.createElement("p");
-                lastMessage.classList.add("content");
-                if (result1.data[result1.data.length - 1].MessageType == 0)
-                  lastMessage.textContent =
-                    result1.data[result1.data.length - 1].Content;
-                else
-                  lastMessage.textContent =
-                    "You:" + result1.data[result1.data.length - 1].Content;
-                friendInfo.appendChild(lastMessage);
-              } else {
-                console.error("Error: " + result2.message);
-              }
-            })
-            .catch((error2) => console.log("error", error2));
-          listItem.appendChild(friendInfo);
-          friendsList.appendChild(listItem);
-        });
-      } else {
-        console.error("Error: " + result.message);
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching friends list:", error);
-    });
+  //         fetch(
+  //           "http://localhost:8888/api/message/get-message?FriendID=" +
+  //             friend.FriendID,
+  //           requestOptions
+  //         )
+  //           .then((response1) => {
+  //             return response1.json();
+  //           })
+  //           .then((result1) => {
+  //             console.log("result1", result1);
+  //             if (result1.status == 1) {
+  //               const lastMessage = document.createElement("p");
+  //               lastMessage.classList.add("content");
+  //               if (result1.data[result1.data.length - 1].MessageType == 0)
+  //                 lastMessage.textContent =
+  //                   result1.data[result1.data.length - 1].Content;
+  //               else
+  //                 lastMessage.textContent =
+  //                   "You:" + result1.data[result1.data.length - 1].Content;
+  //               friendInfo.appendChild(lastMessage);
+  //             } else {
+  //               console.error("Error: " + result2.message);
+  //             }
+  //           })
+  //           .catch((error2) => console.log("error", error2));
+  //         listItem.appendChild(friendInfo);
+  //         friendsList.appendChild(listItem);
+  //       });
+  //     } else {
+  //       console.error("Error: " + result.message);
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     console.error("Error fetching friends list:", error);
+  //   });
 }
 
 //su kien click vao ban be va lay tin nhan
-friendsList.addEventListener("click", function (event) {
-  if (event.target && event.target.classList.contains("leftContainerChannel")) {
+// friendsList.addEventListener("click", function (event) {
+//   if (event.target && event.target.classList.contains("leftContainerChannel")) {
     // Lấy thông tin về friend từ phần tử cha
-    const friend = event.target.dataset.friend;
-    friendClick(JSON.parse(friend));
-    const friendID = JSON.parse(friend).FriendID;
+    // const friend = event.target.dataset.friend;
+    // friendClick(JSON.parse(friend));
+    // const friendID = JSON.parse(friend).FriendID;
     //lay tin nhan
-    fetch(
-      "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friendID,
-      requestOptions
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((result) => {
-        console.log("result", result);
+    // fetch(
+    //   "http://localhost:8888/api/message/get-message?FriendID=" + friendID,
+    //   requestOptions
+    // )
+    //   .then((response) => {
+    //     return response.json();
+    //   })
+    //   .then((result) => {
+    //     console.log("result", result);
         //Xoa form cu
-        const existingMessageForm = messageForm.querySelector(
-          ".rightContainerMessageComposer"
-        );
-        if (existingMessageForm) {
-          existingMessageForm.remove();
-        }
-        const existingFriendMessage = getAllMessage.querySelectorAll(
-          ".rightContainerListMessageFriend"
-        );
+        // const existingMessageForm = messageForm.querySelector(
+        //   ".rightContainerMessageComposer"
+        // );
+        // if (existingMessageForm) {
+        //   existingMessageForm.remove();
+        // }
+        // const existingFriendMessage = getAllMessage.querySelectorAll(
+        //   ".rightContainerListMessageFriend"
+        // );
         //Tao form gui tin nhan
         // const divMessageForm = document.createElement("div");
         // divMessageForm.classList.add("rightContainerMessageComposer");
@@ -174,39 +183,39 @@ friendsList.addEventListener("click", function (event) {
         // messageForm.appendChild(divMessageForm);
 
         //Xuat toan bo tin nhan
-        if (result.status == 1) {
-          result.data.forEach((message) => {
-            const listMessage = document.createElement("div");
-            if (message.MessageType == 0) {
-              listMessage.classList.add("rightContainerListMessageFriend");
+      //   if (result.status == 1) {
+      //     result.data.forEach((message) => {
+      //       const listMessage = document.createElement("div");
+      //       if (message.MessageType == 0) {
+      //         listMessage.classList.add("rightContainerListMessageFriend");
 
-              const avatar = document.createElement("img");
-              avatar.classList.add("avatarMessage");
-              avatar.src =
-                "http://10.2.44.52:8888/api/images" + JSON.parse(friend).Avatar;
-              listMessage.appendChild(avatar);
+      //         const avatar = document.createElement("img");
+      //         avatar.classList.add("avatarMessage");
+      //         avatar.src =
+      //           "http://localhost:8888/api/images" + JSON.parse(friend).Avatar;
+      //         listMessage.appendChild(avatar);
 
-              const content = document.createElement("p");
-              content.classList.add("friendMessage");
-              content.textContent = message.Content;
+      //         const content = document.createElement("p");
+      //         content.classList.add("friendMessage");
+      //         content.textContent = message.Content;
 
-              listMessage.appendChild(content);
-              getAllMessage.appendChild(listMessage);
-            } else {
-              listMessage.classList.add("rightContainerListMyMessage");
-              const content = document.createElement("p");
-              content.classList.add("myMessage");
-              content.textContent = message.Content;
+      //         listMessage.appendChild(content);
+      //         getAllMessage.appendChild(listMessage);
+      //       } else {
+      //         listMessage.classList.add("rightContainerListMyMessage");
+      //         const content = document.createElement("p");
+      //         content.classList.add("myMessage");
+      //         content.textContent = message.Content;
 
-              listMessage.appendChild(content);
-              getAllMessage.appendChild(listMessage);
-            }
-          });
-        } else {
-          console.error("Error: " + result.message);
-        }
-      })
-      .catch((error) => console.log("error", error));
+      //         listMessage.appendChild(content);
+      //         getAllMessage.appendChild(listMessage);
+      //       }
+      //     });
+      //   } else {
+      //     console.error("Error: " + result.message);
+      //   }
+      // })
+      // .catch((error) => console.log("error", error));
     // console.log(sendMessage.querySelector('[name="message"]').value);
     // const btnSendmessage = document.querySelector("#btnSendMessage");
     // btnSendmessage.addEventListener("click", function (e) {
@@ -216,7 +225,7 @@ friendsList.addEventListener("click", function (event) {
     //     sendMessage.querySelector('[name="message"]').value
     //   );
     // });
-  }
+  // }
   //set background cho ban be duoc chon
   $(".leftContainerChannel").click(function () {
     $(".leftContainerChannel").removeClass("active");
@@ -224,7 +233,7 @@ friendsList.addEventListener("click", function (event) {
   });
 
   //gui tin nhan
-});
+// });
 
 // lay user
 // function friendClick(friend) {
@@ -249,7 +258,7 @@ friendsList.addEventListener("click", function (event) {
 
 //   const avatar = document.createElement("img");
 //   avatar.classList.add("rightContainerHeaderAvatar");
-//   avatar.src = "http://10.2.44.52:8888/api/images" + friend.Avatar;
+//   avatar.src = "http://localhost:8888/api/images" + friend.Avatar;
 //   userInfor.appendChild(avatar);
 
 //   const detailDiv = document.createElement("div");
@@ -277,7 +286,7 @@ function friendClick(friend) {
     // Thay đổi nội dung ảnh đại diện
     $userInfor
       .find(".rightContainerHeaderAvatar")
-      .attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+      .attr("src", "http://localhost:8888/api/images" + friend.Avatar);
 
     // Thay đổi nội dung tên và trạng thái
     $userInfor.find(".rightContainerHeaderUserName").text(friend.FullName);
@@ -290,7 +299,7 @@ function friendClick(friend) {
 
     const $avatar = $("<img>")
       .addClass("rightContainerHeaderAvatar")
-      .attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+      .attr("src", "http://localhost:8888/api/images" + friend.Avatar);
     $userInfor.append($avatar);
 
     const $detailDiv = $("<div>").addClass("rightContainerHeaderInfor");
@@ -323,7 +332,7 @@ function actionSendMessage(FriendID, Content) {
     headers: myHeaders,
     body: formData,
   };
-  fetch("http://10.2.44.52:8888/api/message/send-message", requestOptions1)
+  fetch("http://localhost:8888/api/message/send-message", requestOptions1)
     .then((response) => response.json())
     .then((result) => {
       console.log("result", result);

@@ -65,7 +65,6 @@
     btnSubmitRegister.on("click",function(e)
     {
       e.preventDefault();
-      console.log("")
       register(
         form.find('[name="fullname"]').val(),
         form.find('[name="username"]').val(),
@@ -81,7 +80,7 @@
       Password: Password,
     });
     $.ajax({
-      url: "http://10.2.44.52:8888/api/auth/register",
+      url: "http://localhost:8888/api/auth/register",
       method: "POST",
       contentType: "application/json",
       data:raw,
