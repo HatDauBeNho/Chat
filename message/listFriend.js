@@ -26,11 +26,8 @@ $(document).on("click", ".left-container-channel", function(event)
       $(".list-friend-message").remove();
       $(".list-my-message").remove();
       getMessages(JSON.parse(friend));
-      btnSendMessage.click(function(){
-        console.log("adubaby");
-        
-        console.log(JSON.parse(friend).FriendID,message.find('[name="message"]').val());    
-        actionSendMessage(JSON.parse(friend),message.find('[name="message"]').val());   
+      btnSendMessage.click(function(){        
+        actionSendMessage(JSON.parse(friend).FriendID,$('.message-input').val());
       });
   }
   $(".left-container-channel").removeClass("active");
@@ -44,14 +41,14 @@ btnLogout.click(function() {
 
 function getUserInfor() {
   $.ajax({
-    url: "http://10.2.44.52:8888/api/user/info",
+    url: "http://localhost:8888/api/user/info",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
     success: function (result) {
       if (result.status == 1) {
         $("#fullName").text(result.data.FullName);
-        $("#avatar").attr("src","http://10.2.44.52:8888/api/images" + result.data.Avatar);
+        $("#avatar").attr("src","http://localhost:8888/api/images" + result.data.Avatar);
 
       } else console.log("loi: ", result.message);
     },
@@ -64,7 +61,7 @@ function getListFriend()
 {
   //lấy danh sách bạn bè
   $.ajax({
-    url: "http://10.2.44.52:8888/api/message/list-friend",
+    url: "http://localhost:8888/api/message/list-friend",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
@@ -76,7 +73,7 @@ function getListFriend()
         $(listItem).data('friend', JSON.stringify(friend));
 
         const avatar = $("<img>").addClass("avatar");
-        avatar.attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+        avatar.attr("src", "http://localhost:8888/api/images" + friend.Avatar);
         listItem.append(avatar);
 
         const friendInfo = $("<div>").addClass("left-container-channel-infor");
@@ -88,7 +85,7 @@ function getListFriend()
         friendsList.append(listItem);
 
         $.ajax({
-          url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
+          url: "http://localhost:8888/api/message/get-message?FriendID=" + friend.FriendID,
           method:"GET",
           contentType: "application/json",
           headers: myHeaders, 
@@ -124,7 +121,7 @@ function getListFriend()
 function getMessages(friend)
 {
   $.ajax({
-    url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
+    url: "http://localhost:8888/api/message/get-message?FriendID=" + friend.FriendID,
     method:"GET",
     contentType: "application/json",
     headers: myHeaders, 
@@ -135,7 +132,7 @@ function getMessages(friend)
         if (message.MessageType == 0) {
             listMessage.addClass("list-friend-message");
     
-            const avatar = $("<img>").addClass("avatar-message").attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+            const avatar = $("<img>").addClass("avatar-message").attr("src", "http://localhost:8888/api/images" + friend.Avatar);
             listMessage.append(avatar);
     
             const content = $("<p>").addClass("friend-message").text(message.Content);
@@ -163,7 +160,7 @@ function friendClick(friend) {
     {
     userInfor
       .find(".right-friend-avatar")
-      .attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+      .attr("src", "http://localhost:8888/api/images" + friend.Avatar);
     userInfor.find(".right-friend-username").text(friend.FullName);
     userInfor
       .find(".right-friend-status")
@@ -173,7 +170,7 @@ function friendClick(friend) {
 
     const avatar = $("<img>")
       .addClass("right-friend-avatar")
-      .attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+      .attr("src", "http://localhost:8888/api/images" + friend.Avatar);
     userInfor.append(avatar);
 
     const detailDiv = $("<div>").addClass("right-friend-infor");
@@ -194,12 +191,12 @@ function friendClick(friend) {
 }
 var myHeaders = { Authorization: `Bearer ${token}` };
 
-function actionSendMessage(FriendID, Content) {
+function actionSendMessage( FriendID, Content) {
   var formData = new FormData();
   formData.append("FriendID", FriendID);
   formData.append("Content", Content);
   $.ajax({
-    url: "http://10.2.44.52:8888/api/message/send-message",
+    url: "http://localhost:8888/api/message/send-message",
     type: "POST",
     headers: myHeaders,
     processData: false,
