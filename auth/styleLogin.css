@@ -6,7 +6,7 @@ body {
   overflow: hidden;
   margin: 0;
   padding: 0;
-  background-color:#F6F6F6;
+  background-color: #f6f6f6;
 }
 .left-container {
   display: flex;
@@ -21,7 +21,7 @@ body {
 .logo-img {
   padding: 30px 0 0 56px;
 }
-.content{
+.content {
   display: flex;
   width: 100%;
   height: 100%;
@@ -72,8 +72,7 @@ body {
   height: 100%;
   vertical-align: bottom;
 }
-.right-content-img
-{
+.right-content-img {
   padding-top: 354px;
 }
 .redirect-text {
@@ -84,7 +83,6 @@ body {
   width: 670px;
   height: 100%;
   padding-right: 130px;
-
 }
 .right-container-menu {
   align-items: flex-end;
@@ -93,7 +91,7 @@ body {
   justify-content: center;
 }
 
-.right-container-auth-form{
+.right-container-auth-form {
   display: flex;
   align-items: center;
   height: 500px;
@@ -136,7 +134,6 @@ body {
   line-height: 77px;
   letter-spacing: 0.09em;
   text-align: left;
-
 }
 .right-container-function-social {
   display: flex;
@@ -157,34 +154,31 @@ body {
 .apple-img {
   width: 27.44px;
   height: 28px;
-  border: 1px solid #DDDFDD
 }
 .google:hover,
 .facebook:hover,
 .apple:hover {
-  background-color:  #FFFFFF;
-  ;
+  background-color: #ffffff;
 }
 /* Thiết lập các thuộc tính cho input */
 input[type="text"],
-input[type="password"]
-{
+input[type="password"] {
   width: 400px;
-  height: 77px;
+  height: 60px;
   padding: 10px;
   margin-top: 12px;
-  border: 1px solid #F6F6F6;
+  border: 1px solid #f6f6f6;
   border-radius: 10px;
   box-sizing: border-box;
-  background-color:  #EAF0F7;
+  background-color: #eaf0f7;
+  outline: none;
 
   font-size: 18px;
   font-weight: 500;
   line-height: 77px;
   letter-spacing: 9%;
-  
 }
-::placeholder{
+::placeholder {
   font-size: 18px;
   font-weight: 500;
   line-height: 77px;
@@ -195,8 +189,7 @@ input[type="password"]
 input[type="submit"] {
   background-color: #4461f2;
   height: 60px;
-  color: #FFFFFF;
-  ;
+  color: #ffffff;
   border: none;
   cursor: pointer;
   border-radius: 10px;
@@ -216,11 +209,23 @@ input[type="submit"] {
   width: 112px;
   height: 42px;
   color: #4461f2;
-  background:  #f6f6f6;
+  background: #f6f6f6;
+  border: none;
   border-radius: 21px;
   font-weight: bold;
   font-size: 16px;
-  border: #ccc;
+  align-items: center;
+}
+.underline {
+  position: absolute;
+  width: 34.78px;
+  height: 3px;
+  top: 90px;
+  left: 1500px;
+  margin: 0;
+  background-color: #4461f2;
+  border: none;
+  border-radius: 20px;
 }
 
 .btn-language {
@@ -236,12 +241,9 @@ input[type="submit"] {
 .btn-register:hover,
 .btn-login:hover,
 .btn-language:hover {
-  background-color: #FFFFFF;
-  box-shadow: 0px 4px 4px 0px #0000000D;
-  text-decoration: underline;
-  text-decoration-color: #4461f2;
-  text-decoration-thickness: 2px; 
-  text-underline-offset: 4px; 
+  background-color: #ffffff;
+  box-shadow: 0px 4px 4px 0px #0000000d;
+  cursor: pointer;
 }
 /* .underlined::after {
   content: "";

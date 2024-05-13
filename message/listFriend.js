@@ -1,32 +1,57 @@
 const token = localStorage.getItem("token");
 const friendsList = $("#friends");
-const getUser = document.getElementById("getUser");
-const getAllMessage = document.getElementById("messages");
-const messageForm = document.getElementById("messageForm");
-const btnLogout = document.getElementById("logout");
-const sendMessage = document.querySelector("#sendMessage");
-const btnSendMessage = document.querySelector("#btnSendMessage");
+const getUser = $("#getUser");
+const getAllMessage = $("#messages");
+const messageForm = $("#messageForm");
+const btnLogout = $("#logout");
+const message = $("#message");
+const btnSendMessage = $("#btnSendMessage");
 
 var myHeaders = { Authorization: `Bearer ${token}` };
-var requestOptions = {
-  method: "GET",
-  contentType: "application/json",
-  headers: myHeaders,
-};
+
 $(document).ready(function () {
-  getUserInfor();
-  getListFriend();
+  if (token==null) window.location.href="/login.html";
+  else
+  {
+    getUserInfor();
+    getListFriend();
+  }
 });
+//su kien click ban be 
+$(document).on("click", ".left-container-channel", function(event) 
+{
+  if ($(event.target).hasClass("left-container-channel")) {
+      const friend = $(event.target).data("friend");
+      friendClick(JSON.parse(friend));
+      $(".list-friend-message").remove();
+      $(".list-my-message").remove();
+      getMessages(JSON.parse(friend));
+      btnSendMessage.click(function(){
+        console.log("adubaby");
+        
+        console.log(JSON.parse(friend).FriendID,message.find('[name="message"]').val());    
+        actionSendMessage(JSON.parse(friend),message.find('[name="message"]').val());   
+      });
+  }
+  $(".left-container-channel").removeClass("active");
+  $(this).addClass("active");
+  
+});
+btnLogout.click(function() {
+    localStorage.clear();
+    window.location.href = "/login.html";
+  });
+
 function getUserInfor() {
   $.ajax({
-    url: "http://localhost:8888/api/user/info",
+    url: "http://10.2.44.52:8888/api/user/info",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
     success: function (result) {
       if (result.status == 1) {
         $("#fullName").text(result.data.FullName);
-        $("#avatar").attr("src","http://localhost:8888/api/images" + result.data.Avatar);
+        $("#avatar").attr("src","http://10.2.44.52:8888/api/images" + result.data.Avatar);
 
       } else console.log("loi: ", result.message);
     },
@@ -35,309 +60,157 @@ function getUserInfor() {
     },
   });
 }
-function getListFriend() {
+function getListFriend() 
+{
   //lấy danh sách bạn bè
   $.ajax({
-    url: "http://localhost:8888/api/message/list-friend",
+    url: "http://10.2.44.52:8888/api/message/list-friend",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
-    success: function (result) {
-      result.data.forEach((friend) => {
-        const listItem = $("<div>").addClass("leftContainerChannel");
-        listItem.attr("data-friend", JSON.stringify(friend));
+    success: function (result) 
+    {
+      result.data.forEach((friend) => 
+      {
+        const listItem = $("<div>").addClass("left-container-channel");
+        $(listItem).data('friend', JSON.stringify(friend));
 
         const avatar = $("<img>").addClass("avatar");
-        avatar.attr("src", "http://localhost:8888/api/images" + friend.Avatar);
+        avatar.attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
         listItem.append(avatar);
 
-        const friendInfo = $("<div>").addClass("leftContainerChannelInfor");
+        const friendInfo = $("<div>").addClass("left-container-channel-infor");
 
         const fullName = $("<h4>").addClass("h4content").text(friend.FullName);
         friendInfo.append(fullName);
+        listItem.append(friendInfo);
+
+        friendsList.append(listItem);
+
+        $.ajax({
+          url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
+          method:"GET",
+          contentType: "application/json",
+          headers: myHeaders, 
+          success: function (result) 
+          {
+            const lastMessage=$("<p>").addClass("content");
+            if (result.data[result.data.length-1].MessageType==0)
+            {
+                lastMessage.text(result.data[result.data.length - 1].Content);
+            }else 
+            {
+              lastMessage.text("You:"+result.data[result.data.length - 1].Content);
+            }
+            friendInfo.append(lastMessage);
+          },
+          error: function (error) {
+            console.log("error: ", error);
+          }
+        });
       });
-    },
+      // Gọi hàm click trên phần tử đầu tiên để hiển thị friend
+       $(".left-container-channel").first().click();
+    },error: function (error) {
+      console.log("error: ", error);
+    }
   });
-  // fetch("http://localhost:8888/api/message/list-friend", requestOptions)
-  //   .then((response) => response.json())
-  //   .then((result) => {
-  //     console.log("Result:", result);
-  //     if (result.status == 1) {
-  //       result.data.forEach((friend) => {
-  //         const listItem = document.createElement("div");
-  //         listItem.classList.add("leftContainerChannel");
-  //         listItem.dataset.friend = JSON.stringify(friend);
-
-  //         const avatar = document.createElement("img");
-  //         avatar.classList.add("avatar");
-  //         avatar.src = "http://localhost:8888/api/images" + friend.Avatar;
-  //         listItem.appendChild(avatar);
-
-  //         const friendInfo = document.createElement("div");
-  //         friendInfo.classList.add("leftContainerChannelInfor");
-
-  //         const fullName = document.createElement("h4");
-  //         fullName.classList.add("h4content");
-  //         fullName.textContent = friend.FullName;
-  //         friendInfo.appendChild(fullName);
-
-  //         fetch(
-  //           "http://localhost:8888/api/message/get-message?FriendID=" +
-  //             friend.FriendID,
-  //           requestOptions
-  //         )
-  //           .then((response1) => {
-  //             return response1.json();
-  //           })
-  //           .then((result1) => {
-  //             console.log("result1", result1);
-  //             if (result1.status == 1) {
-  //               const lastMessage = document.createElement("p");
-  //               lastMessage.classList.add("content");
-  //               if (result1.data[result1.data.length - 1].MessageType == 0)
-  //                 lastMessage.textContent =
-  //                   result1.data[result1.data.length - 1].Content;
-  //               else
-  //                 lastMessage.textContent =
-  //                   "You:" + result1.data[result1.data.length - 1].Content;
-  //               friendInfo.appendChild(lastMessage);
-  //             } else {
-  //               console.error("Error: " + result2.message);
-  //             }
-  //           })
-  //           .catch((error2) => console.log("error", error2));
-  //         listItem.appendChild(friendInfo);
-  //         friendsList.appendChild(listItem);
-  //       });
-  //     } else {
-  //       console.error("Error: " + result.message);
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error("Error fetching friends list:", error);
-  //   });
+  
 }
 
-//su kien click vao ban be va lay tin nhan
-// friendsList.addEventListener("click", function (event) {
-//   if (event.target && event.target.classList.contains("leftContainerChannel")) {
-    // Lấy thông tin về friend từ phần tử cha
-    // const friend = event.target.dataset.friend;
-    // friendClick(JSON.parse(friend));
-    // const friendID = JSON.parse(friend).FriendID;
-    //lay tin nhan
-    // fetch(
-    //   "http://localhost:8888/api/message/get-message?FriendID=" + friendID,
-    //   requestOptions
-    // )
-    //   .then((response) => {
-    //     return response.json();
-    //   })
-    //   .then((result) => {
-    //     console.log("result", result);
-        //Xoa form cu
-        // const existingMessageForm = messageForm.querySelector(
-        //   ".rightContainerMessageComposer"
-        // );
-        // if (existingMessageForm) {
-        //   existingMessageForm.remove();
-        // }
-        // const existingFriendMessage = getAllMessage.querySelectorAll(
-        //   ".rightContainerListMessageFriend"
-        // );
-        //Tao form gui tin nhan
-        // const divMessageForm = document.createElement("div");
-        // divMessageForm.classList.add("rightContainerMessageComposer");
 
-        // const btnPlus = document.createElement("button");
-        // btnPlus.classList.add("rightContainerMessageComposerPlus");
-        // const plusImage = document.createElement("img");
-        // plusImage.classList.add("rightContainerMessageComposerPlusIcon");
-        // plusImage.src = "attach.png";
-        // btnPlus.appendChild(plusImage);
-        // divMessageForm.appendChild(btnPlus);
 
-        // const divEnterInput = document.createElement("div");
-        // divEnterInput.classList.add("rightContainerMessageComposerEnter");
-        // const inputMessage = document.createElement("input");
-        // inputMessage.classList.add("rightContainerMessageComposerEnterInput");
-        // inputMessage.placeholder = "Nhập tin nhắn";
-        // inputMessage.id = "message";
-        // const btnEmo = document.createElement("btn");
-        // btnEmo.classList.add("rightContainerMessageComposerEnterEmo");
-        // const emoImage = document.createElement("img");
-        // emoImage.classList.add("rightContainerMessageComposerEnterEmoIcon");
-        // emoImage.src = "smile.png";
-        // btnEmo.appendChild(emoImage);
-        // divEnterInput.appendChild(inputMessage);
-        // divEnterInput.appendChild(btnEmo);
-        // divMessageForm.appendChild(divEnterInput);
-
-        // const btnSendMessage = document.createElement("button");
-        // btnSendMessage.classList.add("rightContainerMessageComposerSend");
-        // const sendImage = document.createElement("img");
-        // sendImage.classList.add("rightContainerMessageComposerSendIcon");
-        // sendImage.src = "Send Button.png";
-        // btnSendMessage.appendChild(sendImage);
-        // divMessageForm.appendChild(btnSendMessage);
-        // messageForm.appendChild(divMessageForm);
-
-        //Xuat toan bo tin nhan
-      //   if (result.status == 1) {
-      //     result.data.forEach((message) => {
-      //       const listMessage = document.createElement("div");
-      //       if (message.MessageType == 0) {
-      //         listMessage.classList.add("rightContainerListMessageFriend");
-
-      //         const avatar = document.createElement("img");
-      //         avatar.classList.add("avatarMessage");
-      //         avatar.src =
-      //           "http://localhost:8888/api/images" + JSON.parse(friend).Avatar;
-      //         listMessage.appendChild(avatar);
-
-      //         const content = document.createElement("p");
-      //         content.classList.add("friendMessage");
-      //         content.textContent = message.Content;
-
-      //         listMessage.appendChild(content);
-      //         getAllMessage.appendChild(listMessage);
-      //       } else {
-      //         listMessage.classList.add("rightContainerListMyMessage");
-      //         const content = document.createElement("p");
-      //         content.classList.add("myMessage");
-      //         content.textContent = message.Content;
-
-      //         listMessage.appendChild(content);
-      //         getAllMessage.appendChild(listMessage);
-      //       }
-      //     });
-      //   } else {
-      //     console.error("Error: " + result.message);
-      //   }
-      // })
-      // .catch((error) => console.log("error", error));
-    // console.log(sendMessage.querySelector('[name="message"]').value);
-    // const btnSendmessage = document.querySelector("#btnSendMessage");
-    // btnSendmessage.addEventListener("click", function (e) {
-    //   e.preventDefault();
-    //   actionSendMessage(
-    //     friendID,
-    //     sendMessage.querySelector('[name="message"]').value
-    //   );
-    // });
-  // }
-  //set background cho ban be duoc chon
-  $(".leftContainerChannel").click(function () {
-    $(".leftContainerChannel").removeClass("active");
-    $(this).addClass("active");
+//
+function getMessages(friend)
+{
+  $.ajax({
+    url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
+    method:"GET",
+    contentType: "application/json",
+    headers: myHeaders, 
+    success: function (result) 
+    {
+      result.data.forEach((message) => {
+        const listMessage = $("<div>");
+        if (message.MessageType == 0) {
+            listMessage.addClass("list-friend-message");
+    
+            const avatar = $("<img>").addClass("avatar-message").attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+            listMessage.append(avatar);
+    
+            const content = $("<p>").addClass("friend-message").text(message.Content);
+            listMessage.append(content);
+    
+            getAllMessage.append(listMessage);
+        } else {
+            listMessage.addClass("list-my-message");
+            const content = $("<p>").addClass("my-message").text(message.Content);
+            listMessage.append(content);
+    
+            getAllMessage.append(listMessage);
+        }
+    });
+    },
+    error: function (error) {
+      console.log("error: ", error);
+    }
   });
-
-  //gui tin nhan
-// });
-
-// lay user
-// function friendClick(friend) {
-//   const existingUser = getUser.querySelector(".rightContainerHeader");
-//   if (existingUser) {
-//     existingUser.remove();
-//   }
-//   const existingFriendMessage = getAllMessage.querySelectorAll(
-//     ".rightContainerListMessageFriend"
-//   );
-//   existingFriendMessage.forEach((message) => {
-//     message.remove();
-//   });
-//   const existingMyMessage = getAllMessage.querySelectorAll(
-//     ".rightContainerListMyMessage"
-//   );
-//   existingMyMessage.forEach((message) => {
-//     message.remove();
-//   });
-//   const userInfor = document.createElement("div");
-//   userInfor.classList.add("rightContainerHeader");
-
-//   const avatar = document.createElement("img");
-//   avatar.classList.add("rightContainerHeaderAvatar");
-//   avatar.src = "http://localhost:8888/api/images" + friend.Avatar;
-//   userInfor.appendChild(avatar);
-
-//   const detailDiv = document.createElement("div");
-//   detailDiv.classList.add("rightContainerHeaderInfor");
-
-//   const fullName = document.createElement("h3");
-//   fullName.classList.add("rightContainerHeaderUserName");
-//   fullName.textContent = friend.FullName;
-//   detailDiv.appendChild(fullName);
-
-//   const status = document.createElement("p");
-//   status.textContent = friend.isOnline ? "Online" : "Offline";
-//   status.classList.add("rightContainerHeaderStatus");
-//   detailDiv.appendChild(status);
-
-//   userInfor.appendChild(detailDiv);
-//   getUser.appendChild(userInfor);
-// }
+  
+}
 function friendClick(friend) {
-  // Chọn phần tử rightContainerHeader
-  const $userInfor = $(".rightContainerHeader");
-
-  // Nếu phần tử này đã tồn tại, thay đổi nội dung của nó
-  if ($userInfor.length > 0) {
-    // Thay đổi nội dung ảnh đại diện
-    $userInfor
-      .find(".rightContainerHeaderAvatar")
-      .attr("src", "http://localhost:8888/api/images" + friend.Avatar);
-
-    // Thay đổi nội dung tên và trạng thái
-    $userInfor.find(".rightContainerHeaderUserName").text(friend.FullName);
-    $userInfor
-      .find(".rightContainerHeaderStatus")
+  const userInfor = $(".right-container-header");
+  if (userInfor.length > 0) 
+    {
+    userInfor
+      .find(".right-friend-avatar")
+      .attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+    userInfor.find(".right-friend-username").text(friend.FullName);
+    userInfor
+      .find(".right-friend-status")
       .text(friend.isOnline ? "Online" : "Offline");
   } else {
-    // Nếu phần tử không tồn tại, tạo mới và thêm vào
-    const $userInfor = $("<div>").addClass("rightContainerHeader");
+    const userInfor = $("<div>").addClass("right-container-header");
 
-    const $avatar = $("<img>")
-      .addClass("rightContainerHeaderAvatar")
-      .attr("src", "http://localhost:8888/api/images" + friend.Avatar);
-    $userInfor.append($avatar);
+    const avatar = $("<img>")
+      .addClass("right-friend-avatar")
+      .attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+    userInfor.append(avatar);
 
-    const $detailDiv = $("<div>").addClass("rightContainerHeaderInfor");
+    const detailDiv = $("<div>").addClass("right-friend-infor");
 
-    const $fullName = $("<h3>")
-      .addClass("rightContainerHeaderUserName")
+    const fullName = $("<h3>")
+      .addClass("right-friend-username")
       .text(friend.FullName);
-    $detailDiv.append($fullName);
+    detailDiv.append(fullName);
 
-    const $status = $("<p>")
+    const status = $("<p>")
       .text(friend.isOnline ? "Online" : "Offline")
-      .addClass("rightContainerHeaderStatus");
-    $detailDiv.append($status);
+      .addClass("right-friend-status");
+    detailDiv.append(status);
 
-    $userInfor.append($detailDiv);
-    $(".getUser").append($userInfor);
+    userInfor.append(detailDiv);
+    getUser.append(userInfor);
   }
 }
-
-//gui tin nhan
+var myHeaders = { Authorization: `Bearer ${token}` };
 
 function actionSendMessage(FriendID, Content) {
   var formData = new FormData();
   formData.append("FriendID", FriendID);
   formData.append("Content", Content);
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer " + token);
-  var requestOptions1 = {
-    method: "POST",
+  $.ajax({
+    url: "http://10.2.44.52:8888/api/message/send-message",
+    type: "POST",
     headers: myHeaders,
-    body: formData,
-  };
-  fetch("http://localhost:8888/api/message/send-message", requestOptions1)
-    .then((response) => response.json())
-    .then((result) => {
+    processData: false,
+    contentType: false,
+    data:formData,
+    success: function(result) {
       console.log("result", result);
-    })
-    .catch((error) => {
+    },
+    error: function(error) {
       console.error("Error:", error);
-    });
+    }
+  });
 }
+

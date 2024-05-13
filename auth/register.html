@@ -25,7 +25,10 @@
             <option value="vietnames" selected>Tiếng việt</option>
           </select>
           <button id="btnLogin" class="btn-login" onclick="window.location.href='/login.html'">Đăng nhập</button>
-          <button id="btnRegister" class="btn-register" >Đăng ký</button>
+          <button id="btnRegister" class="btn-register" >
+            <hr class="underline">
+            Đăng ký
+          </button>
         </div>
         <div class="right-container-auth-form">
           <form class="form-register" id="register" method="post">
@@ -80,7 +83,7 @@
       Password: Password,
     });
     $.ajax({
-      url: "http://localhost:8888/api/auth/register",
+      url: "http://10.2.44.52:8888/api/auth/register",
       method: "POST",
       contentType: "application/json",
       data:raw,

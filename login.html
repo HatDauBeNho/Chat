@@ -40,7 +40,10 @@
       <select class="btn-language">
         <option value="vietnames" selected>Tiếng việt</option>
       </select>
-      <button id="btnLogin" class="btn-login">Đăng nhập</button>
+      <button id="btnLogin" class="btn-login">
+        Đăng nhập
+        <hr class="underline">
+      </button>
       <button id="btnRegister" class="btn-register" onclick="window.location.href='auth/register.html'">Đăng ký</button>
     </div>
     <div class="right-container-auth-form">
@@ -59,7 +62,7 @@
       </div>
       <div class="right-container-function-social">
         <button class="google">
-          <img src="auth/images/google.png" alt="" class="google-img" />
+          <img src="auth/images/icongoogle.svg" alt="" class="google-img" />
         </button>
         <button class="apple">
           <img src="auth/images/apple.png" alt="" class="apple-image" />
@@ -93,7 +96,7 @@
     });
 
     $.ajax({
-      url: "http://localhost:8888/api/auth/login",
+      url: "http://10.2.44.52:8888/api/auth/login",
       method: "POST",
       contentType: "application/json",
       data: raw,
@@ -103,6 +106,7 @@
       },
       error: function (error) {
         console.log("error", error);
+        alert("Tai khoan hoac mat khau khong dung!");
       }
     });
   }
