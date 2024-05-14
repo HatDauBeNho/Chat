@@ -126,10 +126,14 @@ input[type="submit"] {
   letter-spacing: 0.09em;
   color: #ffffff;
   margin: 26px 0 0 270px;
+
+  box-shadow: 0px 12px 21px 4px #4461F226;
 }
 
 .btn-register,
 .btn-login {
+  position: relative;
+
   width: 112px;
   height: 42px;
   color: #4461f2;
@@ -153,12 +157,12 @@ input[type="submit"] {
   position: absolute;
   width: 34.78px;
   height: 3px;
-  top: 90px;
-  left: 1580px;
   margin: 0;
   background-color: #4461f2;
   border: none;
   border-radius: 20px;
+  bottom: 3px;;
+  left: 38px;
 }
 .btn-register:hover,
 .btn-login:hover,

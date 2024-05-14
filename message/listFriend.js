@@ -17,27 +17,30 @@ $(document).ready(function () {
     getUserInfor();
     getListFriend();
   }
+  
 });
-//su kien click ban be 
 $(document).on("click", ".left-container-channel", function(event) 
 {
-  if ($(event.target).hasClass("left-container-channel")) {
+    if ($(event.target).hasClass("left-container-channel")) 
+    {
       const friend = $(event.target).data("friend");
       friendClick(JSON.parse(friend));
       $(".list-friend-message").remove();
       $(".list-my-message").remove();
       getMessages(JSON.parse(friend));
-      customFriend=JSON.parse(friend);      
+      customFriend=JSON.parse(friend);   
+   
   }
   $(".left-container-channel").removeClass("active");
   $(this).addClass("active");
-  
 });
+
+// su kien click ban be 
+
 btnLogout.click(function() {
     localStorage.clear();
     window.location.href = "/login.html";
   });
-
 function getUserInfor() {
   $.ajax({
     url: "http://10.2.44.52:8888/api/user/info",
@@ -47,8 +50,8 @@ function getUserInfor() {
     success: function (result) {
       if (result.status == 1) {
         $("#fullName").text(result.data.FullName);
-        $("#avatar").attr("src","http://10.2.44.52:8888/api/images" + result.data.Avatar);
-
+        let avatarUrl = result.data.Avatar ? "http://10.2.44.52:8888/api/images" + result.data.Avatar : "/message/images/defaultavatar.jpg";
+        $("#avatar").attr("src", avatarUrl);
       } else console.log("loi: ", result.message);
     },
     error: function (error) {
@@ -66,61 +69,43 @@ function getListFriend()
     headers: myHeaders,
     success: function (result) 
     {
+      let index=0
       result.data.forEach((friend) => 
       {
-        const listItem = $("<div>").addClass("left-container-channel");
+        index++;
+        const listItem = $("<div>").addClass("left-container-channel").attr('index',index);
         $(listItem).data('friend', JSON.stringify(friend));
 
         const avatar = $("<img>").addClass("avatar");
-        avatar.attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+        let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+        avatar.attr("src", avatarUrl);
         listItem.append(avatar);
 
         const friendInfo = $("<div>").addClass("left-container-channel-infor");
 
+
+
         const fullName = $("<h4>").addClass("h4content").text(friend.FullName);
+        const lastMessage=$("<p>").addClass("content").text(friend.Content);
         friendInfo.append(fullName);
+        friendInfo.append(lastMessage);
+        
         listItem.append(friendInfo);
 
         friendsList.append(listItem);
 
-        $.ajax({
-          url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
-          method:"GET",
-          contentType: "application/json",
-          headers: myHeaders, 
-          success: function (result) 
-          {
-            const lastMessage=$("<p>").addClass("content");
-            if (result.data[result.data.length-1].MessageType==0)
-            {
-                lastMessage.text(result.data[result.data.length - 1].Content);
-            }else 
-            {
-              lastMessage.text("You:"+result.data[result.data.length - 1].Content);
-            }
-            friendInfo.append(lastMessage);
-          },
-          error: function (error) {
-            console.log("error: ", error);
-          }
-        });
+      
       });
       // Gọi hàm click trên phần tử đầu tiên để hiển thị friend
-       $(".left-container-channel").first().click();
+      $(".left-container-channel[index='1']").click();
     },error: function (error) {
       console.log("error: ", error);
     }
   });
   
 }
-
-
-
-//
 function getMessages(friend)
 {
-
-  console.log("friend",friend);
   $.ajax({
     url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
     method:"GET",
@@ -129,7 +114,6 @@ function getMessages(friend)
     success: function (result) 
     {
       renderMessage(friend,result);
-      
     },
     error: function (error) {
       console.log("error: ", error);
@@ -141,19 +125,16 @@ function friendClick(friend) {
   const userInfor = $(".right-container-header");
   if (userInfor.length > 0) 
     {
-    userInfor
-      .find(".right-friend-avatar")
-      .attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
-    userInfor.find(".right-friend-username").text(friend.FullName);
-    userInfor
-      .find(".right-friend-status")
-      .text(friend.isOnline ? "Online" : "Offline");
+      let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+      userInfor.find(".right-friend-avatar").attr("src", avatarUrl);
+      userInfor.find(".right-friend-username").text(friend.FullName);
+      userInfor.find(".right-friend-status").text(friend.isOnline ? "Online" : "Offline");     
   } else {
     const userInfor = $("<div>").addClass("right-container-header");
-
+    let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
     const avatar = $("<img>")
       .addClass("right-friend-avatar")
-      .attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
+      .attr("src", avatarUrl);
     userInfor.append(avatar);
 
     const detailDiv = $("<div>").addClass("right-friend-infor");
@@ -186,7 +167,6 @@ function actionSendMessage( FriendID, Content) {
     contentType: false,
     data:formData,
     success: function(result) {
-      console.log("result", result);
       getMessages(customFriend);
     },
     error: function(error) {
@@ -197,28 +177,49 @@ function actionSendMessage( FriendID, Content) {
 
 function renderMessage(friend,result)
 {
-  result.data.forEach((message) => 
-  {
+  getAllMessage.empty();
+  if (result.data.length==0)
+    {
     const listMessage = $("<div>");
-    if (message.MessageType == 0) {
-        listMessage.addClass("list-friend-message");
+    const emptyMessage=$("<img>").addClass("empty-message-img").attr("src", "/message/images/empty-list-message.png");
+    listMessage.append(emptyMessage);
+    getAllMessage.append(listMessage);
+  }   
+  else{
+    result.data.forEach((message) => 
+      {
+        const listMessage = $("<div>");
+        if (message.MessageType == 0) {
+            listMessage.addClass("list-friend-message");
+    
+            let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+            const avatar = $("<img>").addClass("avatar-message").attr("src", avatarUrl);
+            listMessage.append(avatar);
+    
+            const content = $("<p>").addClass("friend-message").text(message.Content);
+            listMessage.append(content);
 
-        const avatar = $("<img>").addClass("avatar-message").attr("src", "http://10.2.44.52:8888/api/images" + friend.Avatar);
-        listMessage.append(avatar);
+            let formattedTime = moment(message.CreatedAt).format('hh:mm A');
+            const sendTime=$("<p>").addClass("send-time-friend-message").text(formattedTime);
+            listMessage.append(sendTime);
 
-        const content = $("<p>").addClass("friend-message").text(message.Content);
-        listMessage.append(content);
+            getAllMessage.append(listMessage);
+        } else {
+            listMessage.addClass("list-my-message");
+            const content = $("<p>").addClass("my-message").text(message.Content);
+            listMessage.append(content);
 
-        getAllMessage.append(listMessage);
-    } else {
-        listMessage.addClass("list-my-message");
-        const content = $("<p>").addClass("my-message").text(message.Content);
-        listMessage.append(content);
+            let formattedTime = moment(message.CreatedAt).format('hh:mm A');
+            const sendTime=$("<p>").addClass("send-time-my-message").text(formattedTime);
+            listMessage.append(sendTime);
 
-        getAllMessage.append(listMessage);
-    }
-  });
+            getAllMessage.append(listMessage);
+        }
+      });
+  }
+  
 }
+
 btnSendMessage.click(function(){        
   getAllMessage.empty();
   actionSendMessage(customFriend.FriendID,$('.message-input').val());

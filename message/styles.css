@@ -6,7 +6,7 @@ body {
   overflow: hidden;
   margin: 0;
   padding: 0;
-  background-color:  #FFFFFF;
+  background-color: #ffffff;
 }
 
 .left-container {
@@ -31,13 +31,12 @@ body {
   background-color: #ffffff;
   cursor: pointer;
 }
-.btn-dropdown
-{
+.btn-dropdown {
   border: none;
-  background-color:#ffffff;
+  background-color: #ffffff;
+  cursor: pointer;
 }
-.icon-dropdown
-{
+.icon-dropdown {
   background-color: #ffffff;
 }
 .item-dropdown {
@@ -46,7 +45,7 @@ body {
   background-color: #f9f9f9;
   width: 295px;
   height: 280px;
-  top: 100%; 
+  top: 100%;
   left: 0;
   border-radius: 8px;
 }
@@ -57,24 +56,19 @@ body {
   display: flex;
   align-items: center;
 }
-.icon-item
-{
+.icon-item {
   margin-right: 15px;
 }
-.item-dropdown a:hover
-{
+.item-dropdown a:hover {
   background-color: #f1f1f1;
 }
-.dropdown:hover .item-dropdown
-{
+.dropdown:hover .item-dropdown {
   display: block;
 }
-.item-dropdown-userinfor
-{
+.item-dropdown-userinfor {
   display: flex;
 }
-.h3
-{
+.h3 {
   margin-left: 10px;
 }
 
@@ -104,6 +98,7 @@ body {
   padding: 0px;
   width: 360px;
   height: 432px;
+  overflow-y: scroll;
 }
 
 .left-container-channel {
@@ -112,14 +107,11 @@ body {
   height: 72px;
   width: 100%;
 }
-.left-container-channel.active
-{
-  background-color: #DBDDE1;
-
+.left-container-channel.active {
+  background-color: #dbdde1;
 }
 
-.left-container-channel:hover
-{
+.left-container-channel:hover {
   cursor: pointer;
 }
 .left-container-channel-infor {
@@ -136,7 +128,7 @@ body {
   margin-right: 10px;
   margin-left: 10px;
 }
-.avatar-message{
+.avatar-message {
   width: 36px;
   height: 36px;
   border-radius: 99.99px;
@@ -147,7 +139,7 @@ body {
   margin: 0;
   font-size: 14px;
 }
-.h4content{
+.h4content {
   margin: 0;
 }
 
@@ -165,93 +157,113 @@ body {
   margin-bottom: 20px;
 }
 
-
-.right-friend-avatar
-{
+.right-friend-avatar {
   width: 43px;
   height: 43px;
   margin-left: 8px;
   border-radius: 99.99px;
   margin-right: 10px;
 }
-.right-friend-infor
-{
+.right-friend-infor {
   display: flex;
   flex-direction: column;
-  
 }
-.right-friend-username
-{
+.right-friend-username {
   height: 20px;
-  margin: 0 ;
+  margin: 0;
 }
-.right-friend-status
-{
-  margin: 5px 0 0 0 ;
+.right-friend-status {
+  margin: 5px 0 0 0;
   font-size: 14px;
 }
-
 
 .list-message {
   width: 100%;
   height: 825px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
-.list-friend-message
-{
-  display: flex;
+.empty-message-img {
   width: 100%;
-  height: auto;
-  align-items: center;
-  margin-bottom: 10px;
-  justify-content: left;
+  height: 784px;
+}
+.list-friend-message {
+  display: flex;
+  position: relative;
 
-  
-}
-.list-my-message
-{
-  display: flex;
   width: 100%;
-  height: auto;
+  height: 62px;
   align-items: center;
-  margin-bottom: 10px;
-  justify-content: right;
+  justify-content: left;
 }
-.friend-message
-{
+
+.friend-message {
   padding: 4px 8px 4px 8px;
   display: flex;
+  
   align-items: center;
   width: fit-content;
   height: 32px;
-  background-color: #E9EAED;
+  background-color: #e9eaed;
   border-radius: 18px 18px 18px 2px;
   margin: 0;
 }
-.my-message
-{
+.send-time-friend-message{
+  position: absolute;
+  width: 55px;
+  height: 16px;
+  left: 55px;
+  bottom: -4px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+  margin: 0;
+}
+.list-my-message {
+  display: flex;
+  position: relative;
+
+  width: 100%;
+  height: 62px;
+  margin-bottom: 10px;
+  justify-content: right;
+}
+.my-message {
   padding: 4px 8px 4px 8px;
   display: flex;
   align-items: center;
   width: fit-content;
   height: 32px;
-  background-color:#E0F0FF;;
-  border-radius: 18px 18px 2px 18px;
   margin: 0 10px 0 0;
+
+  background-color: #e0f0ff;
+  border-radius: 18px 18px 2px 18px;
 }
-.message-composer{
+.send-time-my-message{
+  position: absolute;
+  width: 55px;
+  height: 16px;
+  right: 8px;
+  bottom: 6px;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+}
+
+.message-composer {
   display: flex;
   width: 100%;
   height: 56px;
 }
-.message-composer-input{
+.message-composer-input {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 1440px;
   height: 40px;
   border-radius: 20px;
-  border: 1px solid #DBDDE1;
+  border: 1px solid #dbdde1;
   margin-left: 10px;
 }
 .message-composer-emo {
@@ -286,7 +298,6 @@ body {
 }
 .message-composer-emo,
 .message-composer-add,
-.message-composer-send:hover
-{
+.message-composer-send:hover {
   cursor: pointer;
 }
