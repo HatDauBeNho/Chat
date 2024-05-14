@@ -44,9 +44,9 @@ body {
   position: absolute;
   background-color: #f9f9f9;
   width: 295px;
-  height: 280px;
+  height: auto;
   top: 100%;
-  left: 0;
+  left: 11px;
   border-radius: 8px;
 }
 .item-dropdown a {
@@ -55,6 +55,12 @@ body {
   text-decoration: none;
   display: flex;
   align-items: center;
+  
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+
+
 }
 .icon-item {
   margin-right: 15px;

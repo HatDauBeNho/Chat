@@ -29,7 +29,6 @@ $(document).on("click", ".left-container-channel", function(event)
       $(".list-my-message").remove();
       getMessages(JSON.parse(friend));
       customFriend=JSON.parse(friend);   
-   
   }
   $(".left-container-channel").removeClass("active");
   $(this).addClass("active");
