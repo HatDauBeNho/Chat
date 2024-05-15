@@ -16,6 +16,7 @@ $(document).ready(function () {
   {
     getUserInfor();
     getListFriend();
+    filterFriend();
   }
   
 });
@@ -155,29 +156,35 @@ function friendClick(friend) {
 var myHeaders = { Authorization: `Bearer ${token}` };
 
 function actionSendMessage( FriendID, Content) {
-  var formData = new FormData();
-  formData.append("FriendID", FriendID);
-  formData.append("Content", Content);
-  $.ajax({
-    url: "http://10.2.44.52:8888/api/message/send-message",
-    type: "POST",
-    headers: myHeaders,
-    processData: false,
-    contentType: false,
-    data:formData,
-    success: function(result) {
-      getMessages(customFriend);
-    },
-    error: function(error) {
-      console.error("Error:", error);
-    }
-  });
+  if (Content!='')
+    {
+      console.log("ok");
+      var formData = new FormData();
+      formData.append("FriendID", FriendID);
+      formData.append("Content", Content);
+      $.ajax({
+        url: "http://10.2.44.52:8888/api/message/send-message",
+        type: "POST",
+        headers: myHeaders,
+        processData: false,
+        contentType: false,
+        data:formData,
+        success: function(result) {
+          getMessages(customFriend);
+        },
+        error: function(error) {
+          console.error("Error:", error);
+        }
+      });
+    }else  getMessages(customFriend);
+
+ 
 }
 
-function renderMessage(friend,result)
+function renderMessage(friend,arrMess)
 {
   getAllMessage.empty();
-  if (result.data.length==0)
+  if (arrMess.data.length==0)
     {
     const listMessage = $("<div>");
     const emptyMessage=$("<img>").addClass("empty-message-img").attr("src", "/message/images/empty-list-message.png");
@@ -185,38 +192,108 @@ function renderMessage(friend,result)
     getAllMessage.append(listMessage);
   }   
   else{
-    result.data.forEach((message) => 
+    let flag=0;
+    for (let i=0;i<arrMess.data.length;i++)
       {
-        const listMessage = $("<div>");
-        if (message.MessageType == 0) {
-            listMessage.addClass("list-friend-message");
-    
-            let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
-            const avatar = $("<img>").addClass("avatar-message").attr("src", avatarUrl);
-            listMessage.append(avatar);
-    
-            const content = $("<p>").addClass("friend-message").text(message.Content);
-            listMessage.append(content);
-
-            let formattedTime = moment(message.CreatedAt).format('hh:mm A');
-            const sendTime=$("<p>").addClass("send-time-friend-message").text(formattedTime);
-            listMessage.append(sendTime);
-
-            getAllMessage.append(listMessage);
-        } else {
-            listMessage.addClass("list-my-message");
-            const content = $("<p>").addClass("my-message").text(message.Content);
-            listMessage.append(content);
-
-            let formattedTime = moment(message.CreatedAt).format('hh:mm A');
-            const sendTime=$("<p>").addClass("send-time-my-message").text(formattedTime);
-            listMessage.append(sendTime);
-
-            getAllMessage.append(listMessage);
-        }
-      });
-  }
+        if (i<=flag) 
+        {
+          continue;
+        } 
+        else
+        {
+          const listMessage = $("<div>");
+          if (arrMess.data[i].MessageType == 0) {
+              listMessage.addClass("list-friend-message");
+      
+              let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+              const avatar = $("<img>").addClass("avatar-message").attr("src", avatarUrl);
+              listMessage.append(avatar);
   
+              let formattedTime = moment(arrMess.data[i].CreatedAt).format('hh:mm A');
+              const friendMessage=$("<div>").addClass("friend-messages");
+              for (let j=i;j<arrMess.data.length-1;j++)
+                {
+                  const content = $("<p>").addClass("friend-message").text(arrMess.data[j].Content);
+                  friendMessage.append(content);
+                  let startTime = moment(arrMess.data[j].CreatedAt);
+                  let endTime = moment(arrMess.data[j+1].CreatedAt);
+                  let time = moment.duration(endTime.diff(startTime));
+                   if (time.asSeconds()>30) {
+                    break;
+                   } else {
+                    flag=j+1;
+                  }
+                  
+                   if ((startTime.isSame(endTime, "hour") && startTime.isSame(endTime, "minute"))) {
+                    console.log("ok",startTime,"/",endTime);
+                  }
+                }
+              const sendTime=$("<p>").addClass("send-time-friend-message").text(formattedTime);
+              friendMessage.append(sendTime);
+              listMessage.append(friendMessage);
+  
+  
+              const func=$("<div>").addClass("function");
+  
+              const btnReaction=$("<button>").addClass("btn-reaction");
+              const reactionImg = $("<img>").addClass("reaction-img").attr("src", "/message/images/reaction.png");
+              btnReaction.append(reactionImg);
+              func.append(btnReaction);
+  
+  
+              const btnFunction=$("<button>").addClass("btn-function");
+              const functionImg = $("<img>").addClass("function-img").attr("src", "/message/images/Menu.png");
+              btnFunction.append(functionImg);
+              func.append(btnFunction);
+  
+              listMessage.append(func);
+  
+              getAllMessage.append(listMessage);
+              
+          } else {
+            const func=$("<div>").addClass("function");
+  
+            const btnReaction=$("<button>").addClass("btn-reaction");
+            const reactionImg = $("<img>").addClass("reaction-img").attr("src", "/message/images/reaction.png");
+            btnReaction.append(reactionImg);
+            func.append(btnReaction);
+  
+            listMessage.append(func);
+  
+  
+            const btnFunction=$("<button>").addClass("btn-function");
+            const functionImg = $("<img>").addClass("function-img").attr("src", "/message/images/Menu.png");
+            btnFunction.append(functionImg);
+            func.append(btnFunction);
+  
+              listMessage.addClass("list-my-message");
+              const content = $("<p>").addClass("my-message").text(arrMess.data[i].Content);
+              listMessage.append(content);
+  
+              let formattedTime = moment(message.CreatedAt).format('hh:mm A');
+              const sendTime=$("<p>").addClass("send-time-my-message").text(formattedTime);
+              listMessage.append(sendTime);
+  
+  
+  
+              getAllMessage.append(listMessage);
+          }
+        }
+        
+      };
+  }
+
+}
+function filterFriend()
+{
+  $('#search-input').on("keyup",function(){
+    var value = $(this).val().toLowerCase();
+    $("#friends .left-container-channel").filter(function() 
+    {
+      var text = $(this).find(".h4content").text().toLowerCase();
+      $(this).toggle(text.indexOf(value) > -1);
+    });
+  });
 }
 
 btnSendMessage.click(function(){        

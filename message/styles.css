@@ -138,8 +138,7 @@ body {
   width: 36px;
   height: 36px;
   border-radius: 99.99px;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin: 0 10px 0 10px;
 }
 .content {
   margin: 0;
@@ -197,9 +196,14 @@ body {
   position: relative;
 
   width: 100%;
-  height: 62px;
+  height: auto;
   align-items: center;
   justify-content: left;
+  margin-bottom: 10px;
+}
+.friend-messages{
+  display: flex;
+  flex-direction: column;
 }
 
 .friend-message {
@@ -211,19 +215,38 @@ body {
   height: 32px;
   background-color: #e9eaed;
   border-radius: 18px 18px 18px 2px;
-  margin: 0;
+  margin: 0 0 2px 0;
+  
+}
+.list-friend-message:hover .function{
+  display: flex;
+}
+.function{
+  display: none;
+  width: 70px;
+  height: 34px;
+  padding-bottom: 20px;
 }
 .send-time-friend-message{
-  position: absolute;
+  /* position: absolute; */
   width: 55px;
   height: 16px;
-  left: 55px;
-  bottom: -4px;
+  /* left: 55px;
+  bottom: -4px; */
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
   text-align: left;
   margin: 0;
+}
+
+.btn-function,
+.btn-reaction
+{
+  border: none;
+  border-radius: 999px;
+  padding: 5px;
+  background-color: #ffffff;
 }
 .list-my-message {
   display: flex;
@@ -255,6 +278,9 @@ body {
   font-weight: 400;
   line-height: 16px;
   margin: 0;
+}
+.list-my-message:hover .function{
+  display: flex;
 }
 
 .message-composer {
