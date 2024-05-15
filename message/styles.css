@@ -228,11 +228,9 @@ body {
   padding-bottom: 20px;
 }
 .send-time-friend-message{
-  /* position: absolute; */
   width: 55px;
   height: 16px;
-  /* left: 55px;
-  bottom: -4px; */
+ 
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
@@ -253,9 +251,14 @@ body {
   position: relative;
 
   width: 100%;
-  height: 62px;
-  margin-bottom: 10px;
+  height: auto;
   justify-content: right;
+  margin-bottom: 10px;
+
+}
+.my-messages{
+  display: flex;
+  flex-direction: column;
 }
 .my-message {
   padding: 4px 8px 4px 8px;
@@ -263,20 +266,19 @@ body {
   align-items: center;
   width: fit-content;
   height: 32px;
-  margin: 0 10px 0 0;
+  margin: 0 0 2px 0;
 
   background-color: #e0f0ff;
   border-radius: 18px 18px 2px 18px;
 }
 .send-time-my-message{
-  position: absolute;
   width: 55px;
   height: 16px;
-  right: 8px;
-  bottom: 6px;
+ 
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
+  text-align: right;
   margin: 0;
 }
 .list-my-message:hover .function{

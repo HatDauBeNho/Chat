@@ -43,14 +43,14 @@ btnLogout.click(function() {
   });
 function getUserInfor() {
   $.ajax({
-    url: "http://10.2.44.52:8888/api/user/info",
+    url: "http://localhost:8888/api/user/info",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
     success: function (result) {
       if (result.status == 1) {
         $("#fullName").text(result.data.FullName);
-        let avatarUrl = result.data.Avatar ? "http://10.2.44.52:8888/api/images" + result.data.Avatar : "/message/images/defaultavatar.jpg";
+        let avatarUrl = result.data.Avatar ? "http://localhost:8888/api/images" + result.data.Avatar : "/message/images/defaultavatar.jpg";
         $("#avatar").attr("src", avatarUrl);
       } else console.log("loi: ", result.message);
     },
@@ -63,7 +63,7 @@ function getListFriend()
 {
   //lấy danh sách bạn bè
   $.ajax({
-    url: "http://10.2.44.52:8888/api/message/list-friend",
+    url: "http://localhost:8888/api/message/list-friend",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
@@ -77,7 +77,7 @@ function getListFriend()
         $(listItem).data('friend', JSON.stringify(friend));
 
         const avatar = $("<img>").addClass("avatar");
-        let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+        let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
         avatar.attr("src", avatarUrl);
         listItem.append(avatar);
 
@@ -107,7 +107,7 @@ function getListFriend()
 function getMessages(friend)
 {
   $.ajax({
-    url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
+    url: "http://localhost:8888/api/message/get-message?FriendID=" + friend.FriendID,
     method:"GET",
     contentType: "application/json",
     headers: myHeaders, 
@@ -125,13 +125,13 @@ function friendClick(friend) {
   const userInfor = $(".right-container-header");
   if (userInfor.length > 0) 
     {
-      let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+      let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
       userInfor.find(".right-friend-avatar").attr("src", avatarUrl);
       userInfor.find(".right-friend-username").text(friend.FullName);
       userInfor.find(".right-friend-status").text(friend.isOnline ? "Online" : "Offline");     
   } else {
     const userInfor = $("<div>").addClass("right-container-header");
-    let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+    let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
     const avatar = $("<img>")
       .addClass("right-friend-avatar")
       .attr("src", avatarUrl);
@@ -163,7 +163,7 @@ function actionSendMessage( FriendID, Content) {
       formData.append("FriendID", FriendID);
       formData.append("Content", Content);
       $.ajax({
-        url: "http://10.2.44.52:8888/api/message/send-message",
+        url: "http://localhost:8888/api/message/send-message",
         type: "POST",
         headers: myHeaders,
         processData: false,
@@ -205,28 +205,23 @@ function renderMessage(friend,arrMess)
           if (arrMess.data[i].MessageType == 0) {
               listMessage.addClass("list-friend-message");
       
-              let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+              let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
               const avatar = $("<img>").addClass("avatar-message").attr("src", avatarUrl);
               listMessage.append(avatar);
   
-              let formattedTime = moment(arrMess.data[i].CreatedAt).format('hh:mm A');
               const friendMessage=$("<div>").addClass("friend-messages");
+              let formattedTime = moment(arrMess.data[i].CreatedAt).format('hh:mm A');
+
               for (let j=i;j<arrMess.data.length-1;j++)
                 {
                   const content = $("<p>").addClass("friend-message").text(arrMess.data[j].Content);
                   friendMessage.append(content);
                   let startTime = moment(arrMess.data[j].CreatedAt);
                   let endTime = moment(arrMess.data[j+1].CreatedAt);
-                  let time = moment.duration(endTime.diff(startTime));
-                   if (time.asSeconds()>30) {
-                    break;
-                   } else {
+                  if ((startTime.isSame(endTime, "hour") && startTime.isSame(endTime, "minute"))&&arrMess.data[j+1].MessageType==0)
+                    {
                     flag=j+1;
-                  }
-                  
-                   if ((startTime.isSame(endTime, "hour") && startTime.isSame(endTime, "minute"))) {
-                    console.log("ok",startTime,"/",endTime);
-                  }
+                   } else break;
                 }
               const sendTime=$("<p>").addClass("send-time-friend-message").text(formattedTime);
               friendMessage.append(sendTime);
@@ -266,14 +261,27 @@ function renderMessage(friend,arrMess)
             btnFunction.append(functionImg);
             func.append(btnFunction);
   
+            const myMessage=$("<div>").addClass("my-messages");
+
+            for (let j=i;j<arrMess.data.length-1;j++)
+              {
+                const content = $("<p>").addClass("my-message").text(arrMess.data[j].Content);
+                myMessage.append(content);
+                let startTime = moment(arrMess.data[j].CreatedAt);
+                let endTime = moment(arrMess.data[j+1].CreatedAt);
+                if ((startTime.isSame(endTime, "hour") && startTime.isSame(endTime, "minute"))&&arrMess.data[j+1].MessageType==1)
+                  {
+                  flag=j+1;
+                 } else break;
+              }
+
               listMessage.addClass("list-my-message");
-              const content = $("<p>").addClass("my-message").text(arrMess.data[i].Content);
-              listMessage.append(content);
   
               let formattedTime = moment(message.CreatedAt).format('hh:mm A');
               const sendTime=$("<p>").addClass("send-time-my-message").text(formattedTime);
-              listMessage.append(sendTime);
-  
+              myMessage.append(sendTime);
+              
+              listMessage.append(myMessage);
   
   
               getAllMessage.append(listMessage);
