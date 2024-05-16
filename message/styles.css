@@ -381,3 +381,8 @@ body {
 .message-composer-send:hover {
   cursor: pointer;
 }
+
+.file-input
+{
+  display: none;
+}

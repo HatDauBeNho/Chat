@@ -3,9 +3,9 @@ const friendsList = $("#friends");
 const getUser = $("#getUser");
 const getAllMessage = $("#messages");
 const messageForm = $("#messageForm");
-const btnLogout = $("#logout");
+ 
 const message = $("#message");
-const btnSendMessage = $("#btnSendMessage");
+
 let customFriend={};
 let arrListFriend=[];
 
@@ -36,12 +36,11 @@ $(document).on("click", ".left-container-channel", function()
   $(this).addClass("active");
 });
 
-
-btnLogout.click(function() {
+$("#logout").click(function() {
     localStorage.clear();
     window.location.href = "/auth/login.html";
 });
-btnSendMessage.click(function()
+$("#btnSendMessage").click(function()
   {        
     getAllMessage.empty();
     actionSendMessage(customFriend.FriendID,$('.message-input').val());
@@ -55,6 +54,21 @@ $(".message-input").keydown(function(event){
       $('.message-input').val('');
   }
 });
+
+$('#btnChooseFile').click(function() 
+{
+  console.log("Hello");
+  $('#fileInput').click();
+});
+
+$('#fileInput').change(function() {
+  var file = this.files[0]; 
+  if (file) {
+      alert('Bạn đã chọn tệp: ' + file.name);
+  }
+});
+
+
 function getUserInfor() {
   $.ajax({
     url: "http://10.2.44.52:8888/api/user/info",
