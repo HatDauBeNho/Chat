@@ -20,12 +20,14 @@ $(document).ready(function () {
   }
   
 });
+
+//click ban be
 $(document).on("click", ".left-container-channel", function(event) 
 {
     if ($(event.target).hasClass("left-container-channel")) 
     {
       const friend = $(event.target).data("friend");
-      friendClick(JSON.parse(friend));
+      getFriendInfor(JSON.parse(friend));
       $(".list-friend-message").remove();
       $(".list-my-message").remove();
       getMessages(JSON.parse(friend));
@@ -35,22 +37,27 @@ $(document).on("click", ".left-container-channel", function(event)
   $(this).addClass("active");
 });
 
-// su kien click ban be 
 
 btnLogout.click(function() {
     localStorage.clear();
     window.location.href = "/login.html";
-  });
+});
+btnSendMessage.click(function()
+  {        
+    getAllMessage.empty();
+    actionSendMessage(customFriend.FriendID,$('.message-input').val());
+    $('.message-input').val('');
+});
 function getUserInfor() {
   $.ajax({
-    url: "http://localhost:8888/api/user/info",
+    url: "http://10.2.44.52:8888/api/user/info",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
     success: function (result) {
       if (result.status == 1) {
         $("#fullName").text(result.data.FullName);
-        let avatarUrl = result.data.Avatar ? "http://localhost:8888/api/images" + result.data.Avatar : "/message/images/defaultavatar.jpg";
+        let avatarUrl = result.data.Avatar ? "http://10.2.44.52:8888/api/images" + result.data.Avatar : "/message/images/defaultavatar.jpg";
         $("#avatar").attr("src", avatarUrl);
       } else console.log("loi: ", result.message);
     },
@@ -63,21 +70,19 @@ function getListFriend()
 {
   //lấy danh sách bạn bè
   $.ajax({
-    url: "http://localhost:8888/api/message/list-friend",
+    url: "http://10.2.44.52:8888/api/message/list-friend",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
     success: function (result) 
     {
-      let index=0
       result.data.forEach((friend) => 
       {
-        index++;
-        const listItem = $("<div>").addClass("left-container-channel").attr('index',index);
+        const listItem = $("<div>").addClass("left-container-channel");
         $(listItem).data('friend', JSON.stringify(friend));
 
         const avatar = $("<img>").addClass("avatar");
-        let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+        let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
         avatar.attr("src", avatarUrl);
         listItem.append(avatar);
 
@@ -97,56 +102,38 @@ function getListFriend()
       
       });
       // Gọi hàm click trên phần tử đầu tiên để hiển thị friend
-      $(".left-container-channel[index='1']").click();
+      $(".left-container-channel").first().click();
     },error: function (error) {
       console.log("error: ", error);
     }
   });
   
 }
-function getMessages(friend)
-{
-  $.ajax({
-    url: "http://localhost:8888/api/message/get-message?FriendID=" + friend.FriendID,
-    method:"GET",
-    contentType: "application/json",
-    headers: myHeaders, 
-    success: function (result) 
-    {
-      renderMessage(friend,result);
-    },
-    error: function (error) {
-      console.log("error: ", error);
-    }
-  });
-  
-}
-function friendClick(friend) {
+
+function getFriendInfor(friend) {
   const userInfor = $(".right-container-header");
   if (userInfor.length > 0) 
     {
-      let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+      let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
       userInfor.find(".right-friend-avatar").attr("src", avatarUrl);
       userInfor.find(".right-friend-username").text(friend.FullName);
       userInfor.find(".right-friend-status").text(friend.isOnline ? "Online" : "Offline");     
   } else {
     const userInfor = $("<div>").addClass("right-container-header");
-    let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
-    const avatar = $("<img>")
-      .addClass("right-friend-avatar")
-      .attr("src", avatarUrl);
+    let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+    const avatar = $("<img>").addClass("right-friend-avatar").attr("src", avatarUrl);
     userInfor.append(avatar);
 
     const detailDiv = $("<div>").addClass("right-friend-infor");
 
-    const fullName = $("<h3>")
-      .addClass("right-friend-username")
-      .text(friend.FullName);
+    const fullName = $("<h3>").addClass("right-friend-username").text(friend.FullName);
+      
+      
     detailDiv.append(fullName);
 
-    const status = $("<p>")
-      .text(friend.isOnline ? "Online" : "Offline")
-      .addClass("right-friend-status");
+    const status = $("<p>").text(friend.isOnline ? "Online" : "Offline").addClass("right-friend-status");
+      
+      
     detailDiv.append(status);
 
     userInfor.append(detailDiv);
@@ -163,7 +150,7 @@ function actionSendMessage( FriendID, Content) {
       formData.append("FriendID", FriendID);
       formData.append("Content", Content);
       $.ajax({
-        url: "http://localhost:8888/api/message/send-message",
+        url: "http://10.2.44.52:8888/api/message/send-message",
         type: "POST",
         headers: myHeaders,
         processData: false,
@@ -180,7 +167,23 @@ function actionSendMessage( FriendID, Content) {
 
  
 }
-
+function getMessages(friend)
+{
+  $.ajax({
+    url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
+    method:"GET",
+    contentType: "application/json",
+    headers: myHeaders, 
+    success: function (result) 
+    {
+      renderMessage(friend,result);
+    },
+    error: function (error) {
+      console.log("error: ", error);
+    }
+  });
+  
+}
 function renderMessage(friend,arrMess)
 {
   getAllMessage.empty();
@@ -192,7 +195,7 @@ function renderMessage(friend,arrMess)
     getAllMessage.append(listMessage);
   }   
   else{
-    let flag=0;
+    let flag=-1;
     for (let i=0;i<arrMess.data.length;i++)
       {
         if (i<=flag) 
@@ -205,24 +208,31 @@ function renderMessage(friend,arrMess)
           if (arrMess.data[i].MessageType == 0) {
               listMessage.addClass("list-friend-message");
       
-              let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+              let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
               const avatar = $("<img>").addClass("avatar-message").attr("src", avatarUrl);
               listMessage.append(avatar);
   
               const friendMessage=$("<div>").addClass("friend-messages");
-              let formattedTime = moment(arrMess.data[i].CreatedAt).format('hh:mm A');
 
-              for (let j=i;j<arrMess.data.length-1;j++)
-                {
-                  const content = $("<p>").addClass("friend-message").text(arrMess.data[j].Content);
-                  friendMessage.append(content);
+              for (let j=i;j<arrMess.data.length;j++)
+              {
+                const content = $("<p>").addClass("friend-message").text(arrMess.data[j].Content);
+                friendMessage.append(content);
+                  
+                if (j==arrMess.data.length-1) break;
+                else{
                   let startTime = moment(arrMess.data[j].CreatedAt);
                   let endTime = moment(arrMess.data[j+1].CreatedAt);
-                  if ((startTime.isSame(endTime, "hour") && startTime.isSame(endTime, "minute"))&&arrMess.data[j+1].MessageType==0)
-                    {
-                    flag=j+1;
-                   } else break;
+                  if (startTime.isSame(endTime, "hour") && startTime.isSame(endTime, "minute")&&arrMess.data[j+1].MessageType==0 )
+                {
+                  flag=j+1;
+  
+                } else break;
                 }
+                
+              }
+              let formattedTime = moment(arrMess.data[i].CreatedAt).format('hh:mm A');
+
               const sendTime=$("<p>").addClass("send-time-friend-message").text(formattedTime);
               friendMessage.append(sendTime);
               listMessage.append(friendMessage);
@@ -263,21 +273,26 @@ function renderMessage(friend,arrMess)
   
             const myMessage=$("<div>").addClass("my-messages");
 
-            for (let j=i;j<arrMess.data.length-1;j++)
+            for (let j=i;j<arrMess.data.length;j++)
               {
                 const content = $("<p>").addClass("my-message").text(arrMess.data[j].Content);
                 myMessage.append(content);
-                let startTime = moment(arrMess.data[j].CreatedAt);
-                let endTime = moment(arrMess.data[j+1].CreatedAt);
-                if ((startTime.isSame(endTime, "hour") && startTime.isSame(endTime, "minute"))&&arrMess.data[j+1].MessageType==1)
+                if (j==arrMess.data.length-1) break;
+                else{
+                  let startTime = moment(arrMess.data[j].CreatedAt);
+                  let endTime = moment(arrMess.data[j+1].CreatedAt);
+                  if ((startTime.isSame(endTime, "hour") && startTime.isSame(endTime, "minute"))&&arrMess.data[j+1].MessageType==1)
                   {
-                  flag=j+1;
-                 } else break;
+                    flag=j+1;
+                   } else {
+                    break;
+                  }
+                }
+                
               }
-
               listMessage.addClass("list-my-message");
   
-              let formattedTime = moment(message.CreatedAt).format('hh:mm A');
+              let formattedTime = moment(arrMess.data[i].CreatedAt).format('hh:mm A');
               const sendTime=$("<p>").addClass("send-time-my-message").text(formattedTime);
               myMessage.append(sendTime);
               
@@ -291,7 +306,9 @@ function renderMessage(friend,arrMess)
       };
   }
 
+  $('.list-message').scrollTop($('.list-message')[0].scrollHeight);
 }
+
 function filterFriend()
 {
   $('#search-input').on("keyup",function(){
@@ -304,8 +321,3 @@ function filterFriend()
   });
 }
 
-btnSendMessage.click(function(){        
-  getAllMessage.empty();
-  actionSendMessage(customFriend.FriendID,$('.message-input').val());
-  $('.message-input').val('');
-});
