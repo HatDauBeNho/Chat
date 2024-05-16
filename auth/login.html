@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="auth/styleLogin.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+  <div class="main">
+    <div class="left-container">
+      <div class="logo">
+        <img src="auth/images/Logo.png" alt="logo" class="logo-img" />
+      </div>
+      <div class="content">
+        <div class="left-content">
+          <div class="background">
+            <img src="auth/images/background.png" class="background-image">
+            <div class="text">
+              <p class="text1">Đăng nhập để kết nối</p>
+              <p class="text2">
+                Nếu chưa có tài khoản đăng ký tại
+                <a class="redirect-text" href="auth/register.html" id="redirectRegister">đây!</a>
+              </p>
+            </div>
+          </div>
+  
+        </div>
+        <div class="right-content">
+          <img class="right-content-img" src="auth/images/isometric view of colleagues discussing the project.png" alt="">
+        </div>
+      </div>
+    </div>
+  
+    <div class="right-container">
+      <div class="right-container-menu">
+        <select class="btn-language">
+          <option value="vietnames" selected>Tiếng việt</option>
+        </select>
+        <button id="btnLogin" class="btn-login">
+          Đăng nhập
+          <hr class="underline">
+        </button>
+        <button id="btnRegister" class="btn-register" onclick="window.location.href='auth/register.html'">Đăng ký</button>
+      </div>
+      <div class="right-container-auth-form">
+        <form class="form-login" id="login" method="post">
+          <input type="text" name="username" placeholder="Nhập tài khoản" required />
+          <input type="password" name="password" placeholder="Mật khẩu" required />
+          <a class="forgot" href="">Quên mật khẩu ?</a>
+          <input id="btnSubmitLogin" type="submit" value="Đăng nhập" />
+        </form>
+      </div>
+      <div class="right-container-function">
+        <div class="right-container-function-noti">
+          <span class="dash"></span>
+          <p class="noti">Hoặc tiếp tục với</p>
+          <span class="dash"></span>
+        </div>
+        <div class="right-container-function-social">
+          <button class="google">
+            <img src="auth/images/icongoogle.svg" alt="" class="google-img" />
+          </button>
+          <button class="apple">
+            <img src="auth/images/apple.png" alt="" class="apple-image" />
+          </button>
+          <button class="facebook">
+            <img src="auth/images/facebook.png" alt="" class="facebook-img" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+  </div>
+  
+
+</html>
+<script>
+  $(document).ready(function() {
+  const form = $("#login");
+  const btnSubmitLogin = $("#btnSubmitLogin");
+  
+  btnSubmitLogin.on("click", function (e) {
+    e.preventDefault();
+    login(
+      form.find('[name="username"]').val(),
+      form.find('[name="password"]').val()
+    );
+  });
+});
+  function login(Username, Password) {
+    var raw = JSON.stringify({
+      Username: Username,
+      Password: Password,
+    });
+
+    $.ajax({
+      url: "http://10.2.44.52:8888/api/auth/login",
+      method: "POST",
+      contentType: "application/json",
+      data: raw,
+      success: function (result) {
+        localStorage.setItem("token", result.data.token);
+        window.location.href = "/message/listFriend.html";
+      },
+      error: function (error) {
+        console.log("error", error);
+        alert("Tai khoan hoac mat khau khong dung!");
+      }
+    });
+  }
+
+</script>

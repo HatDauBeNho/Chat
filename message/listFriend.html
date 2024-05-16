@@ -11,64 +11,67 @@
   </head>
 
   <body>
-    <div class="left-container">
-      <div class="left-container-header">
-        <div class="dropdown">
-          <button class="btn-dropdown">
-            <img src="images/Vector.png" alt="" class="icon-dropdown" />
-          </button>
-          <div class="item-dropdown">
-            <div class="item-dropdown-userinfor">
-              <img id="avatar" class="avatar" src="" alt="" />
-              <h3 id="fullName"></h3>
+    <div class="main">
+      <div class="left-container">
+        <div class="left-container-header">
+          <div class="dropdown">
+            <button class="btn-dropdown">
+              <img src="images/Vector.png" alt="" class="icon-dropdown" />
+            </button>
+            <div class="item-dropdown">
+              <div class="item-dropdown-userinfor">
+                <img id="avatar" class="avatar" src="" alt="" />
+                <h3 id="fullName"></h3>
+              </div>
+              <a href="">
+                <img src="images/@.png" class="icon-item" />
+                Nhắc đến bạn
+              </a>
+              <a href="">
+                <img src="images/group.png" class="icon-item" />
+                Tạo nhóm
+              </a>
+              <a href="">
+                <img src="images/moon.png" class="icon-item" />
+                Giao diện tối
+              </a>
+              <a id="logout" href="/login.html">
+                <img src="images/user.png" class="icon-item" />
+                Đăng xuất
+              </a>
             </div>
-            <a href="">
-              <img src="images/@.png" class="icon-item" />
-              Nhắc đến bạn
-            </a>
-            <a href="">
-              <img src="images/group.png" class="icon-item" />
-              Tạo nhóm
-            </a>
-            <a href="">
-              <img src="images/moon.png" class="icon-item" />
-              Giao diện tối
-            </a>
-            <a id="logout" href="/login.html">
-              <img src="images/user.png" class="icon-item" />
-              Đăng xuất
-            </a>
+          </div>
+  
+          <div class="search">
+            <img src="images/Shape.png"  class="search-icon" />
+            <input id="search-input" class="search-input" type="text" placeholder="Tìm kiếm" />
           </div>
         </div>
-
-        <div class="search">
-          <img src="images/Shape.png"  class="search-icon" />
-          <input id="search-input" class="search-input" type="text" placeholder="Tìm kiếm" />
+        <div class="left-container-channels">
+          <div id="friends"></div>
         </div>
       </div>
-      <div class="left-container-channels">
-        <div id="friends"></div>
+      <div class="right-container">
+        <div id="getUser"></div>
+        <div class="list-message">
+          <div id="messages"></div>
+        </div>
+        <div id="messageForm" class="message-composer" >
+            <button class="message-composer-add">
+              <img src="/message/images/attach.png" class="add-icon">
+            </button>
+            <div class="message-composer-input">
+              <input type="text" class="message-input" placeholder="Nhập tin nhắn" id="message" name="message">
+              <img src="/message/images/smile.png" class="emo-icon">
+            </div>
+            <button class="message-composer-send" id="btnSendMessage">
+              <img src="/message/images/Send Button.png" class="send-icon">
+            </button>
+  
+        </div>
       </div>
     </div>
-    <div class="right-container">
-      <div id="getUser"></div>
-      <div class="list-message">
-        <div id="messages"></div>
-      </div>
-      <div id="messageForm" class="message-composer" >
-          <button class="message-composer-add">
-            <img src="/message/images/attach.png" class="add-icon">
-          </button>
-          <div class="message-composer-input">
-            <input type="text" class="message-input" placeholder="Nhập tin nhắn" id="message" name="message">
-            <img src="/message/images/smile.png" class="emo-icon">
-          </div>
-          <button class="message-composer-send" id="btnSendMessage">
-            <img src="/message/images/Send Button.png" class="send-icon">
-          </button>
-
-      </div>
-    </div>
+    
 
     <script src="listFriend.js"></script>
   </body>

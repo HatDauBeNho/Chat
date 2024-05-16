@@ -47,6 +47,14 @@ btnSendMessage.click(function()
     actionSendMessage(customFriend.FriendID,$('.message-input').val());
     $('.message-input').val('');
 });
+$(".message-input").keydown(function(event){
+  if(event.keyCode == 13) { 
+      event.preventDefault(); 
+      getAllMessage.empty();
+     actionSendMessage(customFriend.FriendID,$('.message-input').val());
+      $('.message-input').val('');
+  }
+});
 function getUserInfor() {
   $.ajax({
     url: "http://10.2.44.52:8888/api/user/info",

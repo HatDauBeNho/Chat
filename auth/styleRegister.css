@@ -1,12 +1,16 @@
 body {
   display: flex;
   font-family: "Roboto", sans-serif;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
   margin: 0;
   padding: 0;
   background-color: #f6f6f6;
+}
+.main
+{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
 }
 .left-container {
   display: flex;
@@ -40,8 +44,9 @@ body {
 }
 
 .right-container {
-  width: 864px;
-  height: 1080px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1
 }
 .right-container-menu {
   align-items: flex-end;
