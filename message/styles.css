@@ -149,12 +149,17 @@ body {
   flex-direction: column;
   justify-content: center;
 }
+.avatar-user {
+  width: 36px;
+  height: 36px;
+  border-radius: 99.99px;
+  margin: 6px 10px 0 6px;
+}
 .avatar {
   width: 49px;
   height: 49px;
   border-radius: 99.99px;
-  margin-right: 10px;
-  margin-left: 10px;
+  margin: 6px 10px 0 6px;
 }
 .avatar-message {
   width: 36px;

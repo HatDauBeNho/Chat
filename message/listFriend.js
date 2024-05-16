@@ -39,7 +39,7 @@ $(document).on("click", ".left-container-channel", function()
 
 btnLogout.click(function() {
     localStorage.clear();
-    window.location.href = "/login.html";
+    window.location.href = "/auth/login.html";
 });
 btnSendMessage.click(function()
   {        
