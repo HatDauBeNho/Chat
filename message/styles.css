@@ -116,6 +116,22 @@ body {
   height: 72px;
   width: 100%;
 }
+.left-container-channels::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.left-container-channels::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+.left-container-channels::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 4px; 
+}
+
+.left-container-channels::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 .left-container-channel:hover{
   background-color: #f1f1f1;
 }
@@ -194,6 +210,22 @@ body {
   height: calc(100% - 136px);
   overflow-y: auto;
 }
+.list-message::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.list-message::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+.list-message::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 4px; 
+}
+
+.list-message::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 .empty-message-img {
   width: 100%;
   height: 784px;
@@ -267,6 +299,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  padding-right: 5px;
 }
 .my-message {
   padding: 4px 8px 4px 8px;
@@ -275,7 +308,7 @@ body {
   width: fit-content;
   height: 32px;
   margin: 0 0 2px 0;
-
+  
   background-color: #e0f0ff;
   border-radius: 18px 18px 2px 18px;
 }

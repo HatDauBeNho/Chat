@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="user-info">
+        <div class="avatar-container">
+            <img id="avatar" class="avatar" src="" alt="Avatar">
+        </div>
+        <div class="info">
+            <h1 id="fullname" class="fullname"></h1>
+            <label >User name:</label>
+            <p id="username" class="username"></p>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script>
+    const form = document.querySelector('#user-infor');
+    const token = localStorage.getItem('token');
+    const fullname = document.getElementById('fullname');
+    const username = document.getElementById('username');
+    const avatar = document.getElementById('avatar');
+    var myHeaders = new Headers();
+    if (token) {
+        myHeaders.append("Authorization", "Bearer " + token);
+    }
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+    };
+    fetch("http://localhost:8888/api/user/info", requestOptions)
+        .then(response => {
+            return response.json();
+        })
+        .then(result => {
+            console.log('result', result);
+
+            if (result.status == 1) {
+                // Cập nhật thông tin người dùng vào trang web
+                username.textContent = result.data.Username;
+                fullname.textContent = result.data.FullName;
+                avatar.src = 'http://localhost:8888/api/images' + result.data.Avatar;
+            } else {
+                console.error('Error: ' + result.message);
+            }
+        })
+        .catch(error => console.log('error', error));
+
+</script>
