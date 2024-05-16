@@ -7,6 +7,7 @@ const btnLogout = $("#logout");
 const message = $("#message");
 const btnSendMessage = $("#btnSendMessage");
 let customFriend={};
+let arrListFriend=[];
 
 var myHeaders = { Authorization: `Bearer ${token}` };
 
@@ -22,17 +23,15 @@ $(document).ready(function () {
 });
 
 //click ban be
-$(document).on("click", ".left-container-channel", function(event) 
+$(document).on("click", ".left-container-channel", function() 
 {
-    if ($(event.target).hasClass("left-container-channel")) 
-    {
-      const friend = $(event.target).data("friend");
-      getFriendInfor(JSON.parse(friend));
-      $(".list-friend-message").remove();
-      $(".list-my-message").remove();
-      getMessages(JSON.parse(friend));
-      customFriend=JSON.parse(friend);   
-  }
+  let friendid= $(this).attr("id");
+  let friend= arrListFriend.find(({ FriendID }) => FriendID == friendid)
+  getFriendInfor(friend);
+  $(".list-friend-message").remove();
+  $(".list-my-message").remove();
+  getMessages(friend);
+  customFriend=friend;   
   $(".left-container-channel").removeClass("active");
   $(this).addClass("active");
 });
@@ -76,10 +75,10 @@ function getListFriend()
     headers: myHeaders,
     success: function (result) 
     {
+      arrListFriend=result.data;
       result.data.forEach((friend) => 
       {
-        const listItem = $("<div>").addClass("left-container-channel");
-        $(listItem).data('friend', JSON.stringify(friend));
+        const listItem = $("<div>").addClass("left-container-channel").attr("id",friend.FriendID);
 
         const avatar = $("<img>").addClass("avatar");
         let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
@@ -145,7 +144,6 @@ var myHeaders = { Authorization: `Bearer ${token}` };
 function actionSendMessage( FriendID, Content) {
   if (Content!='')
     {
-      console.log("ok");
       var formData = new FormData();
       formData.append("FriendID", FriendID);
       formData.append("Content", Content);
