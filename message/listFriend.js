@@ -27,14 +27,21 @@ $(document).on("click", ".left-container-channel", function()
   let friendid= $(this).attr("id");
   let friend= arrListFriend.find(({ FriendID }) => FriendID == friendid)
   getFriendInfor(friend);
+  customFriend=friend;   
   $(".list-friend-message").remove();
   $(".list-my-message").remove();
-  getMessages(friend);
-  customFriend=friend;   
+  getMessages(customFriend)
   $(".left-container-channel").removeClass("active");
   $(this).addClass("active");
+  
 });
 
+// setTimeout(function() {
+   
+//   getMessages(customFriend)
+//   console.log("lap");
+// }, 2000);
+console.log(customFriend);
 $("#logout").click(function() {
     localStorage.clear();
     window.location.href = "/auth/login.html";
@@ -46,7 +53,6 @@ $("#btnSendMessage").click(function()
         getAllMessage.empty();
         actionSendMessage(customFriend.FriendID,$('.message-input').val());
         $('.message-input').val('');
-
       } 
 });
 $(".message-input").keydown(function(event){
@@ -202,6 +208,7 @@ function actionSendMessage( FriendID, Content,Files) {
 
  
 }
+
 function getMessages(friend)
 {
   $.ajax({
