@@ -3,7 +3,6 @@ const friendsList = $("#friends");
 const getUser = $("#getUser");
 const getAllMessage = $("#messages");
 const messageForm = $("#messageForm");
- 
 const message = $("#message");
 
 let customFriend={};
@@ -42,12 +41,16 @@ $("#logout").click(function() {
 });
 $("#btnSendMessage").click(function()
   {        
-    getAllMessage.empty();
-    actionSendMessage(customFriend.FriendID,$('.message-input').val());
-    $('.message-input').val('');
+    if ($('.message-input').val()!='')
+      {
+        getAllMessage.empty();
+        actionSendMessage(customFriend.FriendID,$('.message-input').val());
+        $('.message-input').val('');
+
+      } 
 });
 $(".message-input").keydown(function(event){
-  if(event.keyCode == 13) { 
+  if(event.keyCode == 13&&$('.message-input').val()!='') { 
       event.preventDefault(); 
       getAllMessage.empty();
      actionSendMessage(customFriend.FriendID,$('.message-input').val());
@@ -57,18 +60,27 @@ $(".message-input").keydown(function(event){
 
 $('#btnChooseFile').click(function() 
 {
-  console.log("Hello");
   $('#fileInput').click();
 });
 
 $('#fileInput').change(function() {
-  var file = this.files[0]; 
+  let file = this.files[0]; 
   if (file) {
-      alert('Bạn đã chọn tệp: ' + file.name);
+      if (confirm('bạn có muốn gửi: ' + file.name))
+        actionSendMessage(customFriend.FriendID,"Gửi file",file);
   }
 });
 
-
+$(document).on("click", ".my-file", function() 
+{
+  let urlFile= $(this).attr("urlFile");
+  downloadFile(urlFile);
+});
+$(document).on("click", ".friend-file", function() 
+{
+  let urlFile= $(this).attr("urlFile");
+  downloadFile(urlFile);
+});
 function getUserInfor() {
   $.ajax({
     url: "http://10.2.44.52:8888/api/user/info",
@@ -163,12 +175,13 @@ function getFriendInfor(friend) {
 }
 var myHeaders = { Authorization: `Bearer ${token}` };
 
-function actionSendMessage( FriendID, Content) {
+function actionSendMessage( FriendID, Content,Files) {
   if (Content!='')
     {
       var formData = new FormData();
       formData.append("FriendID", FriendID);
       formData.append("Content", Content);
+      formData.append("files",Files);
       $.ajax({
         url: "http://10.2.44.52:8888/api/message/send-message",
         type: "POST",
@@ -176,7 +189,9 @@ function actionSendMessage( FriendID, Content) {
         processData: false,
         contentType: false,
         data:formData,
-        success: function(result) {
+        success: function(result) 
+        {
+          console.log(result);
           getMessages(customFriend);
         },
         error: function(error) {
@@ -196,6 +211,7 @@ function getMessages(friend)
     headers: myHeaders, 
     success: function (result) 
     {
+      console.log("get message:",result);
       renderMessage(friend,result);
     },
     error: function (error) {
@@ -224,6 +240,7 @@ function renderMessage(friend,arrMess)
         } 
         else
         {
+
           const listMessage = $("<div>");
           if (arrMess.data[i].MessageType == 0) {
               listMessage.addClass("list-friend-message");
@@ -236,6 +253,16 @@ function renderMessage(friend,arrMess)
 
               for (let j=i;j<arrMess.data.length;j++)
               {
+                if (arrMess.data[j].Files.length>0) 
+                  {
+                    const file=$("<div>").addClass("friend-file").attr("urlFile",arrMess.data[j].Files[0].urlFile);
+                    const fileImage = $("<img>").addClass("file-image").attr("src", "/message/images/file-icon.svg");
+                    const fileName=$("<p>").addClass("file-name").text(arrMess.data[j].Files[0].FileName);
+                    file.append(fileImage);
+                    file.append(fileName);
+                    friendMessage.append(file);
+                  }
+
                 const content = $("<p>").addClass("friend-message").text(arrMess.data[j].Content);
                 friendMessage.append(content);
                   
@@ -244,10 +271,9 @@ function renderMessage(friend,arrMess)
                   let startTime = moment(arrMess.data[j].CreatedAt);
                   let endTime = moment(arrMess.data[j+1].CreatedAt);
                   if (startTime.isSame(endTime, "hour") && startTime.isSame(endTime, "minute")&&arrMess.data[j+1].MessageType==0 )
-                {
-                  flag=j+1;
-  
-                } else break;
+                  {
+                    flag=j+1;
+                  } else break;
                 }
                 
               }
@@ -295,6 +321,20 @@ function renderMessage(friend,arrMess)
 
             for (let j=i;j<arrMess.data.length;j++)
               {
+                if (arrMess.data[j].Files.length>0) 
+                {
+                  const file=$("<div>").addClass("my-file").attr("urlFile",arrMess.data[j].Files[0].urlFile);
+                  const fileImage = $("<img>").addClass("file-image").attr("src", "/message/images/file-icon.svg");
+                  const fileName=$("<p>").addClass("file-name").text(arrMess.data[j].Files[0].FileName);
+                  file.append(fileImage);
+                  file.append(fileName);
+                  myMessage.append(file);
+                }
+                if (arrMess.data[j].Images.length>0)
+                {
+                  const showImage=$("<img>").addClass("show-image").attr("src", "http://10.2.44.52:8888/api"+arrMess.data[j].Images[0].urlImage);
+                  myMessage.append(showImage);
+                }
                 const content = $("<p>").addClass("my-message").text(arrMess.data[j].Content);
                 myMessage.append(content);
                 if (j==arrMess.data.length-1) break;
@@ -338,6 +378,23 @@ function filterFriend()
       var text = $(this).find(".h4content").text().toLowerCase();
       $(this).toggle(text.indexOf(value) > -1);
     });
+  });
+}
+function downloadFile(urlFile)
+{
+  $.ajax({
+    url: "http://10.2.44.52:8888/api" + urlFile,
+    method:"GET",
+    success: function (result) 
+    {
+      var link = document.createElement("a");
+      link.href = "http://10.2.44.52:8888/api" + urlFile;
+      link.target = "_blank"; 
+      link.click();
+    },
+    error: function (error) {
+      console.log("error: ", error);
+    }
   });
 }
 
