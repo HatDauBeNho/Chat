@@ -292,7 +292,7 @@ function renderMessage(friend,arrMess)
           if (arrMess.data[i].MessageType == 0) {
               listMessage.addClass("list-friend-message");
       
-              let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar :"images/defaultavatar.jpg";
+              let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar :"/images/defaultavatar.jpg";
               const avatar = $("<img>").addClass("avatar-message").attr("src", avatarUrl);
               listMessage.append(avatar);
   
