@@ -36,15 +36,14 @@ $(document).on("click", ".left-container-channel", function()
   customFriend=friend;   
   $(".list-friend-message").remove();
   $(".list-my-message").remove();
+  arrStorageMessage.length=0;
+
   getMessages(customFriend)
   $(".left-container-channel").removeClass("active");
   $(this).addClass("active");
   
-  //luu tru tin nhan thanh 1 arr vao client
-  // arrStorageMessage.empty();
-  // getMessages(customFriend).forEach(mess => {
-  // arrStorageMessage.push(mess);
-  // });
+  // luu tru tin nhan thanh 1 arr vao client
+  console.log(arrStorageMessage);
 });
 $("#logout").click(function() {
     localStorage.clear();
@@ -56,10 +55,9 @@ $("#btnSendMessage").click(function()
       {
         // arrStorageMessage.push()
         getAllMessage.empty();   
-        renderMessage(customFriend,arrStorageMessage);    
-        setTimeout(() => {
-          actionSendMessage(customFriend.FriendID,$('.message-input').val());
-        }, 2000);
+        // setTimeout(() => {
+        actionSendMessage(customFriend.FriendID,$('.message-input').val());
+        // }, 2000);
         $('.message-input').val('');
       } 
 });
@@ -259,6 +257,8 @@ function actionSendMessage( FriendID, Content,Files) {
     headers: myHeaders, 
     success: function (result) 
     {
+      arrStorageMessage.push(result.data);
+      console.log(result.data);
       renderMessage(friend,result);
     },
     error: function (error) {
