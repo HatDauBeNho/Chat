@@ -100,14 +100,14 @@ $(document).on("click", ".friend-file", function()
 });
 function getUserInfor() {
   $.ajax({
-    url: "http://localhost:8888/api/user/info",
+    url: "http://10.2.44.52:8888/api/user/info",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
     success: function (result) {
       if (result.status == 1) {
         $("#fullName").text(result.data.FullName);
-        let avatarUrl = result.data.Avatar ? "http://localhost:8888/api/images" + result.data.Avatar : "/message/images/defaultavatar.jpg";
+        let avatarUrl = result.data.Avatar ? "http://10.2.44.52:8888/api/images" + result.data.Avatar : "/message/images/defaultavatar.jpg";
         $("#avatar").attr("src", avatarUrl);
       } else console.log("loi: ", result.message);
     },
@@ -123,7 +123,7 @@ function getListFriend()
 {
   //lấy danh sách bạn bè
   $.ajax({
-    url: "http://localhost:8888/api/message/list-friend",
+    url: "http://10.2.44.52:8888/api/message/list-friend",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
@@ -135,7 +135,7 @@ function getListFriend()
         const listItem = $("<div>").addClass("left-container-channel").attr("id",friend.FriendID);
 
         const avatar = $("<img>").addClass("avatar");
-        let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+        let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
         avatar.attr("src", avatarUrl);
         listItem.append(avatar);
 
@@ -167,7 +167,7 @@ function getFriendInfor(friend) {
   const userInfor = $(".right-container-header");
   if (userInfor.length > 0) 
     {
-      let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+      let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
       userInfor.find(".right-friend-avatar").attr("src", avatarUrl);
       userInfor.find(".right-friend-username").text(friend.FullName);
       if (friend.isOnline) $(".status-icon").show()
@@ -180,7 +180,7 @@ function getFriendInfor(friend) {
     const avatarContainer = $("<div>").addClass("avatar-container");
     const statusIcon = $("<img>").addClass("status-icon").attr("src", "/message/images/Online.png");
     
-    let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+    let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
     const avatar = $("<img>").addClass("right-friend-avatar").attr("src", avatarUrl);
     avatarContainer.append(statusIcon );
     avatarContainer.append(avatar);
@@ -214,7 +214,7 @@ function actionSendMessage( FriendID, Content,Files) {
       formData.append("Content", Content);
       formData.append("files",Files);
       $.ajax({
-        url: "http://localhost:8888/api/message/send-message",
+        url: "http://10.2.44.52:8888/api/message/send-message",
         type: "POST",
         headers: myHeaders,
         processData: false,
@@ -239,7 +239,7 @@ function actionSendMessage( FriendID, Content,Files) {
 async function getMessages(friend)
 {
   $.ajax({
-    url: "http://localhost:8888/api/message/get-message?FriendID=" + friend.FriendID,
+    url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
     method:"GET",
     contentType: "application/json",
     headers: myHeaders, 
@@ -279,7 +279,7 @@ function renderMessage(friend,arrMess)
           if (arrMess.data[i].MessageType == 0) {
               listMessage.addClass("list-friend-message");
       
-              let avatarUrl = friend.Avatar ? "http://localhost:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+              let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
               const avatar = $("<img>").addClass("avatar-message").attr("src", avatarUrl);
               listMessage.append(avatar);
   
@@ -366,7 +366,7 @@ function renderMessage(friend,arrMess)
                 }
                 if (arrMess.data[j].Images.length>0)
                 {
-                  const showImage=$("<img>").addClass("show-image").attr("src", "http://localhost:8888/api"+arrMess.data[j].Images[0].urlImage);
+                  const showImage=$("<img>").addClass("show-image").attr("src", "http://10.2.44.52:8888/api"+arrMess.data[j].Images[0].urlImage);
                   myMessage.append(showImage);
                 }
                 const content = $("<p>").addClass("my-message").text(arrMess.data[j].Content);
@@ -421,12 +421,12 @@ function filterFriend()
 function downloadFile(urlFile)
 {
   $.ajax({
-    url: "http://localhost:8888/api" + urlFile,
+    url: "http://10.2.44.52:8888/api" + urlFile,
     method:"GET",
     success: function (result) 
     {
       var link = document.createElement("a");
-      link.href = "http://localhost:8888/api" + urlFile;
+      link.href = "http://10.2.44.52:8888/api" + urlFile;
       link.target = "_blank"; 
       link.click();
     },
