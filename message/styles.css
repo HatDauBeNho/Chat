@@ -373,13 +373,17 @@ body {
 .list-emo{
   position: absolute;
   display: none;
-  width: 480px;
-  height: 190px;
+  width: 370px;
+  height: fit-content;
   bottom: 30px;
   right: 30px;
   background-color: #dbdde1;
 }
-.emo-icon
+.emo-icon{
+  cursor: pointer;
+  font-size: 24px;
+}
+.send-emo-icon
 {
   padding-right: 10px;
   cursor: pointer;
