@@ -24,7 +24,9 @@ $(document).ready(function () {
   }
   
 });
-
+setInterval(function() {
+  getMessages(customFriend);
+}, 10000);
 //click ban be
 $(document).on("click", ".left-container-channel", function() 
 {
@@ -44,11 +46,6 @@ $(document).on("click", ".left-container-channel", function()
   arrStorageMessage.push(mess);
   });
 });
-
-setInterval(function() {
-  getMessages(customFriend);
-}, 10000);
-console.log(customFriend);
 $("#logout").click(function() {
     localStorage.clear();
     window.location.href = "/auth/login.html";
@@ -149,7 +146,7 @@ function getListFriend()
         const listItem = $("<div>").addClass("left-container-channel").attr("id",friend.FriendID);
 
         const avatar = $("<img>").addClass("avatar");
-        let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+        let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/images/defaultavatar.jpg";
         avatar.attr("src", avatarUrl);
         listItem.append(avatar);
 
@@ -181,7 +178,7 @@ function getFriendInfor(friend) {
   const userInfor = $(".right-container-header");
   if (userInfor.length > 0) 
     {
-      let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+      let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/images/defaultavatar.jpg";
       userInfor.find(".right-friend-avatar").attr("src", avatarUrl);
       userInfor.find(".right-friend-username").text(friend.FullName);
       if (friend.isOnline) $(".status-icon").show()
@@ -192,9 +189,9 @@ function getFriendInfor(friend) {
     const userInfor = $("<div>").addClass("right-container-header");
 
     const avatarContainer = $("<div>").addClass("avatar-container");
-    const statusIcon = $("<img>").addClass("status-icon").attr("src", "/message/images/Online.png");
+    const statusIcon = $("<img>").addClass("status-icon").attr("src", "/images/Online.png");
     
-    let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+    let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/images/defaultavatar.jpg";
     const avatar = $("<img>").addClass("right-friend-avatar").attr("src", avatarUrl);
     avatarContainer.append(statusIcon );
     avatarContainer.append(avatar);
@@ -276,7 +273,7 @@ function renderMessage(friend,arrMess)
   if (arrMess.data.length==0)
     {
     const listMessage = $("<div>");
-    const emptyMessage=$("<img>").addClass("empty-message-img").attr("src", "/message/images/empty-list-message.png");
+    const emptyMessage=$("<img>").addClass("empty-message-img").attr("src", "/images/empty-list-message.png");
     listMessage.append(emptyMessage);
     getAllMessage.append(listMessage);
   }   
@@ -295,7 +292,7 @@ function renderMessage(friend,arrMess)
           if (arrMess.data[i].MessageType == 0) {
               listMessage.addClass("list-friend-message");
       
-              let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar : "/message/images/defaultavatar.jpg";
+              let avatarUrl = friend.Avatar ? "http://10.2.44.52:8888/api/images" + friend.Avatar :"images/defaultavatar.jpg";
               const avatar = $("<img>").addClass("avatar-message").attr("src", avatarUrl);
               listMessage.append(avatar);
   
@@ -306,7 +303,7 @@ function renderMessage(friend,arrMess)
                 if (arrMess.data[j].Files.length>0) 
                   {
                     const file=$("<div>").addClass("friend-file").attr("urlFile",arrMess.data[j].Files[0].urlFile);
-                    const fileImage = $("<img>").addClass("file-image").attr("src", "/message/images/file-icon.svg");
+                    const fileImage = $("<img>").addClass("file-image").attr("src", "/images/file-icon.svg");
                     const fileName=$("<p>").addClass("file-name").text(arrMess.data[j].Files[0].FileName);
                     file.append(fileImage);
                     file.append(fileName);
@@ -337,13 +334,13 @@ function renderMessage(friend,arrMess)
               const func=$("<div>").addClass("function");
   
               const btnReaction=$("<button>").addClass("btn-reaction");
-              const reactionImg = $("<img>").addClass("reaction-img").attr("src", "/message/images/reaction.png");
+              const reactionImg = $("<img>").addClass("reaction-img").attr("src", "/images/reaction.png");
               btnReaction.append(reactionImg);
               func.append(btnReaction);
   
   
               const btnFunction=$("<button>").addClass("btn-function");
-              const functionImg = $("<img>").addClass("function-img").attr("src", "/message/images/Menu.png");
+              const functionImg = $("<img>").addClass("function-img").attr("src", "/images/Menu.png");
               btnFunction.append(functionImg);
               func.append(btnFunction);
   
@@ -355,7 +352,7 @@ function renderMessage(friend,arrMess)
             const func=$("<div>").addClass("function");
   
             const btnReaction=$("<button>").addClass("btn-reaction");
-            const reactionImg = $("<img>").addClass("reaction-img").attr("src", "/message/images/reaction.png");
+            const reactionImg = $("<img>").addClass("reaction-img").attr("src", "/images/reaction.png");
             btnReaction.append(reactionImg);
             func.append(btnReaction);
   
@@ -363,7 +360,7 @@ function renderMessage(friend,arrMess)
   
   
             const btnFunction=$("<button>").addClass("btn-function");
-            const functionImg = $("<img>").addClass("function-img").attr("src", "/message/images/Menu.png");
+            const functionImg = $("<img>").addClass("function-img").attr("src", "/images/Menu.png");
             btnFunction.append(functionImg);
             func.append(btnFunction);
   
@@ -376,7 +373,7 @@ function renderMessage(friend,arrMess)
                 if (arrMess.data[j].Files.length>0) 
                 {
                   const file=$("<div>").addClass("my-file").attr("urlFile",arrMess.data[j].Files[0].urlFile);
-                  const fileImage = $("<img>").addClass("file-image").attr("src", "/message/images/file-icon.svg");
+                  const fileImage = $("<img>").addClass("file-image").attr("src", "/images/file-icon.svg");
                   const fileName=$("<p>").addClass("file-name").text(arrMess.data[j].Files[0].FileName);
                   file.append(fileImage);
                   file.append(fileName);
@@ -406,7 +403,7 @@ function renderMessage(friend,arrMess)
   
               let formattedTime = moment(arrMess.data[i].CreatedAt).format('hh:mm A');
               const check=$("<div>").addClass("check");
-              const checkIcon=$("<img>").addClass("check-icon").attr("src","/message/images/Check all.png")
+              const checkIcon=$("<img>").addClass("check-icon").attr("src","/images/Check all.png")
               const sendTime=$("<p>").addClass("send-time-my-message").text(formattedTime);
               check.append(checkIcon);
               check.append(sendTime);

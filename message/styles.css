@@ -479,3 +479,6 @@ body {
   border-radius: 16px 16px 2px 16px;
 
 }
+.my-messages.active{
+  background-color: rgb(250, 145, 145);
+}
