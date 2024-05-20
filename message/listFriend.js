@@ -5,7 +5,7 @@ const getAllMessage = $("#messages");
 const messageForm = $("#messageForm");
 const message = $("#message");
 let messageError='';
-let check=false;
+let checkStatus=false;
 let listIcon = [
   "😀",
   "😃",
@@ -113,14 +113,13 @@ $(".message-input").keydown(async function (event) {
   {
     event.preventDefault();
     getAllMessage.empty();
-    statusMessage($(".message-input").val());
+    let input=$(".message-input").val()
+    statusMessage(input);
     let result = { status: 0, data: arrStorageMessage, message: "" };
-    actionSendMessage(customFriend.FriendID, $(".message-input").val());
-    console.log(check);
     renderMessage(customFriend, result);
-   
     $(".message-input").val('');
-
+    await actionSendMessage(customFriend.FriendID,input);
+    renderMessage(customFriend, result);
   }
 });
 
@@ -159,7 +158,7 @@ function statusFile(file)
   });
   let result = { status: 1, data: arrStorageMessage, message: "" };
   renderMessage(customFriend, result);
-  actionSendMessage(customFriend.FriendID,'gửi file',file);
+  actionSendMessage(customFriend.FriendID,'Gửi file',file);
   $(".message-input").val("");
 }
 reversedIcons.forEach(function (icon) {
@@ -302,24 +301,24 @@ function getFriendInfor(friend) {
   }
 }
 
-function actionSendMessage(FriendID, Content, Files) {
+async function actionSendMessage(FriendID, Content, Files) {
   if (Content != "") {
     let formData = new FormData();
     formData.append("FriendID", FriendID);
     formData.append("Content", Content);
     formData.append("files", Files);
-    $.ajax({
-      url: "http://10.2.44.52:8888/api/message/send-message",
+  await   $.ajax({
+      url: "http://10.2.44.52:8888/api/message/send-message1",
       type: "POST",
       headers: myHeaders,
       processData: false,
       contentType: false,
       data: formData,
       success: function (result) {
-        console.log(result);
+        checkStatus=true;
       },
       error: function (error) {
-        console.log("error:",error);
+        checkStatus=false;
       },
     });
   }
@@ -517,11 +516,20 @@ function renderMessage(friend, arrMess) {
           );
           if (formattedTime == "Invalid date") {
             const check = $("<div>").addClass("check");
-            const sendTime = $("<p>")
-              .addClass("send-time-my-message")
-              .text("Đang gửi");
+            const sendTime = $("<p>").addClass("send-time-my-message").text("Đang gửi");
+            console.log(checkStatus);
+            if (!checkStatus)
+              {
+                setTimeout(function() {
+                  sendTime.text("Gửi lỗi");
+                  sendTime.addClass("active");
+              }, 3000); 
+                  
+              }
             check.append(sendTime);
             myMessage.append(check);
+           
+              
           } else {
             const check = $("<div>").addClass("check");
             const checkIcon = $("<img>")

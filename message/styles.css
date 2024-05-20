@@ -482,3 +482,6 @@ body {
 .my-messages.active{
   background-color: rgb(250, 145, 145);
 }
+.send-time-my-message.active{
+  color: red ;
+}
