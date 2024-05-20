@@ -87,11 +87,11 @@ $(document).on("click", ".left-container-channel", function () {
   customFriend = friend;
   $(".list-friend-message").remove();
   $(".list-my-message").remove();
-  arrStorageMessage.length = 0;
 
   getMessages(customFriend);
   $(".left-container-channel").removeClass("active");
   $(this).addClass("active");
+  arrStorageMessage.length=0;
 });
 $("#logout").click(function () {
   localStorage.clear();
@@ -101,14 +101,21 @@ $("#btnSendMessage").click(function () {
   if ($(".message-input").val() != "") {
     getAllMessage.empty();
     statusMessage($(".message-input").val());
+    actionSendMessage(customFriend.FriendID, $(".message-input").val());
+    $(".message-input").val()='';
   }
 });
 
 $(".message-input").keydown(function (event) {
-  if (event.keyCode == 13 && $(".message-input").val() != "") {
+  if (event.keyCode == 13 && $(".message-input").val() != "") 
+  {
     event.preventDefault();
     getAllMessage.empty();
     statusMessage($(".message-input").val());
+    actionSendMessage(customFriend.FriendID, $(".message-input").val());
+    $(".message-input").val('');
+
+
   }
 });
 
@@ -135,8 +142,6 @@ function statusMessage(mess) {
   });
   let result = { status: 1, data: arrStorageMessage, message: "" };
   renderMessage(customFriend, result);
-  actionSendMessage(customFriend.FriendID, $(".message-input").val());
-  $(".message-input").val("");
 }
 function statusFile(file)
 {
