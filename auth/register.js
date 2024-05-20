@@ -1,4 +1,3 @@
- //btn dang ky
  $(document).ready(function(){
     const form=$("#register");
     const btnSubmitRegister=$("#btnSubmitRegister");
@@ -16,6 +15,21 @@
           );
     }
       
+    });
+    $(".clean-input").click(function () {
+      $("#username").val('');
+    });
+    $(".clean-input").click(function () {
+      $("#fullname").val('');
+    });
+    $(".show-password").click(function () {
+      var passwordField = $("#password");
+      var passwordFieldType = passwordField.attr("type");
+      if (passwordFieldType == "password") {
+        passwordField.attr("type", "text");
+      } else {
+        passwordField.attr("type", "password");
+      }
     });
   });
   function register(FullName,Username,Password)

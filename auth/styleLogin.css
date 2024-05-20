@@ -168,16 +168,25 @@ body {
   background-color: #ffffff;
 }
 /* Thiết lập các thuộc tính cho input */
-.passsword-container{
+.password-container{
   position: relative;
-  z-index: 1;
 }
 .show-password{
   position: absolute;
   top: 35px;
   right: 25.81px;
   cursor: pointer;
-  z-index: 2;
+}
+.username-container
+{
+  position: relative;
+}
+.clean-input
+{
+  position: absolute;
+  top: 35px;
+  right: 25.81px;
+  cursor: pointer;
 }
 
 input[type="text"],

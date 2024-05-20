@@ -4,9 +4,13 @@ const getUser = $("#getUser");
 const getAllMessage = $("#messages");
 const messageForm = $("#messageForm");
 const message = $("#message");
+let listIcon = ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😶', '😏', '😒', '🙄', '😬', '😮‍💨', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶'];
+const reversedIcons = listIcon.reverse();
 
 let customFriend={};
 let arrListFriend=[];
+let arrStorageMessage=[];
+
 
 var myHeaders = { Authorization: `Bearer ${token}` };
 
@@ -34,6 +38,11 @@ $(document).on("click", ".left-container-channel", function()
   $(".left-container-channel").removeClass("active");
   $(this).addClass("active");
   
+  //luu tru tin nhan vao client
+  arrStorageMessage.empty();
+  getMessages(customFriend).forEach(mess => {
+  arrStorageMessage.push(mess);
+  });
 });
 
 setInterval(function() {
@@ -48,8 +57,12 @@ $("#btnSendMessage").click(function()
   {        
     if ($('.message-input').val()!='')
       {
-        getAllMessage.empty();
-        actionSendMessage(customFriend.FriendID,$('.message-input').val());
+        arrStorageMessage.push()
+        getAllMessage.empty();   
+        renderMessage(customFriend,arrStorageMessage);    
+        setTimeout(() => {
+          actionSendMessage(customFriend.FriendID,$('.message-input').val());
+        }, 2000);
         $('.message-input').val('');
       } 
 });
@@ -74,8 +87,7 @@ $('#fileInput').change(function() {
         actionSendMessage(customFriend.FriendID,"Gửi file",file);
   }
 });
-let listIcon = ['😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃', '😉', '😊', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '🤐', '🤨', '😐', '😑', '😶', '😶', '😏', '😒', '🙄', '😬', '😮‍💨', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮', '🤧', '🥵', '🥶'];
-const reversedIcons = listIcon.reverse();
+
           reversedIcons.forEach(function(icon) {
               $('.list-emo').append(
                   $('<div>').addClass('emo-icon').text(icon).click(function() {
@@ -225,10 +237,13 @@ function actionSendMessage( FriendID, Content,Files) {
         success: function(result) 
         {
           console.log(result);
+          // messageStatus=true;
           getMessages(customFriend);
         },
         error: function(error) {
           console.error("Error:", error);
+          // messageStatus=false;
+
         }
       });
     }else  getMessages(customFriend);
@@ -238,7 +253,7 @@ function actionSendMessage( FriendID, Content,Files) {
 
 
 
-async function getMessages(friend)
+ function getMessages(friend)
 {
   $.ajax({
     url: "http://10.2.44.52:8888/api/message/get-message?FriendID=" + friend.FriendID,
@@ -247,7 +262,6 @@ async function getMessages(friend)
     headers: myHeaders, 
     success: function (result) 
     {
-      console.log("get message:",result);
       renderMessage(friend,result);
     },
     error: function (error) {
@@ -354,7 +368,9 @@ function renderMessage(friend,arrMess)
             func.append(btnFunction);
   
             const myMessage=$("<div>").addClass("my-messages");
-
+            // if (!messageStatus)   $(".my-messages").addClassClass("active");
+            // else $(".my-messages").removeClass("active");
+ 
             for (let j=i;j<arrMess.data.length;j++)
               {
                 if (arrMess.data[j].Files.length>0) 

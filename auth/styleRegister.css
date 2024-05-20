@@ -67,6 +67,8 @@ body {
 .form-register {
   display: flex;
   flex-direction: column;
+  position: relative;
+
 }
 .form-register-line {
   display: flex;
@@ -94,6 +96,26 @@ body {
 }
 
 /* Thiết lập các thuộc tính cho input */
+.password-container{
+  position: relative;
+}
+.show-password{
+  position: absolute;
+  top: 23px;
+  right: 25.81px;
+  cursor: pointer;
+}
+.username-container
+{
+  position: relative;
+}
+.clean-input
+{
+  position: absolute;
+  top: 23px;
+  right: 25.81px;
+  cursor: pointer;
+}
 input[type="text"],
 input[type="password"] {
   width: 400px;
@@ -103,6 +125,7 @@ input[type="password"] {
   border-radius: 10px;
   box-sizing: border-box;
   background-color: #eaf0f7;
+  outline: none;
 
   font-size: 18px;
   font-weight: 500;
@@ -180,8 +203,8 @@ input[type="submit"] {
   position: absolute;
   width: 290px;
   height: 63px;
-  left: 1321px;
-  top: 722px;
+  left: 270px;
+  bottom: -120px;
 
   font-size: 23px;
   font-weight: 400;

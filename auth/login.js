@@ -9,15 +9,18 @@ $(document).ready(function () {
       form.find('[name="password"]').val()
     );
   });
-  $('.show-password').click(function() {
-    var passwordField = $('#password');
-    var passwordFieldType = passwordField.attr('type');
-    if (passwordFieldType == 'password') {
-        passwordField.attr('type', 'text');
+  $(".clean-input").click(function () {
+    $("#username").val('');
+  });
+  $(".show-password").click(function () {
+    var passwordField = $("#password");
+    var passwordFieldType = passwordField.attr("type");
+    if (passwordFieldType == "password") {
+      passwordField.attr("type", "text");
     } else {
-        passwordField.attr('type', 'password');
+      passwordField.attr("type", "password");
     }
-});
+  });
 });
 function login(Username, Password) {
   var raw = JSON.stringify({

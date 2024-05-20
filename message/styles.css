@@ -1,6 +1,5 @@
 body {
   font-family: "Roboto", sans-serif;
-  
   margin: 0;
   padding: 0;
   background-color: #ffffff;
@@ -349,16 +348,29 @@ body {
   display: flex;
   width: 100%;
   height: 56px;
+  align-items: center;
 }
 .message-composer-input {
   display: flex;
   align-items: center;
   justify-content: center;
   width: calc(100% - 64px);
-  height: 40px;
+  height: auto;
+  min-height: 40px;
   border-radius: 20px;
   border: 1px solid #dbdde1;
   margin-left: 10px;
+}
+.message-input {
+  width: calc(100% - 32px);
+  height: 20px;
+  outline: none;
+  border: none;
+  padding-left: 20px;
+  font-size: 16px;
+
+  /* overflow: hidden;
+  resize: none; */
 }
 .message-composer-emo {
   border: none;
@@ -394,13 +406,7 @@ body {
   flex-wrap: wrap-reverse;
 
 }
-.message-input {
-  width: calc(100% - 32px);
-  height: 20px;
-  outline: none;
-  border: none;
-  padding-left: 20px;
-}
+
 
 .message-composer-add {
   display: flex;
