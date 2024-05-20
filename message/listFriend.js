@@ -118,7 +118,7 @@ function getUserInfor() {
     success: function (result) {
       if (result.status == 1) {
         $("#fullName").text(result.data.FullName);
-        let avatarUrl = result.data.Avatar ? "http://10.2.44.52:8888/api/images" + result.data.Avatar : "/message/images/defaultavatar.jpg";
+        let avatarUrl = result.data.Avatar ? "http://10.2.44.52:8888/api/images" + result.data.Avatar : "/images/defaultavatar.jpg";
         $("#avatar").attr("src", avatarUrl);
       } else console.log("loi: ", result.message);
     },
