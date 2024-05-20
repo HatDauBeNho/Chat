@@ -41,10 +41,10 @@ $(document).on("click", ".left-container-channel", function()
   $(this).addClass("active");
   
   //luu tru tin nhan thanh 1 arr vao client
-  arrStorageMessage.empty();
-  getMessages(customFriend).forEach(mess => {
-  arrStorageMessage.push(mess);
-  });
+  // arrStorageMessage.empty();
+  // getMessages(customFriend).forEach(mess => {
+  // arrStorageMessage.push(mess);
+  // });
 });
 $("#logout").click(function() {
     localStorage.clear();
@@ -54,7 +54,7 @@ $("#btnSendMessage").click(function()
   {        
     if ($('.message-input').val()!='')
       {
-        arrStorageMessage.push()
+        // arrStorageMessage.push()
         getAllMessage.empty();   
         renderMessage(customFriend,arrStorageMessage);    
         setTimeout(() => {
@@ -309,7 +309,11 @@ function renderMessage(friend,arrMess)
                     file.append(fileName);
                     friendMessage.append(file);
                   }
-
+                  if (arrMess.data[j].Images.length>0)
+                    {
+                      const showImage=$("<img>").addClass("show-image").attr("src", "http://10.2.44.52:8888/api"+arrMess.data[j].Images[0].urlImage);
+                      friendMessage.append(showImage);
+                    }
                 const content = $("<p>").addClass("friend-message").text(arrMess.data[j].Content);
                 friendMessage.append(content);
                   
