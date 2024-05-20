@@ -40,7 +40,7 @@ $(document).on("click", ".left-container-channel", function()
   $(".left-container-channel").removeClass("active");
   $(this).addClass("active");
   
-  //luu tru tin nhan vao client
+  //luu tru tin nhan thanh 1 arr vao client
   arrStorageMessage.empty();
   getMessages(customFriend).forEach(mess => {
   arrStorageMessage.push(mess);
