@@ -4,6 +4,8 @@ const getUser = $("#getUser");
 const getAllMessage = $("#messages");
 const messageForm = $("#messageForm");
 const message = $("#message");
+let messageError='';
+let check=false;
 let listIcon = [
   "😀",
   "😃",
@@ -106,15 +108,18 @@ $("#btnSendMessage").click(function () {
   }
 });
 
-$(".message-input").keydown(function (event) {
+$(".message-input").keydown(async function (event) {
   if (event.keyCode == 13 && $(".message-input").val() != "") 
   {
     event.preventDefault();
     getAllMessage.empty();
     statusMessage($(".message-input").val());
+    let result = { status: 0, data: arrStorageMessage, message: "" };
     actionSendMessage(customFriend.FriendID, $(".message-input").val());
+    console.log(check);
+    renderMessage(customFriend, result);
+   
     $(".message-input").val('');
-
 
   }
 });
@@ -140,8 +145,6 @@ function statusMessage(mess) {
     CreatedAt: "",
     MessageType: 1,
   });
-  let result = { status: 1, data: arrStorageMessage, message: "" };
-  renderMessage(customFriend, result);
 }
 function statusFile(file)
 {
@@ -301,7 +304,7 @@ function getFriendInfor(friend) {
 
 function actionSendMessage(FriendID, Content, Files) {
   if (Content != "") {
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append("FriendID", FriendID);
     formData.append("Content", Content);
     formData.append("files", Files);
@@ -312,12 +315,14 @@ function actionSendMessage(FriendID, Content, Files) {
       processData: false,
       contentType: false,
       data: formData,
-      success: function (result) {},
+      success: function (result) {
+        console.log(result);
+      },
       error: function (error) {
-        console.error("Error:", error);
+        console.log("error:",error);
       },
     });
-  } else getMessages(customFriend);
+  }
 }
 
 function getMessages(friend) {
