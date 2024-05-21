@@ -4,8 +4,8 @@ const getUser = $("#getUser");
 const getAllMessage = $("#messages");
 const messageForm = $("#messageForm");
 const message = $("#message");
-let messageError='';
-let checkStatus=false;
+let messageError = "";
+let checkStatus = false;
 let listIcon = [
   "😀",
   "😃",
@@ -93,7 +93,7 @@ $(document).on("click", ".left-container-channel", function () {
   getMessages(customFriend);
   $(".left-container-channel").removeClass("active");
   $(this).addClass("active");
-  arrStorageMessage.length=0;
+  arrStorageMessage.length = 0;
 });
 $("#logout").click(function () {
   localStorage.clear();
@@ -102,27 +102,26 @@ $("#logout").click(function () {
 $("#btnSendMessage").click(async function () {
   if ($(".message-input").val() != "") {
     getAllMessage.empty();
-    let input=$(".message-input").val() 
+    let input = $(".message-input").val();
     statusMessage(input);
     let result = { status: 0, data: arrStorageMessage, message: "" };
     renderMessage(customFriend, result);
-    $(".message-input").val('');
-    await actionSendMessage(customFriend.FriendID,input);
+    $(".message-input").val("");
+    await actionSendMessage(customFriend.FriendID, input);
     renderMessage(customFriend, result);
   }
 });
 
 $(".message-input").keydown(async function (event) {
-  if (event.keyCode == 13 && $(".message-input").val() != "") 
-  {
+  if (event.keyCode == 13 && $(".message-input").val() != "") {
     event.preventDefault();
     getAllMessage.empty();
-    let input=$(".message-input").val()
+    let input = $(".message-input").val();
     statusMessage(input);
     let result = { status: 0, data: arrStorageMessage, message: "" };
     renderMessage(customFriend, result);
-    $(".message-input").val('');
-    await actionSendMessage(customFriend.FriendID,input);
+    $(".message-input").val("");
+    await actionSendMessage(customFriend.FriendID, input);
     renderMessage(customFriend, result);
   }
 });
@@ -131,11 +130,17 @@ $("#btnChooseFile").click(function () {
   $("#fileInput").click();
 });
 
-$("#fileInput").change(function () {
+$("#fileInput").change(async function () {
   let file = this.files[0];
   if (file) {
-    if (confirm("bạn có muốn gửi: " + file.name))
-        statusFile(file);
+    if (confirm("bạn có muốn gửi: " + file.name)) {
+      let input = file;
+      statusFile(input);
+      let result = { status: 0, data: arrStorageMessage, message: "" };
+      renderMessage(customFriend, result);
+      await actionSendMessage(customFriend.FriendID, "Gửi file", input);
+      renderMessage(customFriend, result);
+    }
   }
 });
 function statusMessage(mess) {
@@ -149,8 +154,7 @@ function statusMessage(mess) {
     MessageType: 1,
   });
 }
-function statusFile(file)
-{
+function statusFile(file) {
   arrStorageMessage.push({
     id: "",
     Content: "Gửi file",
@@ -160,10 +164,6 @@ function statusFile(file)
     CreatedAt: "",
     MessageType: 1,
   });
-  let result = { status: 1, data: arrStorageMessage, message: "" };
-  renderMessage(customFriend, result);
-  actionSendMessage(customFriend.FriendID,'Gửi file',file);
-  $(".message-input").val("");
 }
 reversedIcons.forEach(function (icon) {
   $(".list-emo").append(
@@ -311,7 +311,7 @@ async function actionSendMessage(FriendID, Content, Files) {
     formData.append("FriendID", FriendID);
     formData.append("Content", Content);
     formData.append("files", Files);
-  await   $.ajax({
+    await $.ajax({
       url: "http://10.2.44.52:8888/api/message/send-message",
       type: "POST",
       headers: myHeaders,
@@ -319,10 +319,10 @@ async function actionSendMessage(FriendID, Content, Files) {
       contentType: false,
       data: formData,
       success: function (result) {
-        checkStatus=true;
+        checkStatus = true;
       },
       error: function (error) {
-        checkStatus=false;
+        checkStatus = false;
       },
     });
   }
@@ -520,20 +520,18 @@ function renderMessage(friend, arrMess) {
           );
           if (formattedTime == "Invalid date") {
             const check = $("<div>").addClass("check");
-            const sendTime = $("<p>").addClass("send-time-my-message").text("Đang gửi");
+            const sendTime = $("<p>")
+              .addClass("send-time-my-message")
+              .text("Đang gửi");
             console.log(checkStatus);
-            if (!checkStatus)
-              {
-                setTimeout(function() {
-                  sendTime.text("Gửi lỗi");
-                  sendTime.addClass("active");
-              }, 2000); 
-                  
-              }
+            if (!checkStatus) {
+              setTimeout(function () {
+                sendTime.text("Gửi lỗi");
+                sendTime.addClass("active");
+              }, 2000);
+            }
             check.append(sendTime);
             myMessage.append(check);
-           
-              
           } else {
             const check = $("<div>").addClass("check");
             const checkIcon = $("<img>")
