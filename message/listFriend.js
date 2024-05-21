@@ -99,12 +99,16 @@ $("#logout").click(function () {
   localStorage.clear();
   window.location.href = "/auth/login.html";
 });
-$("#btnSendMessage").click(function () {
+$("#btnSendMessage").click(async function () {
   if ($(".message-input").val() != "") {
     getAllMessage.empty();
-    statusMessage($(".message-input").val());
-    actionSendMessage(customFriend.FriendID, $(".message-input").val());
-    $(".message-input").val()='';
+    let input=$(".message-input").val() 
+    statusMessage(input);
+    let result = { status: 0, data: arrStorageMessage, message: "" };
+    renderMessage(customFriend, result);
+    $(".message-input").val('');
+    await actionSendMessage(customFriend.FriendID,input);
+    renderMessage(customFriend, result);
   }
 });
 
@@ -523,7 +527,7 @@ function renderMessage(friend, arrMess) {
                 setTimeout(function() {
                   sendTime.text("Gửi lỗi");
                   sendTime.addClass("active");
-              }, 3000); 
+              }, 2000); 
                   
               }
             check.append(sendTime);
