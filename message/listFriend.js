@@ -4,7 +4,7 @@ const getUser = $("#getUser");
 const getAllMessage = $("#messages");
 const messageForm = $("#messageForm");
 const message = $("#message");
-const domain="http://10.2.44.52:8888/api";
+const domain="http://localhost:8888/api";
 let messageError = "";
 let checkStatus = false;
 let listIcon = [
@@ -142,7 +142,7 @@ $("#fileInput").change(async function () {
       statusFile(input);
       let result = { status: 0, data: arrStorageMessage, message: "" };
       renderMessage(customFriend, result);
-      await actionSendMessage(customFriend.FriendID, "Gửi file", input);
+      await actionSendMessage(customFriend.FriendID, "", input);
       renderMessage(customFriend, result);
     }
   }
@@ -161,7 +161,7 @@ function statusMessage(mess) {
 function statusFile(file) {
   arrStorageMessage.push({
     id: "",
-    Content: "Gửi file",
+    Content: "",
     Files: [file],
     Images: [],
     isSend: 0,
@@ -196,7 +196,7 @@ $(document).on("click", ".friend-file", function () {
 
 function getUserInfor() {
   $.ajax({
-    url: "http://10.2.44.52:8888/api/user/info",
+    url: domain+ "/user/info",
     method: "GET",
     contentType: "application/json",
     headers: myHeaders,
@@ -204,7 +204,7 @@ function getUserInfor() {
       if (result.status == 1) {
         $("#fullName").text(result.data.FullName);
         let avatarUrl = result.data.Avatar
-          ? "http://10.2.44.52:8888/api/images" + result.data.Avatar
+          ? domain+"/images" + result.data.Avatar
           : "/images/defaultavatar.jpg";
         $("#avatar").attr("src", avatarUrl);
       } else console.log("loi: ", result.message);
@@ -280,7 +280,7 @@ function getFriendInfor(friend) {
       .attr("src", "/images/Online.png");
 
     let avatarUrl = friend.Avatar
-      ? "http://10.2.44.52:8888/api/images" + friend.Avatar
+      ? domain+"/images" + friend.Avatar
       : "/images/defaultavatar.jpg";
     const avatar = $("<img>")
       .addClass("right-friend-avatar")
@@ -312,13 +312,12 @@ function getFriendInfor(friend) {
 }
 
 async function actionSendMessage(FriendID, Content, Files) {
-  if (Content != "") {
     let formData = new FormData();
     formData.append("FriendID", FriendID);
     formData.append("Content", Content);
     formData.append("files", Files);
     await $.ajax({
-      url: "http://10.2.44.52:8888/api/message/send-message",
+      url: domain+ "/message/send-message",
       type: "POST",
       headers: myHeaders,
       processData: false,
@@ -331,13 +330,12 @@ async function actionSendMessage(FriendID, Content, Files) {
         checkStatus = false;
       },
     });
-  }
 }
 
 function getMessages(friend) {
   $.ajax({
     url:
-      "http://10.2.44.52:8888/api/message/get-message?FriendID=" +
+      "http://localhost:8888/api/message/get-message?FriendID=" +
       friend.FriendID,
     method: "GET",
     contentType: "application/json",
@@ -463,6 +461,7 @@ function renderMessage(friend, arrMess)
             if (arrMess.data[j].Images.length > 0) {
               friendMessage.append(renderImage(arrMess.data[j].Images[0]));
             }
+            if (arrMess.data[j].Content=='') break;
             const content = $("<p>").addClass("friend-message").text(arrMess.data[j].Content);
             friendMessage.append(content);  
             if (j == arrMess.data.length - 1) break;
@@ -497,6 +496,7 @@ function renderMessage(friend, arrMess)
             if (arrMess.data[j].Images.length > 0) {             
               myMessage.append(renderImage(arrMess.data[j].Images[0]));
             }
+            if (arrMess.data[j].Content=='') break;
             const content = $("<p>").addClass("my-message").text(arrMess.data[j].Content);
             myMessage.append(content);
             if (j == arrMess.data.length - 1) break;
@@ -537,11 +537,11 @@ function filterFriend() {
 }
 function downloadFile(urlFile) {
   $.ajax({
-    url: "http://10.2.44.52:8888/api" + urlFile,
+    url: domain+ urlFile,
     method: "GET",
     success: function (result) {
       var link = document.createElement("a");
-      link.href = "http://10.2.44.52:8888/api" + urlFile;
+      link.href = domain + urlFile;
       link.target = "_blank";
       link.click();
     },

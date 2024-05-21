@@ -160,12 +160,8 @@ body {
   border-radius: 99.99px;
   margin: 6px 10px 0 6px;
 }
-.avatar-message {
-  width: 36px;
-  height: 36px;
-  border-radius: 99.99px;
-  margin: 0 10px 0 10px;
-}
+
+
 .content {
   margin: 0;
   font-size: 14px;
@@ -251,9 +247,19 @@ body {
 
   width: 100%;
   height: auto;
-  align-items: center;
   justify-content: left;
   padding-bottom: 10px;
+}
+.avatar-message-container{
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.avatar-message {
+  width: 36px;
+  height: 36px;
+  border-radius: 99.99px;
+  margin: 0 10px 15px 10px;
 }
 .friend-messages{
   display: flex;
@@ -284,7 +290,8 @@ body {
 .send-time-friend-message{
   width: 55px;
   height: 16px;
- 
+  color: #747881;
+
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
@@ -333,7 +340,9 @@ body {
 .send-time-my-message{
   width: 55px;
   height: 16px;
- 
+  color: #747881;
+  ;
+
   font-size: 12px;
   font-weight: 400;
   line-height: 16px;
