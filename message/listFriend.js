@@ -312,7 +312,7 @@ async function actionSendMessage(FriendID, Content, Files) {
     formData.append("Content", Content);
     formData.append("files", Files);
   await   $.ajax({
-      url: "http://10.2.44.52:8888/api/message/send-message1",
+      url: "http://10.2.44.52:8888/api/message/send-message",
       type: "POST",
       headers: myHeaders,
       processData: false,
