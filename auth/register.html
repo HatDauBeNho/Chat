@@ -37,26 +37,33 @@
               <label class="label-register">Đăng ký</label>
             </div>
             <div class="form-register-line">
+              <label class="label-for-input" for="fullname">Tên hiển thị</label>
+              <div class="username-container">
+                <input type="text" id="fullname" name="fullname" required />
+                <img src="/images/clean-input.png" class="clean-input">
+              </div>
+            </div>
+            <div class="form-register-line">
               <label class="label-for-input" for="username">Tài khoản</label>
               <div class="username-container">
                 <input type="text" name="username" id="username" required />
                 <img src="/images/clean-input.png" class="clean-input">
               </div>
-            </div>
+            </div>           
             <div class="form-register-line">
               <label class="label-for-input" for="password">Nhập mật khẩu</label>
               <div class="password-container">
                 <input type="password" id="password" name="password" required />
                 <img src="/images/show-pass.png" alt="" class="show-password">
               </div>
-            </div>
-            <div class="form-register-line">
-              <label class="label-for-input" for="fullname">Nhập tên đầy đủ</label>
-              <div class="username-container">
-                <input type="text" id="fullname" name="fullname" required />
-                <img src="/images/clean-input.png" class="clean-input">
+            </div><div class="form-register-line">
+              <label class="label-for-input" for="password">Nhập lại mật khẩu</label>
+              <div class="password-container">
+                <input type="password" id="confirm-password" name="confirm-password" required />
+                <img src="/images/show-pass.png" alt="" class="show-confirm-password">
               </div>
             </div>
+            
 
             <input id="btnSubmitRegister" type="submit" value="Đăng ký" />
             <div class="right-container-function-noti">

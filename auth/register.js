@@ -5,13 +5,17 @@
     btnSubmitRegister.on("click",function(e)
     {
       e.preventDefault();
-      if (form.find('[name="fullname"]').val()==''&&form.find('[name="username"]').val()==''&&form.find('[name="password"]').val()=='') 
+      let fullname=form.find('[name="fullname"]').val();
+      let username=form.find('[name="username"]').val();
+      let password=form.find('[name="password"]').val();
+      let confirmPassword=form.find('[name="confirm-password"]').val();
+      if (fullname==''&&username==''&&password==''&&confirmPassword==''&&password==confirmPassword) 
         alert ("Ban chua nhap thong tin");
     else{
         register(
-            form.find('[name="fullname"]').val(),
-            form.find('[name="username"]').val(),
-            form.find('[name="password"]').val()
+          fullname,
+          username,
+          password,
           );
     }
       
@@ -23,12 +27,22 @@
       $("#fullname").val('');
     });
     $(".show-password").click(function () {
-      var passwordField = $("#password");
-      var passwordFieldType = passwordField.attr("type");
+      let passwordField = $("#password");
+      let passwordFieldType = passwordField.attr("type");
       if (passwordFieldType == "password") {
         passwordField.attr("type", "text");
       } else {
         passwordField.attr("type", "password");
+      }
+    });
+    $(".show-confirm-password").click(function () {
+      console.log("adu");
+      let confirmPasswordField = $("#confirm-password");
+      let confirmPasswordFieldType = confirmPasswordField.attr("type");
+      if (confirmPasswordFieldType == "password") {
+        confirmPasswordField.attr("type", "text");
+      } else {
+        confirmPasswordField.attr("type", "password");
       }
     });
   });
