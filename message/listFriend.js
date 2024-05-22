@@ -82,7 +82,7 @@ $(document).ready(function () {
 setInterval(function () {
   getMessages(customFriend);
 }, 10000);
-//click ban be
+// click ban be
 $(document).on("click", ".left-container-channel", function () {
   let friendid = $(this).attr("id");
   let friend = arrListFriend.find(({ FriendID }) => FriendID == friendid);
@@ -109,10 +109,10 @@ $("#btnSendMessage").click(async function (event) {
     let input = $(".message-input").val();
     statusMessage(input);
     let result = { status: 0, data: arrStorageMessage, message: "" };
-    renderMessage(customFriend, result);
+    renderMessage(customFriend, result.data);
     $(".message-input").val("");
     await actionSendMessage(customFriend.FriendID, input);
-    renderMessage(customFriend, result);
+    renderMessage(customFriend, result.data);
   }
 });
 
@@ -123,10 +123,10 @@ $(".message-input").keydown(async function (event) {
     let input = $(".message-input").val();
     statusMessage(input);
     let result = { status: 0, data: arrStorageMessage, message: "" };
-    renderMessage(customFriend, result);
+    renderMessage(customFriend, result.data);
     $(".message-input").val("");
     await actionSendMessage(customFriend.FriendID, input);
-    renderMessage(customFriend, result);
+    renderMessage(customFriend, result.data);
   }
 });
 
@@ -137,14 +137,13 @@ $("#btnChooseFile").click(function () {
 $("#fileInput").change(async function () {
   let file = this.files[0];
   if (file) {
-    if (confirm("bạn có muốn gửi: " + file.name)) {
-      let input = file;
-      statusFile(input);
-      let result = { status: 0, data: arrStorageMessage, message: "" };
-      renderMessage(customFriend, result);
-      await actionSendMessage(customFriend.FriendID, "", input);
-      renderMessage(customFriend, result);
-    }
+    let input = file;
+    statusFile(input);
+    let result = { status: 0, data: arrStorageMessage, message: "" };
+    renderMessage(customFriend, result.data);
+    await actionSendMessage(customFriend.FriendID, "", input);
+    renderMessage(customFriend, result.data);
+    
   }
 });
 function statusMessage(mess) {
@@ -193,7 +192,11 @@ $(document).on("click", ".friend-file", function () {
   let urlFile = $(this).attr("urlFile");
   downloadFile(urlFile);
 });
-
+$(document).on("click", ".show-image", function () {
+  console.log("adu");
+  let urlImage = $(this).attr("src");
+  clickImage(urlImage);
+});
 function getUserInfor() {
   $.ajax({
     url: domain+ "/user/info",
@@ -223,12 +226,9 @@ function getListFriend() {
     contentType: "application/json",
     headers: myHeaders,
     success: function (result) {
-      let index=0;
       result.data.forEach((friend) => {
-        index++;
-        if (friend.FullName!=null) 
+        if (friend.FullName) 
         {
-          console.log("bdu");
           arrListFriend.push(friend);
           const listItem = $("<div>").addClass("left-container-channel").attr("id", friend.FriendID);
           const avatar = $("<img>").addClass("avatar");
@@ -238,17 +238,16 @@ function getListFriend() {
   
           const friendInfo = $("<div>").addClass("left-container-channel-infor");
           const fullName = $("<h4>").addClass("h4content").text(friend.FullName);
-          const lastMessage = $("<p>").addClass("content").text(friend.Content);
+          const lastMessage = $("<p>").addClass("last-message").text(friend.Content);
           friendInfo.append(fullName);
           friendInfo.append(lastMessage);
   
           listItem.append(friendInfo);
   
           friendsList.append(listItem);
-        }else(console.log("adu"));
-        
+        }
       });
-      console.log(index);
+
       // Gọi hàm click trên phần tử đầu tiên để hiển thị friend
       $(".left-container-channel").first().click();
     },
@@ -345,7 +344,7 @@ function getMessages(friend) {
       result.data.forEach((mess) => {
         arrStorageMessage.push(mess);
       });
-      renderMessage(friend, result);
+      renderMessage(friend, result.data);
     },
     error: function (error) {
       console.log("error: ", error);
@@ -365,9 +364,7 @@ function renderFile(Files,type)
 {
   const file=$("<div>");
   if (type==0)  {file.addClass("friend-file").attr("urlFile", Files.urlFile);} 
-  else {
-    file.addClass("my-file").attr("urlFile", Files.urlFile);
-  }
+    else  file.addClass("my-file").attr("urlFile", Files.urlFile);
   const fileImage = $("<img>").addClass("file-image").attr("src", "/images/file-icon.svg");
   const fileName = $("<p>").addClass("file-name").text(Files.FileName);
   file.append(fileImage);
@@ -376,7 +373,7 @@ function renderFile(Files,type)
 }
 
 function renderImage(Images){
-  const showImage = $("<img>").addClass("show-image").attr("src",domain +Images.urlImage);
+  const showImage = $("<img>").addClass("show-image").attr("src",domain + Images.urlImage);
   return showImage;                           
 }
 
@@ -437,92 +434,77 @@ function renderFunction(){
   return func;
 }
 
+function checkTime(startTime,endTime)
+{
+  let time1 = moment(startTime);
+  let time2 = moment(endTime);
+  if(time1.isSame(time2, "hour")&&time1.isSame(time2, "minute")){
+    return true;
+  }
+  return false; 
+}
+function checkMessage(mess)
+{
+  if (mess.Content==''&&mess.Files.length==0&&mess.Images.length==0) return false;
+  return true;
+}
 function renderMessage(friend, arrMess) 
 {
   getAllMessage.empty();
-  if (arrMess.data.length == 0) {
-    getAllMessage.append(renderEmptyMessage);
-  } else 
+  if (arrMess.length == 0) getAllMessage.append(renderEmptyMessage);
+
+  let flag = -1;
+  for (let i = 0; i < arrMess.length; i++) 
   {
-    let flag = -1;
-    for (let i = 0; i < arrMess.data.length; i++) {
-      if (i <= flag) {
-        continue;
-      } else {
-        const listMessage = $("<div>");
-        if (arrMess.data[i].MessageType == 0) {
-          listMessage.addClass("list-friend-message");
-
-          const friendMessage = $("<div>").addClass("friend-messages");
-          for (let j = i; j < arrMess.data.length; j++) {
-            if (arrMess.data[j].Files.length > 0) {
-              friendMessage.append(renderFile(arrMess.data[j].Files[0],0));
-            }
-            if (arrMess.data[j].Images.length > 0) {
-              friendMessage.append(renderImage(arrMess.data[j].Images[0]));
-            }
-            if (arrMess.data[j].Content=='') break;
-            const content = $("<p>").addClass("friend-message").text(arrMess.data[j].Content);
-            friendMessage.append(content);  
-            if (j == arrMess.data.length - 1) break;
-            else {
-              let startTime = moment(arrMess.data[j].CreatedAt);
-              let endTime = moment(arrMess.data[j + 1].CreatedAt);
-              if (
-                startTime.isSame(endTime, "hour") &&
-                startTime.isSame(endTime, "minute") &&
-                arrMess.data[j + 1].MessageType == 0
-              ) {
-                flag = j + 1;
-              } else break;
-            }
-          }
-          friendMessage.append(renderMessageStatus(arrMess.data[i],0));
-
-          listMessage.append(renderAvatar(friend));
-          listMessage.append(friendMessage);
-          listMessage.append(renderFunction());
-
-          getAllMessage.append(listMessage);
-        } else {
-          listMessage.append(renderFunction);
-
-          const myMessage = $("<div>").addClass("my-messages");
-
-          for (let j = i; j < arrMess.data.length; j++) {
-            if (arrMess.data[j].Files.length > 0) {              
-              myMessage.append(renderFile(arrMess.data[j].Files[0],1));
-            }
-            if (arrMess.data[j].Images.length > 0) {             
-              myMessage.append(renderImage(arrMess.data[j].Images[0]));
-            }
-            if (arrMess.data[j].Content=='') break;
-            const content = $("<p>").addClass("my-message").text(arrMess.data[j].Content);
-            myMessage.append(content);
-            if (j == arrMess.data.length - 1) break;
-            else {
-              let startTime = moment(arrMess.data[j].CreatedAt);
-              let endTime = moment(arrMess.data[j + 1].CreatedAt);
-              if (
-                startTime.isSame(endTime, "hour") &&
-                startTime.isSame(endTime, "minute") &&
-                arrMess.data[j + 1].MessageType == 1
-              ) {
-                flag = j + 1;
-              } else {
-                break;
-              }
-            }
-          }
-          listMessage.addClass("list-my-message");
-          myMessage.append(renderMessageStatus(arrMess.data[i],1));
-          listMessage.append(myMessage);
-          getAllMessage.append(listMessage);
+    if (i <= flag)  continue;
+    const listMessage = $("<div>");
+    if (arrMess[i].MessageType==0&&checkMessage(arrMess[i])) 
+    {
+      listMessage.addClass("list-friend-message");
+      const friendMessage = $("<div>").addClass("friend-messages");
+      for (let j = i; j < arrMess.length; j++) 
+      {
+        if (arrMess[j].Files.length > 0) friendMessage.append(renderFile(arrMess[j].Files[0],0));
+        if (arrMess[j].Images.length > 0) friendMessage.append(renderImage(arrMess[j].Images[0]));
+        if (arrMess[j].Content) 
+        {
+          const content = $("<p>").addClass("friend-message").text(arrMess[j].Content);
+          friendMessage.append(content);  
         }
+        if (j == arrMess.length - 1) break;    
+        if (checkTime(arrMess[j].CreatedAt,arrMess[j + 1].CreatedAt) &&arrMess[j + 1].MessageType == 0) flag = j + 1;
+        else break; 
       }
+      friendMessage.append(renderMessageStatus(arrMess[i],0));
+      listMessage.append(renderAvatar(friend));
+      listMessage.append(friendMessage);
+      listMessage.append(renderFunction());
+      getAllMessage.append(listMessage);  
+    } 
+    if (arrMess[i].MessageType==1&&checkMessage(arrMess[i]))
+    {
+      listMessage.append(renderFunction());
+
+      const myMessage = $("<div>").addClass("my-messages");
+
+      for (let j = i; j < arrMess.length; j++) {
+        if (arrMess[j].Files.length > 0)  myMessage.append(renderFile(arrMess[j].Files[0],1));         
+        if (arrMess[j].Images.length > 0)   myMessage.append(renderImage(arrMess[j].Images[0]));          
+        if (arrMess[j].Content) 
+          {
+            const content = $("<p>").addClass("my-message").text(arrMess[j].Content);
+            myMessage.append(content);  
+          }
+        if (j == arrMess.length - 1) break;    
+        if (checkTime(arrMess[j].CreatedAt,arrMess[j + 1].CreatedAt) &&arrMess[j + 1].MessageType == 1) flag = j + 1;
+        else break; 
+      }
+      listMessage.addClass("list-my-message");
+      myMessage.append(renderMessageStatus(arrMess[i],1));
+      listMessage.append(myMessage);
+      getAllMessage.append(listMessage);
     }
   }
-
   $(".list-message").scrollTop($(".list-message")[0].scrollHeight);
 }
 
@@ -550,3 +532,23 @@ function downloadFile(urlFile) {
     },
   });
 }
+function clickImage(urlImage)
+{
+  $.ajax({
+    url: urlImage,
+    method: "GET",
+    success: function (result) {
+      var link = document.createElement("a");
+      link.href =  urlImage;
+      link.target = "_blank";
+      link.click();
+    },
+    error: function (error) {
+      console.log("error: ", error);
+    },
+  });
+}
+// function autoResize(textarea) {
+//   textarea.style.height = "auto"; 
+//   textarea.style.height = (textarea.scrollHeight) + "px"; 
+// }

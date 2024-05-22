@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
 
   </head>
-
+  
   <body>
     <div class="main">
       <div class="left-container">
@@ -62,7 +62,7 @@
             </button>
             <input type="file" id="fileInput" class="file-input" />
             <div class="message-composer-input">
-              <input type="text" class="message-input" placeholder="Nhập tin nhắn" id="message" name="message">
+              <textarea name="message" class="message-input" id="message" placeholder="Nhập tin nhắn" oninput="autoResize(this)"></textarea>
               <div class="emo">
                 <img src="/images/smile.png" class="send-emo-icon">
                 <div class="list-emo"></div>

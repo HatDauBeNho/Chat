@@ -36,7 +36,7 @@
         headers: myHeaders,
         redirect: 'follow'
     };
-    fetch("http://localhost:8888/api/user/info", requestOptions)
+    fetch("http://10.2.44.52:8888/api/user/info", requestOptions)
         .then(response => {
             return response.json();
         })
@@ -47,7 +47,7 @@
                 // Cập nhật thông tin người dùng vào trang web
                 username.textContent = result.data.Username;
                 fullname.textContent = result.data.FullName;
-                avatar.src = 'http://localhost:8888/api/images' + result.data.Avatar;
+                avatar.src = 'http://10.2.44.52:8888/api/images' + result.data.Avatar;
             } else {
                 console.error('Error: ' + result.message);
             }

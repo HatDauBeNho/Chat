@@ -39,7 +39,7 @@ function login(Username, Password) {
     },
     error: function (error) {
       console.log("error", error);
-      alert("Tai khoan hoac mat khau khong dung!");
+      $('#login-fail').text('Sai tài khoản hoặc mật khẩu').show();
     },
   });
 }

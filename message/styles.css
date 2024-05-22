@@ -162,9 +162,13 @@ body {
 }
 
 
-.content {
+.last-message {
   margin: 0;
   font-size: 14px;
+  white-space: nowrap; 
+  width: 150px;
+  overflow: hidden; 
+  text-overflow: ellipsis; 
 }
 .h4content {
   margin: 0;
@@ -218,7 +222,7 @@ body {
 }
 .list-message {
   width: 100%;
-  height: calc(100% - 136px);
+  flex-grow: 1;
   overflow-y: auto;
 }
 .list-message::-webkit-scrollbar {
@@ -284,8 +288,8 @@ body {
 .function{
   display: none;
   width: 70px;
-  height: 34px;
   padding-bottom: 20px;
+  align-items: center;
 }
 .send-time-friend-message{
   width: 55px;
@@ -327,10 +331,11 @@ body {
   padding: 4px 8px 4px 8px;
   display: flex;
   align-items: center;
-  width: fit-content;
-  height: 32px;
+  max-width: 300px;
+  min-height: 32px;
   margin: 0 0 2px 0;
-  
+  word-break: break-word; 
+
   background-color: #e0f0ff;
   border-radius: 18px 18px 2px 18px;
 }
@@ -356,7 +361,8 @@ body {
 .message-composer {
   display: flex;
   width: 100%;
-  height: 56px;
+  min-height: 56px;
+  height: auto;
   align-items: center;
 }
 .message-composer-input {
@@ -378,8 +384,8 @@ body {
   padding-left: 20px;
   font-size: 16px;
 
-  /* overflow: hidden;
-  resize: none; */
+  overflow: hidden;
+  resize: none;
 }
 .message-composer-emo {
   border: none;
@@ -486,11 +492,19 @@ body {
   width: 256px;
   height: 224px;
   border-radius: 16px 16px 2px 16px;
-
+  cursor: pointer;
 }
 .my-messages.active{
   background-color: rgb(250, 145, 145);
 }
 .send-time-my-message.active{
   color: red ;
+}
+textarea::placeholder 
+{
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: left;
+  color:  #747881;
 }
