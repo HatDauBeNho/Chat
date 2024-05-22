@@ -29,7 +29,7 @@ function login(Username, Password) {
   });
 
   $.ajax({
-    url: "http://localhost:8888/api/auth/login",
+    url: "http://10.2.44.52:8888/api/auth/login",
     method: "POST",
     contentType: "application/json",
     data: raw,

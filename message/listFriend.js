@@ -4,7 +4,7 @@ const getUser = $("#getUser");
 const getAllMessage = $("#messages");
 const messageForm = $("#messageForm");
 const message = $("#message");
-const domain="http://localhost:8888/api";
+const domain="http://10.2.44.52:8888/api";
 let messageError = "";
 let checkStatus = false;
 let listIcon = [
@@ -335,7 +335,7 @@ async function actionSendMessage(FriendID, Content, Files) {
 function getMessages(friend) {
   $.ajax({
     url:
-      "http://localhost:8888/api/message/get-message?FriendID=" +
+     domain+ "/message/get-message?FriendID=" +
       friend.FriendID,
     method: "GET",
     contentType: "application/json",
