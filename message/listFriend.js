@@ -79,9 +79,9 @@ $(document).ready(function () {
     filterFriend();
   }
 });
-setInterval(function () {
-  getMessages(customFriend);
-}, 10000);
+// setInterval(function () {
+//   getMessages(customFriend);
+// }, 10000);
 // click ban be
 $(document).on("click", ".left-container-channel", function () {
   let friendid = $(this).attr("id");
@@ -193,10 +193,21 @@ $(document).on("click", ".friend-file", function () {
   downloadFile(urlFile);
 });
 $(document).on("click", ".show-image", function () {
-  console.log("adu");
   let urlImage = $(this).attr("src");
   clickImage(urlImage);
 });
+
+$(document).on("click", ".btn-function", function (event) {
+  event.stopPropagation(); 
+  const div2 = $(this).find('.dropdown-func');
+  $('.dropdown-func').not(div2).hide(); 
+  div2.show(); 
+});
+
+$(document).on('click', function() {
+  $('.dropdown-func').hide(); 
+});
+
 function getUserInfor() {
   $.ajax({
     url: domain+ "/user/info",
@@ -425,9 +436,44 @@ function renderFunction(){
   const reactionImg = $("<img>").addClass("reaction-img").attr("src", "/images/reaction.png");       
   btnReaction.append(reactionImg);
 
+  
+
   const btnFunction = $("<button>").addClass("btn-function");
   const functionImg = $("<img>").addClass("function-img").attr("src", "/images/Menu.png");
   btnFunction.append(functionImg);
+
+  const dropdownFunc=$("<div>").addClass("dropdown-func");
+
+  const response=$("<div>").addClass("item-dropdown-func");
+  const iconResponse=$("<img>").addClass("icon-func").attr("src", "/images/response.png");   
+  const responseText=$("<p>").addClass("func-text").text("Trả lời");
+  response.append(iconResponse);
+  response.append(responseText);
+
+  const edit=$("<div>").addClass("item-dropdown-func");
+  const iconEdit=$("<img>").addClass("icon-func").attr("src", "/images/edit.png");   
+  const editText=$("<p>").addClass("func-text").text("Chỉnh sửa");
+  edit.append(iconEdit);
+  edit.append(editText);
+
+  const pin=$("<div>").addClass("item-dropdown-func");
+  const iconPin=$("<img>").addClass("icon-func").attr("src", "/images/pin.png");   
+  const PinText=$("<p>").addClass("func-text").text("Ghim");
+  pin.append(iconPin);
+  pin.append(PinText);
+
+  const deleteMess=$("<div>").addClass("item-dropdown-func");
+  const iconDelete=$("<img>").addClass("icon-func").attr("src", "/images/delete.png");   
+  const deleteText=$("<p>").addClass("func-text-delete").text("Xóa tin nhắn");
+  deleteMess.append(iconDelete);
+  deleteMess.append(deleteText);
+
+  dropdownFunc.append(response);
+  dropdownFunc.append(edit);
+  dropdownFunc.append(pin);
+  dropdownFunc.append(deleteMess);
+
+  btnFunction.append(dropdownFunc)
 
   func.append(btnReaction);
   func.append(btnFunction);
