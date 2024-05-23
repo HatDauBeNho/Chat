@@ -79,9 +79,9 @@ $(document).ready(function () {
     filterFriend();
   }
 });
-setInterval(function () {
-  getMessages(customFriend);
-}, 10000);
+// setInterval(function () {
+//   getMessages(customFriend);
+// }, 10000);
 // click ban be
 $(document).on("click", ".left-container-channel", function () {
   let friendid = $(this).attr("id");
@@ -117,7 +117,7 @@ $("#btnSendMessage").click(async function (event) {
 });
 
 $(".message-input").keydown(async function (event) {
-  if (event.keyCode == 13 && $(".message-input").val() != "") {
+  if (event.keyCode == 13 && $(".message-input").val().trim!="") {
     event.preventDefault();
     getAllMessage.empty();
     let input = $(".message-input").val();
@@ -445,7 +445,7 @@ function checkTime(startTime,endTime)
 }
 function checkMessage(mess)
 {
-  if (mess.Content==''&&mess.Files.length==0&&mess.Images.length==0) return false;
+  if (!mess.Content.trim()&&mess.Files.length==0&&mess.Images.length==0) return false;
   return true;
 }
 function renderMessage(friend, arrMess) 
@@ -466,7 +466,7 @@ function renderMessage(friend, arrMess)
       {
         if (arrMess[j].Files.length > 0) friendMessage.append(renderFile(arrMess[j].Files[0],0));
         if (arrMess[j].Images.length > 0) friendMessage.append(renderImage(arrMess[j].Images[0]));
-        if (arrMess[j].Content) 
+        if (arrMess[j].Content.trim()) 
         {
           const content = $("<p>").addClass("friend-message").text(arrMess[j].Content);
           friendMessage.append(content);  
@@ -489,8 +489,9 @@ function renderMessage(friend, arrMess)
 
       for (let j = i; j < arrMess.length; j++) {
         if (arrMess[j].Files.length > 0)  myMessage.append(renderFile(arrMess[j].Files[0],1));         
-        if (arrMess[j].Images.length > 0)   myMessage.append(renderImage(arrMess[j].Images[0]));          
-        if (arrMess[j].Content) 
+        if (arrMess[j].Images.length > 0)   myMessage.append(renderImage(arrMess[j].Images[0]));     
+
+        if (arrMess[j].Content.trim()) 
           {
             const content = $("<p>").addClass("my-message").text(arrMess[j].Content);
             myMessage.append(content);  
