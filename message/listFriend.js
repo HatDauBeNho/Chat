@@ -81,9 +81,9 @@ $(document).ready(function () {
     filterFriend();
   }
 });
-// setInterval(function () {
-//   getMessages(customFriend);
-// }, 10000);
+setInterval(function () {
+  getMessages(customFriend);
+}, 10000);
 // click ban be
 $(document).on("click", ".left-container-channel", function () {
   let friendid = $(this).attr("id");
