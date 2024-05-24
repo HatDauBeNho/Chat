@@ -262,7 +262,8 @@ body {
   margin: 0 10px 15px 10px;
 }
 .friend-messages {
-  display: flex;
+  display: flex;  
+  max-width: 300px;
   flex-direction: column;
 }
 
@@ -272,16 +273,19 @@ body {
 
   align-items: center;
   width: fit-content;
-  height: 32px;
+  min-height: 32px;
   background-color: #e9eaed;
   border-radius: 18px 18px 18px 2px;
   margin: 0 0 2px 0;
+  word-break: break-word;
+
 }
 .list-friend-message:hover .function {
   display: flex;
 }
 .function {
   display: none;
+  position: relative;
   width: 70px;
   padding-bottom: 20px;
   align-items: center;
@@ -308,7 +312,7 @@ body {
   cursor: pointer;
 }
 
-.dropdown-func {
+.friend-dropdown-func {
   display: none;
   position: absolute;
   top: 10px;
@@ -318,6 +322,19 @@ body {
   box-shadow: 0px 0px 8px 0px #00000026;
   border-radius: 16px;
   background-color: #ffffff;
+  z-index:1  ;
+}
+.my-dropdown-func {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 240px;
+  height: 168px;
+  box-shadow: 0px 0px 8px 0px #00000026;
+  border-radius: 16px;
+  background-color: #ffffff;
+  z-index:1  ;
 }
 .item-dropdown-func {
   display: flex;
@@ -359,6 +376,7 @@ body {
 .my-messages {
   display: flex;
   flex-direction: column;
+  max-width: 300px;
   align-items: flex-end;
   padding-right: 20px;
 }
@@ -366,7 +384,7 @@ body {
   padding: 4px 8px 4px 8px;
   display: flex;
   align-items: center;
-  max-width: 300px;
+  width: fit-content;;
   min-height: 32px;
   margin: 0 0 2px 0;
   word-break: break-word;
@@ -377,6 +395,7 @@ body {
 .check {
   display: flex;
 }
+
 .send-time-my-message {
   width: 55px;
   height: 16px;
@@ -533,12 +552,30 @@ textarea::placeholder {
 }
 
 /* Popup delete message */
-.popup-container {
+.popup-container
+{
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: none;
+}
+.popup-overlay
+{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color:  #00000033;
+}
+.popup-body {
   width: 312px;
   height: 188px;
   border-radius: 16px;
-  background-color: rgb(211, 211, 211);
+  background-color:  #FFFFFF;
+
+  margin: auto;
+  z-index: 1;
 }
 .popup-delete {
   width: 100%;
@@ -551,6 +588,8 @@ textarea::placeholder {
   line-height: 20px;
   padding: 32px 16px 8px 16px;
   margin: 0;
+
+ 
 }
 .popup-mess {
   font-size: 16px;
@@ -575,7 +614,7 @@ textarea::placeholder {
   line-height: 16.41px;
   text-align: center;
   color:  #005FFF;
-;
+  cursor: pointer;
 }
 
 #submit{

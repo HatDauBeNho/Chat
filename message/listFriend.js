@@ -68,6 +68,8 @@ const reversedIcons = listIcon.reverse();
 let customFriend = {};
 let arrListFriend = [];
 let arrStorageMessage = [];
+let distanceToTop=0;
+let distanceToRight=0;
 
 var myHeaders = { Authorization: `Bearer ${token}` };
 
@@ -197,17 +199,36 @@ $(document).on("click", ".show-image", function () {
   clickImage(urlImage);
 });
 
+$(document).on('click', function(event) {
+  $('.my-dropdown-func').hide();   
+  $('.friend-dropdown-func').hide(); 
+  var windowWidth = $(document).width(); 
+  var windowHeight = $(document).height(); 
+  
+  var clickPosition = { x: event.clientX, y: event.clientY }; 
+  
+  distanceToTop = clickPosition.y; 
+  distanceToRight = windowWidth - clickPosition.x; 
+  console.log("top:",distanceToTop);
+  console.log("right:",distanceToRight);
+});
 $(document).on("click", ".btn-function", function (event) {
   event.stopPropagation(); 
-  const div2 = $(this).find('.dropdown-func');
-  $('.dropdown-func').not(div2).hide(); 
+  let div2 = $(this).find('.my-dropdown-func');
+  if (div2.length == 0) {
+    div2 = $(this).find('.friend-dropdown-func');
+  }
+  $('.friend-dropdown-func').not(div2).hide(); 
+  $('.my-dropdown-func').not(div2).hide(); 
   div2.show(); 
+  adjustDropdownFunc();
 });
-
-$(document).on('click', function() {
-  $('.dropdown-func').hide(); 
+$(document).on("click", "#delete-mess", function () {
+  $('.popup-container').css('display', 'flex');
 });
-
+$('#cancle').click(function() {
+  $('.popup-container').css('display', 'none');
+});
 function getUserInfor() {
   $.ajax({
     url: domain+ "/user/info",
@@ -430,20 +451,21 @@ function renderMessageStatus(data,type)
   
 }
 
-function renderFunction(){
+function renderFunction(type){
   const func = $("<div>").addClass("function");
   const btnReaction = $("<button>").addClass("btn-reaction");
   const reactionImg = $("<img>").addClass("reaction-img").attr("src", "/images/reaction.png");       
   btnReaction.append(reactionImg);
-
-  
 
   const btnFunction = $("<button>").addClass("btn-function");
   const functionImg = $("<img>").addClass("function-img").attr("src", "/images/Menu.png");
   btnFunction.append(functionImg);
 
   const dropdownFunc=$("<div>").addClass("dropdown-func");
-
+  if (type==0)
+  {
+    dropdownFunc.addClass("friend-dropdown-func");
+  }else dropdownFunc.addClass("my-dropdown-func");
   const response=$("<div>").addClass("item-dropdown-func");
   const iconResponse=$("<img>").addClass("icon-func").attr("src", "/images/response.png");   
   const responseText=$("<p>").addClass("func-text").text("Trả lời");
@@ -462,7 +484,7 @@ function renderFunction(){
   pin.append(iconPin);
   pin.append(PinText);
 
-  const deleteMess=$("<div>").addClass("item-dropdown-func");
+  const deleteMess=$("<div>").addClass("item-dropdown-func").attr("id", "delete-mess");
   const iconDelete=$("<img>").addClass("icon-func").attr("src", "/images/delete.png");   
   const deleteText=$("<p>").addClass("func-text-delete").text("Xóa tin nhắn");
   deleteMess.append(iconDelete);
@@ -479,7 +501,20 @@ function renderFunction(){
   func.append(btnFunction);
   return func;
 }
-
+function adjustDropdownFunc()
+{
+  let windowHeight = $(document).height();
+  let friendPopupHeight = $('.my-dropdown-func').outerHeight();
+  let friendPopupTop = parseInt($('.my-dropdown-func').css('top'));
+  if (friendPopupTop  + friendPopupHeight + distanceToTop > windowHeight-150) {
+      $('.my-dropdown-func').css('top',"-"+120 + 'px');
+  }
+  let myPopupHeight = $('.friend-dropdown-func').outerHeight();
+  let myPopupTop = parseInt($('.friend-dropdown-func').css('top'));
+  if (myPopupTop + myPopupHeight + distanceToTop > windowHeight-150) {
+      $('.friend-dropdown-func').css('top',"-"+120 + 'px');
+  }
+}
 function checkTime(startTime,endTime)
 {
   let time1 = moment(startTime);
@@ -498,7 +533,6 @@ function renderMessage(friend, arrMess)
 {
   getAllMessage.empty();
   if (arrMess.length == 0) getAllMessage.append(renderEmptyMessage);
-
   let flag = -1;
   for (let i = 0; i < arrMess.length; i++) 
   {
@@ -524,15 +558,14 @@ function renderMessage(friend, arrMess)
       friendMessage.append(renderMessageStatus(arrMess[i],0));
       listMessage.append(renderAvatar(friend));
       listMessage.append(friendMessage);
-      listMessage.append(renderFunction());
+      listMessage.append(renderFunction(0));
       getAllMessage.append(listMessage);  
     } 
+
     if (arrMess[i].MessageType==1&&checkMessage(arrMess[i]))
     {
-      listMessage.append(renderFunction());
-
+      listMessage.append(renderFunction(1));
       const myMessage = $("<div>").addClass("my-messages");
-
       for (let j = i; j < arrMess.length; j++) {
         if (arrMess[j].Files.length > 0)  myMessage.append(renderFile(arrMess[j].Files[0],1));         
         if (arrMess[j].Images.length > 0)   myMessage.append(renderImage(arrMess[j].Images[0]));     
