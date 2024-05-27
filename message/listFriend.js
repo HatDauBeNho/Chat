@@ -79,7 +79,17 @@ $(document).ready(function () {
     getUserInfor();
     getListFriend();
     filterFriend();
+    $(".list-message").on('scroll',function(){
+      if ($(".list-message").scrollTop() + $(".list-message").innerHeight() < $(".list-message")[0].scrollHeight) {
+        $(".btn-scroll").show();
+      } else {
+        $(".btn-scroll").hide();
+      }
+    });
   }
+});
+$(".btn-scroll").on('click', function() {
+  $(".list-message").animate({ scrollTop: $(".list-message")[0].scrollHeight }, 'slow');
 });
 setInterval(function () {
   getMessages(customFriend);
@@ -229,6 +239,8 @@ $(document).on("click", "#delete-mess", function () {
 $('#cancle').click(function() {
   $('.popup-container').css('display', 'none');
 });
+
+
 function getUserInfor() {
   $.ajax({
     url: domain+ "/user/info",
@@ -582,6 +594,7 @@ function renderMessage(friend, arrMess)
       listMessage.addClass("list-my-message");
       myMessage.append(renderMessageStatus(arrMess[i],1));
       listMessage.append(myMessage);
+
       getAllMessage.append(listMessage);
     }
   }
